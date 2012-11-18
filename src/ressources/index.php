@@ -3,5 +3,6 @@
 </header>
 <body>
 Bonjour <br />
+<?php $dbInter->test(); ?>
 </body>
 </html>

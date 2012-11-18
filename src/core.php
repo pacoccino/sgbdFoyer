@@ -1,14 +1,11 @@
 <?php
-echo "boudin";
-//include("config.php");
-//include("libs/dbInterface.php");
+include("config.php");
 
-include("ressources/index.php");
+
+include("libs/dbInterface.php");
 
 function start()
  {
- include("src/ressources/index.php");
+    include("src/ressources/index.php");
  }
 ?>
-
-a
