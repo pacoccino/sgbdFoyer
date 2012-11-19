@@ -1,5 +1,5 @@
-ag<?php
-
+<?php
+ini_set('display_errors', E_ALL);
 error_reporting(E_ALL);
 /* projet SGBD Foyer
 
@@ -16,7 +16,7 @@ function lib_autoload($class) {
 
 spl_autoload_register('class_autoload');
 spl_autoload_register('lib_autoload');
-echo $config->databaseName;
+
 $core = new Core();
 $core->start();
 

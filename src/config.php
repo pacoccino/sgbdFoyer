@@ -1,4 +1,5 @@
 <?php 
-//$config->sqlImpl = "sqlite";
-$config->datbaseName = "sql/sqlit.db";
+$config = new stdClass();
+$config->sqlImpl = "sqlite";
+$config->databaseName = dirname(__FILE__)."/../sql/sqlite.db";
 ?>

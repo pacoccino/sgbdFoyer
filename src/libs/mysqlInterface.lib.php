@@ -17,5 +17,8 @@ class mysqlInterface implements genericInterface {
     public function executeSqlFile($file)
     {
     }
+     public function query($query);
+     {
+	 }
 }
 ?>

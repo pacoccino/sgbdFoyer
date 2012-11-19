@@ -5,18 +5,29 @@ class sqliteInterface implements genericInterface {
 	
 	public function __construct($config) {
 		$dbname=$config->databaseName;
-		$this->base=new SQLiteDatabase($dbname, 0666, $err);
-		if ($err)
-			die("SQLite error.");
- 
-		echo "SQLite connected.";
+		
+		try {
+		$this->base=new SQLite3($dbname, SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE);
+		} catch(Exception $e)
+		{
+			die($e);
+		}
+		//$this->base=new SQLiteDatabase($dbname, 0666, $err);
+
+		
 	}
     public function test()
     {
         echo "sqlite test";
     }
-    
-    public function connect() {
+	
+    public function exec($query) {
+		return $this->base->exec($query);
+		
+	}
+	
+    public function query($query) {
+		return $this->base->query($query);
 		
 	}
     
