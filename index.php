@@ -1,15 +1,16 @@
-égergegez<?php
+<?php
 
 error_reporting(E_ALL);
 /* projet SGBD Foyer
 
 */
-echo "pouet";
 
-include(dirname(__FILE__)."/src/core.php");
+include("./src/core.php");
 
-start();
+$core = new Core();
+
+$core->start();
 
 
 ?>
-p
+

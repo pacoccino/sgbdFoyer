@@ -3,6 +3,6 @@
 </header>
 <body>
 Bonjour <br />
-<?php $dbInter->test(); ?>
+<?php $core->dbInter->test(); ?>
 </body>
 </html>
