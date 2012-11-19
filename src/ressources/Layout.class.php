@@ -30,7 +30,6 @@ abstract class Layout {
 
 Projet SGBD Foyer <br />
 <br />
-<?php $this->core->pouet(); ?>
 <hr />
 <h2>Debug :</h2>
 <?php $this->core->debugHTML(); ?>

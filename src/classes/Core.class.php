@@ -21,6 +21,7 @@ class Core {
 			$this->dbInter = new mysqlInterface($config);
 			else 
 				die("MySQL NOT supported.");
+			$this->debugText = $this->debugText."mySQL connected.";
 			break;
 		default:
 			$dbInter = new mysqlInterface($config);
@@ -67,16 +68,17 @@ class Core {
 	public function sqlHTML() {
 		if(isset($_POST['sqlreq']))
 		{
-			$result= $this->dbInter->query($_POST['sqlreq']);
+			$result= $this->dbInter->query($_POST['sqlreq']);;
 			if(!($result))
 			{
 				echo "Erreur de requete : ".$this->dbInter->errorMsg();
 			}
-			//elseif(!($result instanceof Sqlite3Result))
-			//	echo "Requete executee avec succes".$result;
+			elseif($this->dbInter->testEmpty())
+				echo "Requete executee avec succes, mais sans resultat";
 			else
 			{
-				while($res = $result->fetchArray(SQLITE3_ASSOC)){ 
+				echo "Donnees : <br />";
+				while($res = $this->dbInter->fetch()){ 
 					foreach($res as $field=>$value) {
 						echo $field ." : ".$value." <br />";
 					}
