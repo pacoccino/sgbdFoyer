@@ -1,14 +1,8 @@
-delete from MEMBERS ;
 
-commit ;
-
-insert into REALISATEUR values (  1 , 'ROBERT') ;
-
-commit ;
-
+insert into ACTEUR values (  1 , 'ROBERT') ;
 
 -- ============================================================
 --    verification des donnees
 -- ============================================================
 
-select count(*), '= 1 ?','MEMBERS' from MEMBERS ;
+select count(*), '= 1 ?','ACTEUR' from ACTEUR ;

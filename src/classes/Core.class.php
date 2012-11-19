@@ -41,7 +41,9 @@ class Core {
 		if(isset($_GET['raz']))
 			$this->razDB();
 		else {
-			include("src/ressources/index.php");
+			//include("src/ressources/index.php");
+			$page = new Liste($this);
+			$page->toHTML();
 		}
 		
 		
@@ -57,8 +59,8 @@ class Core {
 	}
 	
 	public function pageHTML() {
-		echo "Liste des utilisateurs:<br/>";
-		echo "Marcel:";
+		echo "Moi, j'aime le nougat:<br/>";
+		echo "Marcel a un poisson rouge.";
 		
 		
 	}
@@ -66,14 +68,27 @@ class Core {
 		if(isset($_POST['sqlreq']))
 		{
 			$result= $this->dbInter->query($_POST['sqlreq']);
-			echo $result;
+			if(!($result))
+			{
+				echo "Erreur de requete : ".$this->dbInter->errorMsg();
+			}
+			//elseif(!($result instanceof Sqlite3Result))
+			//	echo "Requete executee avec succes".$result;
+			else
+			{
+				while($res = $result->fetchArray(SQLITE3_ASSOC)){ 
+					foreach($res as $field=>$value) {
+						echo $field ." : ".$value." <br />";
+					}
+				} 
+			}
 		}
 		else
 			echo "null";
 		
 	}
 	public function razDB() {
-		$this->dbInter->executeSqlFile(".sql/deleteDatabase.sql");
+		$this->dbInter->executeSqlFile("sql/deleteDatabase.sql");
 		$this->dbInter->executeSqlFile("sql/createDatabase.sql");
 		$this->dbInter->executeSqlFile("sql/initialData.sql");
 		echo "db razed";

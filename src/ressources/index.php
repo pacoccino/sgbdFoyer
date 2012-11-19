@@ -2,7 +2,7 @@
 <header>
 </header>
 <body>
-Bonjour <br />
+<h1>Bonjour </h1><br />
 
 Projet SGBD Foyer <br />
 <br />
@@ -22,8 +22,8 @@ Projet SGBD Foyer <br />
         <label for="sqlreq">Requete :</label>
         <input type="text" name="sqlreq" id="sqlreq" placeholder="Ex : select * from TABLE;" size="30" />
     </p>
-    <p>
-    Resultat : <?php $core->sqlHTML(); ?></p>
+    <p>Resultat :</p>
+    <p> <?php $core->sqlHTML(); ?> </p>
 </form>
 </body>
 </html>

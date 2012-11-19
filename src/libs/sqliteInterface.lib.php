@@ -26,13 +26,27 @@ class sqliteInterface implements genericInterface {
 		
 	}
 	
-    public function query($query) {
-		return $this->base->query($query);
-		
+
+	public function query($query, $debug=false) {
+		$return = $this->base->query($query);
+		if($debug == true && $return == false)
+			echo $this->base->lastErrorMsg();;
+		return $return;
 	}
     
     public function executeSqlFile($file)
     {
+		$sqlbrut=file_get_contents($file);
+		$sqlarray = explode(";", $sqlbrut);
+		foreach($sqlarray as $sql) {
+			if(strlen($sql) > 3)
+				$this->query($sql);
+		}
     }
+    
+    public function errorMsg()
+    {
+		return $this->base->lastErrorMsg();
+	}
 }
 ?>

@@ -1,8 +1,3 @@
-drop table MEMBERS cascade constraints;
-
--- ============================================================
---   Table : MEMBERS                                            
--- ============================================================
 create table ACTEUR
 (
     ID                   NUMBER(3)              not null,
