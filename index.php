@@ -4,9 +4,10 @@ error_reporting(E_ALL);
 /* projet SGBD Foyer
 
 */
-include("src/config.php");
+//include("src/config.php");
 
-echo $config->sqlImpl;
+$config->sqlImpl = "sqlite";
+$config->datbaseName = "sql/sqlit.db";
 function class_autoload($class) {
 	 include 'src/classes/' . $class . '.class.php';
 }
