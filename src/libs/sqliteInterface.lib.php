@@ -24,7 +24,6 @@ class sqliteInterface implements genericInterface {
 	
     public function exec($query) {
 		return $this->base->exec($query);
-		
 	}
 	
 

@@ -1,6 +1,6 @@
 <?php 
 $config = new stdClass();
-$config->sqlImpl = "sqlite";
+$config->sqlImpl = "sqlite3";
 
 //configuration pour sqlite
 $config->sqliteFile = dirname(__FILE__)."/../sql/sqlite.db";

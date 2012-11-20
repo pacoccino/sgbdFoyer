@@ -4,8 +4,8 @@
 */ 
 
 // Debug mode
-ini_set('display_errors', E_ALL);
-error_reporting(E_ALL);
+ini_set('display_errors', E_ERROR);
+error_reporting(E_ERROR);
 
 include("src/config.php");
 
@@ -16,13 +16,13 @@ function class_autoload($class) {
 function lib_autoload($class) {
 	 include 'src/libs/' . $class . '.lib.php';
 }
-function ressources_autoload($class) {
-	 include 'src/ressources/' . $class . '.class.php';
+function pages_autoload($class) {
+	 include 'src/pages/' . $class . '.class.php';
 }
 
 spl_autoload_register('class_autoload');
 spl_autoload_register('lib_autoload');
-spl_autoload_register('ressources_autoload');
+spl_autoload_register('pages_autoload');
 
 // Demarrage de l'application
 $core = new Core();

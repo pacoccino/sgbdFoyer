@@ -1,0 +1,50 @@
+body {
+
+}
+
+
+p
+{
+	width: 250px;
+    height: 110px;
+    text-align: justify;
+    border: 1px solid black;
+    overflow: auto;
+    color: blue;
+}
+
+div#menu{
+	position:		absolute;
+	left:			0;
+	right:			0;
+	top:			0;
+	width:			200px;
+	height:			100%;
+	
+	border-right:	1px solid #aaa;	
+	background-image:-webkit-gradient(linear, 0% 0%, 100% 0%, from(#2E2E2E), to(#595959), color-stop(.1,#212121));
+}
+
+div#body{
+	position:	absolute;
+	left:		200px;
+	right:		0;
+	top:		0;
+	bottom:		0;
+	overflow:	auto;
+	
+	width:		100%;
+	height:		100%;
+	margin-left:30px;
+}
+
+div#footer{
+	position:	fixed;
+	left:		200px;
+	right:		0;
+	top:		1;
+	bottom:		0;
+	margin:		10px;
+	margin-left:30px;
+	overflow:	hidden;
+}

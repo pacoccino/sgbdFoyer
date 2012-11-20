@@ -13,7 +13,6 @@ class mysqlInterface implements genericInterface {
 		{
 			die($e);
 		}
-		//$this->base=new SQLiteDatabase($dbname, 0666, $err);
 
 		
 	}
@@ -23,6 +22,7 @@ class mysqlInterface implements genericInterface {
     }
 	
 
+	// en MySQL, les requetes multiples doivent etre separees par des ';'
 	public function query($query, $debug=false) {
 		$return = $this->base->query($query);
 		$this->lastResult=$return;
@@ -31,6 +31,7 @@ class mysqlInterface implements genericInterface {
 		return $return;
 	}
     
+    // execute un fichier sql (chemin relatif a la racine)
     public function executeSqlFile($file)
     {
 		$sqlbrut=file_get_contents($file);
@@ -42,6 +43,7 @@ class mysqlInterface implements genericInterface {
 		return $this->base->error;
 	}
 	
+	// recupere la ligne suivante du resultat de la derniere requete, ou du resultat fourni en parametre. A iterer.
 	public function fetch($result = false)
 	{
 		if(result==false)
@@ -50,6 +52,7 @@ class mysqlInterface implements genericInterface {
 			return $result->fetch_assoc();
 	}
 	
+	// Retourne vrai si la derniere requete n'a retourne aucun resultat
 	public function testEmpty()
 	{
 		return $this->lastResult->numrows == 0;

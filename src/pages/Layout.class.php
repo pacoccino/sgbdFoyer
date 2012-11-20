@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL);
+
 abstract class Layout {
 	
 	protected $core;

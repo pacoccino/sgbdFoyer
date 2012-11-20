@@ -1,14 +1,17 @@
 <?php
-error_reporting(E_ALL);
 class Core {
 	
 	public $dbInter;
 	public $debugText="";
 	
 	public function __construct() {
+		$this->createDB();
+	}
+	
+	public function createDB() {
 		global $config;
 		switch($config->sqlImpl){
-		case "sqlite":
+		case "sqlite3":
 			//if(class_exists('SQLiteDatabase'))
 			if(class_exists('SQLite3'))
 				$this->dbInter = new sqliteInterface($config);
@@ -24,7 +27,6 @@ class Core {
 			$this->debugText = $this->debugText."mySQL connected.";
 			break;
 		default:
-			$dbInter = new mysqlInterface($config);
 			//if(class_exists('SQLiteDatabase'))
 			if(class_exists('SQLite3'))
 				$this->dbInter = new sqliteInterface($config);
@@ -41,12 +43,25 @@ class Core {
 
 		if(isset($_GET['raz']))
 			$this->razDB();
-		else {
-			//include("src/ressources/index.php");
-			$page = new Liste($this);
-			$page->toHTML();
+		elseif(isset($_GET['action'])) {
+			switch($_GET['action']) {
+				case "liste":
+					$page = new Liste($this);
+					break;
+				case "ajout":
+					$page = new Ajout($this);
+					break;
+				case "suppression":
+					$page = new Suppression($this);
+					break;
+				default:
+					$page = new Liste($this);
+			}
+			
 		}
-		
+		else
+			$page = new Liste($this);
+		$page->toHTML();
 		
 	}
 	

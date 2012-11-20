@@ -1,0 +1,13 @@
+body {
+
+}
+
+p
+{
+	width: 250px;
+    height: 110px;
+    text-align: justify;
+    border: 1px solid black;
+    overflow: auto;
+    color: blue;
+}
