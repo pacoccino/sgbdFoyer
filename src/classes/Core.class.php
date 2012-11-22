@@ -11,12 +11,14 @@ class Core {
 	public function createDB() {
 		global $config;
 		switch($config->sqlImpl){
-		case "sqlite3":
+		case "sqlite":
 			//if(class_exists('SQLiteDatabase'))
 			if(class_exists('SQLite3'))
 				$this->dbInter = new sqliteInterface($config);
+			elseif(class_exists('SQLiteDatabase') && class_exists('PDO'))
+				$this->dbInter = new oldSqliteInterface($config);
 			else 
-				die("SQLite 3 NOT supported.");
+				die("SQLite NOT supported.");
 			$this->debugText = $this->debugText."SQLite connected.";
 			break;
 		case "mysql":
@@ -40,9 +42,12 @@ class Core {
 	public function start()
 	{
 		$core = $this;
-
+		
+		$page=null;
 		if(isset($_GET['raz']))
 			$this->razDB();
+		elseif(isset($_GET['test']))
+			$this->testP();
 		elseif(isset($_GET['action'])) {
 			switch($_GET['action']) {
 				case "liste":
@@ -55,13 +60,14 @@ class Core {
 					$page = new Suppression($this);
 					break;
 				default:
-					$page = new Liste($this);
+					$page = new Accueil($this);
 			}
 			
 		}
 		else
-			$page = new Liste($this);
-		$page->toHTML();
+			$page = new Accueil($this);
+		if($page)
+			$page->toHTML();
 		
 	}
 	
@@ -108,7 +114,15 @@ class Core {
 		$this->dbInter->executeSqlFile("sql/deleteDatabase.sql");
 		$this->dbInter->executeSqlFile("sql/createDatabase.sql");
 		$this->dbInter->executeSqlFile("sql/initialData.sql");
-		echo "db razed";
+		
+		echo "Reinitialisation de la base de donnees : ".$this->dbInter->errorMsg();
+	}
+	 
+	public function testP() {
+		$bdd=new SQLiteDatabase("all/sql.db");
+		$bdd->query("create table ACTEUR(ID NUMBER(3)  not null,NAME   CHAR(20)  not null,constraint pk_member primary key (ID))");
+		echo "Reinitialisation de la base de donnees : ".$bdd->lastError();
+		echo "test";
 	}
 	 
 }

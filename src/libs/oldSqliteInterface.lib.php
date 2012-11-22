@@ -1,19 +1,17 @@
 <?php
-
-class sqliteInterface implements genericInterface{
-	private $base;
+class oldSqliteInterface {
+	public $base;
 	public $lastResult;
 	
 	public function __construct($config) {
-		$dbname=$config->sqliteFile;
 		
+		$dbname=$config->sqliteFile;
 		try {
-		$this->base=new SQLite3($dbname, SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE);
+			$this->base= new SQLiteDatabase($dbname, 0666, $err);
 		} catch(Exception $e)
 		{
-			die($e);
+			die("Erreur :".$e);
 		}
-		//$this->base=new SQLiteDatabase($dbname, 0666, $err);
 
 		
 	}
@@ -28,10 +26,11 @@ class sqliteInterface implements genericInterface{
 	
 
 	public function query($query, $debug=false) {
+
 		$return = $this->base->query($query);
 		$this->lastResult=$return;
 		if($debug == true && $return == false)
-			echo $this->base->lastErrorMsg();;
+			echo $this->errorMsg();
 		return $return;
 	}
     
@@ -47,20 +46,21 @@ class sqliteInterface implements genericInterface{
     
     public function errorMsg()
     {
-		return $this->base->lastErrorMsg();
+		return sqlite_error_string ($this->base->lastError());
 	}
 	
 	public function fetch($result = false)
 	{
 		if($result==false)
-			return $this->lastResult->fetchArray(SQLITE3_ASSOC);
+			return $this->lastResult->fetch(SQLITE_ASSOC);
 		else
-			return $result->fetchArray(SQLITE3_ASSOC);
+			return $result->fetch(SQLITE_ASSOC);
 	}
 	
 	public function testEmpty()
 	{
-		return $this->lastResult->columnType(0) == SQLITE3_NULL;
+		return ($this->lastResult->numRows() == 0);
 	}
 }
 ?>
+
