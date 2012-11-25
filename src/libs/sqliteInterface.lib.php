@@ -13,7 +13,6 @@ class sqliteInterface implements genericInterface{
 		{
 			die($e);
 		}
-		//$this->base=new SQLiteDatabase($dbname, 0666, $err);
 
 		
 	}
@@ -60,7 +59,12 @@ class sqliteInterface implements genericInterface{
 	
 	public function testEmpty()
 	{
-		return $this->lastResult->columnType(0) == SQLITE3_NULL;
+		$res = false;
+		if($this->lastResult->fetchArray() == false)
+			$res=true;
+		$this->lastResult->reset();
+		
+		return $res;
 	}
 }
 ?>

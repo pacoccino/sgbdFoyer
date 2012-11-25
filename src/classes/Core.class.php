@@ -12,7 +12,6 @@ class Core {
 		global $config;
 		switch($config->sqlImpl){
 		case "sqlite":
-			//if(class_exists('SQLiteDatabase'))
 			if(class_exists('SQLite3'))
 				$this->dbInter = new sqliteInterface($config);
 			elseif(class_exists('SQLiteDatabase') && class_exists('PDO'))
@@ -29,7 +28,6 @@ class Core {
 			$this->debugText = $this->debugText."mySQL connected.";
 			break;
 		default:
-			//if(class_exists('SQLiteDatabase'))
 			if(class_exists('SQLite3'))
 				$this->dbInter = new sqliteInterface($config);
 			elseif(class_exists('Mysqli'))
