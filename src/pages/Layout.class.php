@@ -52,7 +52,19 @@ abstract class Layout {
 						<a href="index.php">Accueil</a>
 					</li>
 					<li>
-						<a href="?action=liste">Liste</a>
+						<a href="?action=liste">Liste d'élèves</a>
+					</li>
+					<li>
+						<a href="#">Le bureau</a>
+					</li>
+					<li>
+						<a href="#">Evenements</a>
+					</li>
+					<li>
+						<a href="#">Les livres</a>
+					</li>
+					<li>
+						<a href="#">Les jeux</a>
 					</li>
 				</ul>
 			</nav>
@@ -85,6 +97,10 @@ abstract class Layout {
 					&copy; Copyright  by Pacien Boisson
 				</p>
 			</footer>
+		</div>
+		<div id="debug">
+		<b>Debug :</b><br />
+		<?php $this->core->debugHTML(); ?>
 		</div>
 	</div>
 	</body>

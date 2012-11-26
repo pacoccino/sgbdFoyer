@@ -3,8 +3,8 @@ $config = new stdClass();
 $config->sqlImpl = "sqlite";
 
 //configuration pour sqlite
-$config->sqliteFile = dirname(__FILE__)."/../sql/sqlite.db";
-//$config->sqliteFile = dirname(__FILE__)."/../all/sqlite.db"; //pour l'ecole, creer un dossier avec permissions 777
+//$config->sqliteFile = dirname(__FILE__)."/../sql/sqlite.db";
+$config->sqliteFile = dirname(__FILE__)."/../all/sqlite.db"; //pour l'ecole, creer un dossier avec permissions 777
 
 //configuration pour mysql
 $config->mysqlDB = new stdClass();

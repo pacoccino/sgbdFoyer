@@ -13,16 +13,24 @@ class Core {
 		switch($config->sqlImpl){
 		case "sqlite":
 			if(class_exists('SQLite3'))
+			{
 				$this->dbInter = new sqliteInterface($config);
+				$this->debugText = $this->debugText."SQLite3 connected.";
+			}
 			elseif(class_exists('SQLiteDatabase') && class_exists('PDO'))
+			{
 				$this->dbInter = new oldSqliteInterface($config);
+				$this->debugText = $this->debugText."SQLite2 with PDO connected.";
+			}
 			else 
 				die("SQLite NOT supported.");
-			$this->debugText = $this->debugText."SQLite connected.";
 			break;
 		case "mysql":
 			if(class_exists('MYSQLi'))
-			$this->dbInter = new mysqlInterface($config);
+			{
+				$this->dbInter = new mysqlInterface($config);
+				$this->debugText = $this->debugText."MySQLi connected.";
+			}
 			else 
 				die("MySQL NOT supported.");
 			$this->debugText = $this->debugText."mySQL connected.";

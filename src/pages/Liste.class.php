@@ -1,12 +1,37 @@
 <?php
 
 class Liste extends Layout{
+	
+	public function __construct($core) {
+		parent::__construct($core);
+		if(isset($_POST['posted']))
+		{
+			$insert = "insert into eleve (NOM, PRENOM) values ('".$_POST['nom']."', '".$_POST['prenom']."')";
+			if($this->core->dbInter->query($insert))
+				$this->core->debugText = $this->debugText."<br /> Eleve ajouté.";
+			else 
+				$this->core->debugText = $this->debugText."<br /> Erreur d'ajout.";
+		}
+	}
+	
 	public function bodyHTML() {
-		?>
-		<h1>Liste des acteurs :</h1>
-		Page de test de bdd temporaire. <br/><br/>
+?>
+		<h1>Liste des Eleves :</h1>
+		<br/>
+		Ajouter un élève : 
+		<form method="post" action="index.php?action=liste">
+				<input type="hidden" name="posted" value="true">
+				<p>
+					<label for="nom">Nom :</label>
+					<input type="text" name="nom" id="nom" placeholder="Ex : Taton" size="30" />
+					<label for="prenom">Prenom :</label>
+					<input type="text" name="prenom" id="prenom" placeholder="Ex : Sven" size="30" />
+				</p>
+				<input type="submit" />
+		</form>
+		<br/><u>Liste :</u><br /><br />
 		<?php
-			$query = "select * from ACTEUR";
+			$query = "select * from ELEVE";
 			$result= $this->core->dbInter->query($query);
 			if(!($result))
 			{
@@ -23,7 +48,7 @@ class Liste extends Layout{
 					$st = "true";
 				else
 					$st = "false";
-				echo "emp:".$st;
+				echo "<br />IsEmpty: ".$st;
 			}
 	}
 }
