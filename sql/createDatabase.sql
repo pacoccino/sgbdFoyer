@@ -7,12 +7,12 @@ create table ACTEUR
 
 create table ELEVE
 (
-    ID                   NUMBER(3)              not null,
-    NOM                      CHAR(20)               not null,
-    PRENOM                      CHAR(20)               not null,
-    FILLIERE                      CHAR(2)               not null,
-    LOGIN                      CHAR(20)               not null,
-    PROMO                      NUMBER(4)               not null,
-    constraint pk_member primary key (ID)
+    ID                   NUMBER(3)            ,
+    NOM                      CHAR(20)               ,
+    PRENOM                      CHAR(20)               ,
+    FILLIERE                      CHAR(2)               ,
+    LOGIN                      CHAR(20)               ,
+    PROMO                      NUMBER(4)             ,
+    constraint pk_eleve primary key (ID)
 );
 

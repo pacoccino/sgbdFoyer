@@ -4,13 +4,16 @@ class Liste extends Layout{
 	
 	public function __construct($core) {
 		parent::__construct($core);
+		echo "liste";
+		$this->core->debugText = $this->core->debugText."<br /> Poil";
 		if(isset($_POST['posted']))
 		{
-			$insert = "insert into eleve (NOM, PRENOM) values ('".$_POST['nom']."', '".$_POST['prenom']."')";
+			echo "pos";
+			$insert = "insert into ELEVE (NOM, PRENOM) values ('".$_POST['nom']."', '".$_POST['prenom']."')";
 			if($this->core->dbInter->query($insert))
-				$this->core->debugText = $this->debugText."<br /> Eleve ajouté.";
+				$this->core->debugText = $this->core->debugText."<br /> Eleve ajouté.";
 			else 
-				$this->core->debugText = $this->debugText."<br /> Erreur d'ajout.";
+				$this->core->debugText = $this->core->debugText."<br /> Erreur d'ajout.";
 		}
 	}
 	

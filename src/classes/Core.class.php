@@ -96,7 +96,7 @@ class Core {
 		if(isset($_POST['sqlreq']))
 		{
 			$result= $this->dbInter->query($_POST['sqlreq']);;
-			if(!($result))
+			if($result==false)
 			{
 				echo "Erreur de requete : ".$this->dbInter->errorMsg();
 			}
