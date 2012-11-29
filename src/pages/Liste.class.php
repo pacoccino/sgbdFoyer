@@ -5,7 +5,7 @@ class Liste extends Layout{
 	public function __construct($core) {
 		parent::__construct($core);
 
-		$this->core->addDebug("InListe");
+		Core::addDebug("InListe");
 		if(isset($_POST['a_adding']))
 		{
 			$eleveadd = new Eleve();
@@ -13,27 +13,58 @@ class Liste extends Layout{
 			$eleveadd->prenom = $_POST['prenom'];
 
 			if($eleveadd->addToDatabase())
-				$this->core->addDebug("Eleve ajouté.");
+				Core::addDebug("Eleve ajouté.");
 			else 
-				$this->core->addDebug("<br /> Erreur d'ajout.");
+				Core::addDebug("<br /> Erreur d'ajout.");
 		}
 	}
 	
 	public function bodyHTML() {
+// -----------------------------------
+// Debut Body
+// -----------------------------------
 ?>
+
+<script type="text/javascript">
+<!-- 
+
+function request(callback) {
+	var xhr = getXMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+			callback(xhr.responseText);
+		}
+	};
+	
+	var nom = encodeURIComponent(document.getElementById("nom").value);
+	var prenom = encodeURIComponent(document.getElementById("prenom").value);
+	
+	xhr.open("POST", "post.php", true);
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhr.send("action=adduser&nom="+nom+"&prenom="+prenom);
+}
+
+function readData(sData) {
+
+	alert("m"+sData);
+}
+
+//-->
+</script>
 		<h1>Liste des Eleves :</h1>
 		<br/>
 		Ajouter un élève : 
-		<form method="post" action="index.php?action=liste">
-				<input type="hidden" name="a_adding" value="true">
+		
+				<input type="hidden" name="action" value="adduser">
 				<p>
 					<label for="nom">Nom :</label>
 					<input type="text" name="nom" id="nom" placeholder="Ex : Taton" size="30" />
 					<label for="prenom">Prenom :</label>
 					<input type="text" name="prenom" id="prenom" placeholder="Ex : Sven" size="30" />
 				</p>
-				<input type="submit" />
-		</form>
+				<button onclick="request(readData);"> Ajouter </button>
+		
 		<br/>Vue d'un eleve : 
 		<form method="post" action="index.php?action=liste">
 				<input type="hidden" name="a_viewone" value="true">
@@ -79,8 +110,11 @@ class Liste extends Layout{
 			}
 		?>
 		</table>
+		
 		<?php
-			
+// -----------------------------------
+// Fin Body
+// -----------------------------------
 	}
 }
 ?>

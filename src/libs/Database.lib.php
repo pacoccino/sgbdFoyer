@@ -8,7 +8,7 @@ class Database implements genericInterface {
 		$mysqlDB=Config::$mysqlDB;
 		
 		try {
-		Database::$base = new mysqli($mysqlDB->host, $mysqlDB->user, $mysqlDB->password, $mysqlDB->db);
+		Database::$base = new mysqli($mysqlDB->host, $mysqlDB->user, $mysqlDB->password, $mysqlDB->db, $mysqlDB->port);
 		} catch(Exception $e)
 		{
 			die($e);

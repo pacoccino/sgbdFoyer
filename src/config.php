@@ -12,4 +12,5 @@ $config->mysqlDB->host = "localhost";
 $config->mysqlDB->user = "root";
 $config->mysqlDB->password = "pouet";
 $config->mysqlDB->db = "projetSGBD";
+$config->mysqlDB->port = 3306;
 ?>

@@ -1,12 +1,19 @@
 <?php
 
+// Classe de base contenant tout le html autour de corps de page
 abstract class Layout {
 	
 	protected $core;
+	protected $AJAX = false;
 	
 	public function __construct($core) {
 		$this->core=$core;
 	}	
+	
+	public function showHTML()
+	{
+		return !($this->AJAX);
+	}
 	
 	public function toHTML() {
 		$this->headerHTML();
@@ -42,6 +49,7 @@ abstract class Layout {
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		
 		<link rel="stylesheet" href="ressources/style.css" />
+		<script type="text/javascript" src="ressources/script.js"></script>
 	</head>
 
 	<body>

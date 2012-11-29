@@ -45,9 +45,8 @@ class Core {
 		}
 	}
 
-	public function start()
+	public function showPage()
 	{
-		$core = $this;
 		
 		$page=null;
 		if(isset($_GET['raz']))
@@ -65,6 +64,11 @@ class Core {
 				case "suppression":
 					$page = new Suppression($this);
 					break;
+				/* Pour ajouter une page, décommenter ici
+				case "nouvellepage":
+					$page = new NouvellePage($this);
+					break;
+				*/
 				default:
 					$page = new Accueil($this);
 			}
@@ -72,7 +76,7 @@ class Core {
 		}
 		else
 			$page = new Accueil($this);
-		if($page)
+		if($page && $page->showHTML())
 			$page->toHTML();
 		
 	}
