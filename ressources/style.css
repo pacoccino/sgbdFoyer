@@ -29,7 +29,7 @@ div#menu{
 	background-image: -webkit-linear-gradient(0deg, #2e2e2e, #212121 20px,#595959 200px); 
 	background-image: -o-linear-gradient(0deg, #2e2e2e, #212121 20px,#595959 200px); 
 	background-image: -ms-linear-gradient(0deg, #2e2e2e, #212121 20px,#595959 200px); 
-	background-image:linear-gradient(0deg, #2e2e2e, #212121 20px,#595959 200px);
+	background-image:linear-gradient(90deg, #2e2e2e, #212121 20px,#595959 200px);
 }
 
 
@@ -41,7 +41,7 @@ div#right {
 	min-height: 	100%;
 	background-image:-webkit-gradient(linear, 0% 0%, 1% 0%, from(#595959), to(#EBEBEB));
 	background-image:-moz-linear-gradient(0deg, #595959, #EBEBEB 10px);
-	background-image:linear-gradient(0deg, #595959, #EBEBEB 10px);
+	background-image:linear-gradient(90deg, #595959, #EBEBEB 10px);
 }
 
 div#body{
@@ -88,8 +88,9 @@ div#debug{
 	right:		0px;
 	bottom:		60px;
 	
-	height:		50px;
-	width:		200px;
+	height:		80px;
+	width:		400px;
+	padding:	2px;
 	
 	border:1px solid black;
 	font-size:	0.8em;
@@ -122,4 +123,29 @@ div#debug{
 	margin-left:20px;
 	list-style-type:none;
 
+}
+
+#liste
+{
+	display: table;
+	border-collapse: collapse;
+	width: 	70%;
+}
+
+ #liste  td, th
+{
+	background-color:#D1D1D1;
+	text-align:center;
+    padding: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+	font-size: 100%;
+	border: 1px solid grey;
+}
+
+#liste th 
+{
+	background-color:gray;
+	color:white;
+	border: 2px solid black;
 }

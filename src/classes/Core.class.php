@@ -1,7 +1,7 @@
 <?php
 class Core {
 	
-	public $debugText="";
+	private static $debugText="";
 	
 	public function __construct() {
 		Config::init();
@@ -83,11 +83,11 @@ class Core {
 	}
 	
 	public function debugHTML() {
-		echo $this->debugText;
+		echo Core::$debugText;
 	}
 	
 	public function addDebug($string) {
-		$this->debugText = $this->debugText.$string."<br />";
+		Core::$debugText = Core::$debugText.$string."<br />";
 	}
 		
 	public function pageHTML() {

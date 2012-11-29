@@ -22,7 +22,7 @@ class Database implements genericInterface {
 		$return = Database::$base->query($query);
 		Database::$lastResult=$return;
 		if($debug == true && $return == false)
-			echo Database::$base->error;
+			Core::addDebug(Database::$base->error);
 		return $return;
 	}
     

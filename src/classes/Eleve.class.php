@@ -12,6 +12,19 @@ class Eleve {
 	
 	private static $tableName="Eleves";
 	
+	public function __construct($eleve = false)
+	{
+		if($eleve != false)
+			$this->fetch($eleve);
+	}
+	
+	public function fetch($result)
+	{
+		$this->id = $result['id'];
+		$this->nom = $result['Nom'];
+		$this->prenom = $result['Prenom'];
+	}
+
 	public static function getEleve($i)
 	{
 		$query = "select * from $this->tablename where id_eleve=$i";
@@ -30,10 +43,20 @@ class Eleve {
 		$query = "select * from ".Eleve::$tableName." where id=$i";
 		Database::query($query,true);
 		$result = Database::fetch();
-		$this->id = $i;
-		$this->nom = $result['Nom'];
-		$this->prenom = $result['Prenom'];
-	}
+		$this->fetch($result);
 
+	}
+	
+	public function addToDatabase()
+	{
+		if($this->nom=="" || $this->prenom=="")
+		{
+			Core::addDebug("Il manque des arguments");
+			return false;
+		}
+		$query="insert into Eleves (Nom, Prenom) values ('".$this->nom."', '".$this->prenom."')";
+
+		return Database::query($query, true);
+	}
 }
 ?>

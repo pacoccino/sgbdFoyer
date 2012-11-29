@@ -4,13 +4,15 @@ class Liste extends Layout{
 	
 	public function __construct($core) {
 		parent::__construct($core);
-		echo "liste";
-		$this->core->addDebug("Poil");
+
+		$this->core->addDebug("InListe");
 		if(isset($_POST['a_adding']))
 		{
-			echo "pos";
-			$insert = "insert into ELEVE (NOM, PRENOM) values ('".$_POST['nom']."', '".$_POST['prenom']."')";
-			if(Database::query($insert))
+			$eleveadd = new Eleve();
+			$eleveadd->nom = $_POST['nom'];
+			$eleveadd->prenom = $_POST['prenom'];
+
+			if($eleveadd->addToDatabase())
 				$this->core->addDebug("Eleve ajouté.");
 			else 
 				$this->core->addDebug("<br /> Erreur d'ajout.");
@@ -49,7 +51,14 @@ class Liste extends Layout{
 			echo "Nom : ".$eleve_view->nom;
 		}
 		?>
-		<br/><br/><u>Liste :</u><br /><br />
+		<br/><br/><b>Liste :</b><br /><br />
+		<table id="liste">
+			<tr>
+				<th>Id</th>
+				<th>Nom</th>
+				<th>Prenom</th>
+			</tr>
+
 		<?php
 			$result=Eleve::getListe();
 			if(!($result))
@@ -58,17 +67,19 @@ class Liste extends Layout{
 			}
 			else
 			{
-				while($res = Database::fetch($result)){ 
-					foreach($res as $field=>$value) {
-						echo $field ." : ".$value." <br />";
-					}
+				while($res = Database::fetch($result))
+				{ 
+					echo "<tr>";
+					$eleve = new Eleve($res);
+					echo "<td>".$eleve->id."</td>";
+					echo "<td>".$eleve->nom."</td>";
+					echo "<td>".$eleve->prenom."</td>";
+					echo "</tr>";
 				} 
-				if(Database::testEmpty() == true)
-					$st = "true";
-				else
-					$st = "false";
-				echo "<br />IsEmpty: ".$st;
 			}
+		?>
+		</table>
+		<?php
 			
 	}
 }
