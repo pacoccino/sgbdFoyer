@@ -5,15 +5,15 @@ class Liste extends Layout{
 	public function __construct($core) {
 		parent::__construct($core);
 		echo "liste";
-		$this->core->debugText = $this->core->debugText."<br /> Poil";
-		if(isset($_POST['posted']))
+		$this->core->addDebug("Poil");
+		if(isset($_POST['a_adding']))
 		{
 			echo "pos";
 			$insert = "insert into ELEVE (NOM, PRENOM) values ('".$_POST['nom']."', '".$_POST['prenom']."')";
-			if($this->core->dbInter->query($insert))
-				$this->core->debugText = $this->core->debugText."<br /> Eleve ajouté.";
+			if(Database::query($insert))
+				$this->core->addDebug("Eleve ajouté.");
 			else 
-				$this->core->debugText = $this->core->debugText."<br /> Erreur d'ajout.";
+				$this->core->addDebug("<br /> Erreur d'ajout.");
 		}
 	}
 	
@@ -23,7 +23,7 @@ class Liste extends Layout{
 		<br/>
 		Ajouter un élève : 
 		<form method="post" action="index.php?action=liste">
-				<input type="hidden" name="posted" value="true">
+				<input type="hidden" name="a_adding" value="true">
 				<p>
 					<label for="nom">Nom :</label>
 					<input type="text" name="nom" id="nom" placeholder="Ex : Taton" size="30" />
@@ -32,27 +32,44 @@ class Liste extends Layout{
 				</p>
 				<input type="submit" />
 		</form>
-		<br/><u>Liste :</u><br /><br />
+		<br/>Vue d'un eleve : 
+		<form method="post" action="index.php?action=liste">
+				<input type="hidden" name="a_viewone" value="true">
+				<p>
+					<label for="id">Nom :</label>
+					<input type="text" name="id" id="id" placeholder="Ex : 3" size="30" />
+				</p>
+				<input type="submit" />
+		</form>
 		<?php
-			$query = "select * from ELEVE";
-			$result= $this->core->dbInter->query($query);
+		if(isset($_POST['a_viewone']) && !empty($_POST['id']))
+		{
+			$eleve_view = new Eleve();
+			$eleve_view->getFromDatabase($_POST['id']);
+			echo "Nom : ".$eleve_view->nom;
+		}
+		?>
+		<br/><br/><u>Liste :</u><br /><br />
+		<?php
+			$result=Eleve::getListe();
 			if(!($result))
 			{
-				echo "Erreur de requete : ".$this->core->dbInter->errorMsg();
+				echo "Erreur de requete : ".Database::errorMsg();
 			}
 			else
 			{
-				while($res = $this->core->dbInter->fetch($result)){ 
+				while($res = Database::fetch($result)){ 
 					foreach($res as $field=>$value) {
 						echo $field ." : ".$value." <br />";
 					}
 				} 
-				if($this->core->dbInter->testEmpty() == true)
+				if(Database::testEmpty() == true)
 					$st = "true";
 				else
 					$st = "false";
 				echo "<br />IsEmpty: ".$st;
 			}
+			
 	}
 }
 ?>

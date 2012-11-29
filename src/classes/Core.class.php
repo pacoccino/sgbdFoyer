@@ -1,45 +1,45 @@
 <?php
 class Core {
 	
-	public $dbInter;
 	public $debugText="";
 	
 	public function __construct() {
+		Config::init();
 		$this->createDB();
 	}
 	
 	public function createDB() {
-		global $config;
-		switch($config->sqlImpl){
-		case "sqlite":
+
+		switch(Config::$dbType){
+		/*case "sqlite":
 			if(class_exists('SQLite3'))
 			{
 				$this->dbInter = new sqliteInterface($config);
-				$this->debugText = $this->debugText."SQLite3 connected.";
+				$this->addDebug("SQLite3 connected.");
 			}
 			elseif(class_exists('SQLiteDatabase') && class_exists('PDO'))
 			{
 				$this->dbInter = new oldSqliteInterface($config);
-				$this->debugText = $this->debugText."SQLite2 with PDO connected.";
+				$this->addDebug("SQLite2 with PDO connected.");
 			}
 			else 
 				die("SQLite NOT supported.");
-			break;
+			break;*/
 		case "mysql":
 			if(class_exists('MYSQLi'))
 			{
-				$this->dbInter = new mysqlInterface($config);
-				$this->debugText = $this->debugText."MySQLi connected.";
+				Database::init();
+				$this->addDebug("MySQLi connected.");
 			}
 			else 
 				die("MySQL NOT supported.");
-			$this->debugText = $this->debugText."mySQL connected.";
+
 			break;
 		default:
-			if(class_exists('SQLite3'))
+			/*if(class_exists('SQLite3'))
 				$this->dbInter = new sqliteInterface($config);
-			elseif(class_exists('Mysqli'))
-				$this->dbInter = new mysqlInterface($config);
+			else*/if(class_exists('Mysqli'))
+				Database::init();
 			else
 				die("You don't support any databases :(");
 		}
@@ -86,6 +86,10 @@ class Core {
 		echo $this->debugText;
 	}
 	
+	public function addDebug($string) {
+		$this->debugText = $this->debugText.$string."<br />";
+	}
+		
 	public function pageHTML() {
 		echo "Moi, j'aime le nougat:<br/>";
 		echo "Marcel a un poisson rouge.";
@@ -95,17 +99,17 @@ class Core {
 	public function sqlHTML() {
 		if(isset($_POST['sqlreq']))
 		{
-			$result= $this->dbInter->query($_POST['sqlreq']);;
+			$result= Database::query($_POST['sqlreq']);;
 			if($result==false)
 			{
-				echo "Erreur de requete : ".$this->dbInter->errorMsg();
+				echo "Erreur de requete : ".Database::errorMsg();
 			}
-			elseif($this->dbInter->testEmpty())
+			elseif(Database::testEmpty())
 				echo "Requete executee avec succes, mais sans resultat";
 			else
 			{
 				echo "Donnees : <br />";
-				while($res = $this->dbInter->fetch()){ 
+				while($res = Database::fetch()){ 
 					foreach($res as $field=>$value) {
 						echo $field ." : ".$value." <br />";
 					}
@@ -116,12 +120,13 @@ class Core {
 			echo "null";
 		
 	}
+	
 	public function razDB() {
-		$this->dbInter->executeSqlFile("sql/deleteDatabase.sql");
-		$this->dbInter->executeSqlFile("sql/createDatabase.sql");
-		$this->dbInter->executeSqlFile("sql/initialData.sql");
+		Database::executeSqlFile("sql/deleteDatabase.sql");
+		Database::executeSqlFile("sql/createDatabase.sql");
+		Database::executeSqlFile("sql/initialData.sql");
 		
-		echo "Reinitialisation de la base de donnees : ".$this->dbInter->errorMsg();
+		echo "Reinitialisation de la base de donnees : ".Database::errorMsg();
 	}
 	 
 	public function testP() {

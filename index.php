@@ -4,8 +4,8 @@
 */ 
 
 // Debug mode
-ini_set('display_errors', E_ERROR);
-error_reporting(E_ERROR);
+ini_set('display_errors', E_ALL);
+error_reporting(E_ALL);
 
 include("src/config.php");
 
