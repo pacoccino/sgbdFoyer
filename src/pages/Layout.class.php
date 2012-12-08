@@ -71,20 +71,21 @@ abstract class Layout {
 					<li>
 						<a href="?action=liste">Liste d'élèves</a>
 					</li>
+
 					<li>
-						<a href="?action=sql">Requete SQL</a>
-					</li>
-					<li>
-						<a href="#">Le bureau</a>
+						<a href="?action=bureau">Le bureau</a>
 					</li>
 					<li>
 						<a href="#">Evenements</a>
 					</li>
 					<li>
-						<a href="#">Les livres</a>
+						<a href="?action=livres">Les livres</a>
 					</li>
 					<li>
-						<a href="#">Les jeux</a>
+						<a href="?action=jeux">Les jeux</a>
+					</li>
+					<li>
+						<a href="?action=sql">Requete SQL</a>
 					</li>
 				</ul>
 			</nav>

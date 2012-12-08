@@ -61,6 +61,15 @@ class Core {
 				case "ajout":
 					$page = new Ajout($this);
 					break;
+				case "bureau":
+					$page = new BureauPage($this);
+					break;
+				case "livres":
+					$page = new LivrePage($this);
+					break;
+				case "jeux":
+					$page = new JeuxPage($this);
+					break;
 				case "sql":
 					$page = new SqlPage($this);
 					break;
@@ -84,16 +93,11 @@ class Core {
 		
 	}
 	
-	public function pouet()
-	{
-		echo "pouet";
-	}
-	
-	public function debugHTML() {
+	public static function debugHTML() {
 		echo Core::$debugText;
 	}
 	
-	public function addDebug($string) {
+	public static function addDebug($string) {
 		Core::$debugText = Core::$debugText.$string."<br />";
 	}
 		
@@ -133,7 +137,8 @@ class Core {
 		Database::executeSqlFile("sql/createDatabase.sql");
 		Database::executeSqlFile("sql/initialData.sql");
 		
-		echo "Reinitialisation de la base de donnees : ".Database::errorMsg();
+		echo "<b>Reinitialisation de la base de donnees : </b><br />";
+		$this->debugHTML();
 	}
 	 
 	public function testP() {

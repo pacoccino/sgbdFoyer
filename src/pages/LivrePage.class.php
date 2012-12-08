@@ -1,6 +1,6 @@
 <?php
 
-class Liste extends Layout{
+class LivrePage extends Layout{
 	
 	public function __construct($core) {
 		parent::__construct($core);
@@ -8,12 +8,12 @@ class Liste extends Layout{
 		Core::addDebug("InListe");
 		if(isset($_POST['a_adding']))
 		{
-			$eleveadd = new Eleve();
-			$eleveadd->nom = $_POST['nom'];
-			$eleveadd->prenom = $_POST['prenom'];
+			$livreadd = new Livre();
+			$livreadd->titre = $_POST['titre'];
+			$livreadd->auteur = $_POST['auteur'];
 
-			if($eleveadd->addToDatabase())
-				Core::addDebug("Eleve ajouté.");
+			if($livreadd->addToDatabase())
+				Core::addDebug("Livre ajouté.");
 			else 
 				Core::addDebug("<br /> Erreur d'ajout.");
 		}
@@ -45,11 +45,11 @@ class Liste extends Layout{
 <script type="text/javascript">
 <!-- 
 
-function addEleve(param) {
-	$.post("post.php", { action: "adduser", nom: param[0].value, prenom: param[1].value , login: param[2].value , filliere: param[3].value , promo: param[4].value , isMember: param[5].value },
+function addLivre(param) {
+	$.post("post.php", { action: "adduser", titre: param[0].value, auteur: param[1].value , editeur: param[2].value , isbn: param[3].value , promo: param[4].value , isMember: param[5].value },
 	  function(data){
-	    $( "#eleve-added" ).html(data); 
-	    $( "#eleve-added" ).dialog( "open" );
+	    $( "#livre-added" ).html(data); 
+	    $( "#livre-added" ).dialog( "open" );
 	  });
 }
 
@@ -60,13 +60,11 @@ $(function() {
 </script>
 <script>
 $(function() {
-    var nom = $( "#nom" ),
-        prenom = $( "#prenom" ),
-        login = $( "#login" ),
-        filliere = $( "#filliere" ),
-        promo = $( "#promo" ),
-		isMember = $( "#isMember" ),
-        allFields = $( [] ).add( nom ).add( prenom ).add( login).add( filliere).add( promo ).add( isMember ),
+    var titre = $( "#titre" ),
+        auteur = $( "#auteur" ),
+        editeur = $( "#editeur" ),
+        isbn = $( "#isbn" ),
+        allFields = $( [] ).add( titre ).add( auteur ).add( editeur).add( isbn),
         tips = $( ".validateTips" );
  
         function updateTips( t ) {
@@ -109,23 +107,21 @@ $(function() {
             "Create an account": function() {
                 var bValid = true;
                 
-                bValid = bValid && checkLength( nom, "nom", 2, 20 );
-                bValid = bValid && checkLength( prenom, "prenom", 2, 20 );
-                bValid = bValid && checkLength( login, "login", 3, 20 );
-                bValid = bValid && checkLength( filliere, "filliere", 2, 5 );
-                bValid = bValid && checkLength( promo, "promo", 4, 4 );
+                bValid = bValid && checkLength( titre, "titre", 2, 20 );
+                bValid = bValid && checkLength( auteur, "auteur", 2, 20 );
+                bValid = bValid && checkLength( editeur, "editeur", 2, 20 );
+                bValid = bValid && checkLength( isbn, "isbn", 2, 7 );
+
  
                     if ( bValid ) {
 
-                    	addEleve(allFields);
+                    	addLivre(allFields);
                         $( "#users tbody" ).append( "<tr>" +
                         "<td>0</td>" + 
-                        "<td>" + nom.val() + "</td>" + 
-                        "<td>" + prenom.val() + "</td>" + 
-                        "<td>" + login.val() + "</td>" +
-                        "<td>" + filliere.val() + "</td>" +
-                        "<td>" + promo.val() + "</td>" +
-                        "<td>" + isMember.val() + "</td>" +
+                        "<td>" + titre.val() + "</td>" + 
+                        "<td>" + auteur.val() + "</td>" + 
+                        "<td>" + editeur.val() + "</td>" +
+                        "<td>" + isbn.val() + "</td>" +
                     "</tr>" ); 
                     $( this ).dialog( "close" );
                		}
@@ -145,53 +141,29 @@ $(function() {
             $( "#dialog-form" ).dialog( "open" );
         });
         
-        $( "#eleve-added" ).dialog({
+        $( "#livre-added" ).dialog({
             autoOpen: false,
             show: "blind",
             hide: "explode"
         });
 });
 </script>
-    <div id="eleve-added" title="Status">
-    <p>L'eleve a bien été ajouté.</p>
-</div>
-    <div id="dialog-form" title="Creer un nouvel Eleve">
-    <p class="validateTips">Tous les champs sont requis.</p>
- 
-    <form>
-    <fieldset>
-        <label for="nom">Nom</label>
-        <input type="text" name="nom" id="nom" class="text ui-widget-content ui-corner-all" />
-        <label for="prenom">Prenom</label>
-        <input type="text" name="prenom" id="prenom" value="" class="text ui-widget-content ui-corner-all" />
-        <label for="login">Login</label>
-        <input type="text" name="login" id="login" value="" class="text ui-widget-content ui-corner-all" />
-        <label for="filliere">Filliere</label>
-        <input type="text" name="filliere" id="filliere" value="" class="text ui-widget-content ui-corner-all" />
-        <label for="promo">Promo</label>
-        <input type="text" name="promo" id="promo" value="" class="text ui-widget-content ui-corner-all" />
-        <input type="checkbox" id="isMember" /><label for="isMember">Membre</label>
-    </fieldset>
-    </form>
-</div>
-
 <div id="liste" class="ui-widget">
-    <h1>Liste des élèves:</h1>
+    <h1>Liste des livres :</h1>
     <table id="users" class="ui-widget ui-widget-content">
         <thead>
             <tr class="ui-widget-header ">
 				<th>Id</th>
-				<th>Nom</th>
-				<th>Prenom</th>
-				<th>Login</th>
-				<th>Filliere</th>
+				<th>Titre</th>
+				<th>Auteur</th>
+				<th>Editeur</th>
+				<th>isbn</th>
 				<th>Promo</th>
-				<th>Membre</th>
             </tr>
         </thead>
         <tbody>
 		<?php
-			$result=Eleve::getListe();
+			$result=Livre::getListe();
 			if(!($result))
 			{
 				echo "Erreur de requete : ".Database::errorMsg();
@@ -199,27 +171,24 @@ $(function() {
 			else
 			{
 				while($res = Database::fetch($result))
-				{ 
-					echo "<tr>";
-					$eleve = new Eleve($res);
-					echo "<td>".$eleve->id."</td>";
-					echo "<td>".$eleve->nom."</td>";
-					echo "<td>".$eleve->prenom."</td>";
-					echo "<td>".$eleve->login."</td>";
-					echo "<td>".$eleve->filliere."</td>";
-					echo "<td>".$eleve->promo."</td>";
-					if($eleve->isMember)
-						echo "<td>Oui</td>";
-					else
-						echo "<td>Non</td>";
-					echo "</tr>";
+				{
+					$livre = new Livre($res);
+					if($livre->isMember)
+					{
+						echo "<tr>";
+						echo "<td>".$livre->id."</td>";
+						echo "<td>".$livre->titre."</td>";
+						echo "<td>".$livre->auteur."</td>";
+						echo "<td>".$livre->editeur."</td>";
+						echo "<td>".$livre->isbn."</td>";
+						echo "</tr>";
+					}
 				} 
 			}
 		?>
         </tbody>
     </table>
 </div>
-<button id="create-user">Creer nouvel Eleve</button>
 		
 		<?php
 // -----------------------------------

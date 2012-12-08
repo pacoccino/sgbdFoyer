@@ -33,7 +33,7 @@ class Eleve {
 			$isMember=true;
 	}
 
-	public static function getEleve($i)
+	public static function get($i)
 	{
 		$query = "select * from ".Eleve::$tableName." where id_eleve=$i";
 		$results = Database::query($query);

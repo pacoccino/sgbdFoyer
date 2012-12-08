@@ -1,6 +1,6 @@
 <?php
 
-class Liste extends Layout{
+class BureauPage extends Layout{
 	
 	public function __construct($core) {
 		parent::__construct($core);
@@ -152,31 +152,8 @@ $(function() {
         });
 });
 </script>
-    <div id="eleve-added" title="Status">
-    <p>L'eleve a bien été ajouté.</p>
-</div>
-    <div id="dialog-form" title="Creer un nouvel Eleve">
-    <p class="validateTips">Tous les champs sont requis.</p>
- 
-    <form>
-    <fieldset>
-        <label for="nom">Nom</label>
-        <input type="text" name="nom" id="nom" class="text ui-widget-content ui-corner-all" />
-        <label for="prenom">Prenom</label>
-        <input type="text" name="prenom" id="prenom" value="" class="text ui-widget-content ui-corner-all" />
-        <label for="login">Login</label>
-        <input type="text" name="login" id="login" value="" class="text ui-widget-content ui-corner-all" />
-        <label for="filliere">Filliere</label>
-        <input type="text" name="filliere" id="filliere" value="" class="text ui-widget-content ui-corner-all" />
-        <label for="promo">Promo</label>
-        <input type="text" name="promo" id="promo" value="" class="text ui-widget-content ui-corner-all" />
-        <input type="checkbox" id="isMember" /><label for="isMember">Membre</label>
-    </fieldset>
-    </form>
-</div>
-
 <div id="liste" class="ui-widget">
-    <h1>Liste des élèves:</h1>
+    <h1>Liste des Membres du bureau :</h1>
     <table id="users" class="ui-widget ui-widget-content">
         <thead>
             <tr class="ui-widget-header ">
@@ -186,7 +163,6 @@ $(function() {
 				<th>Login</th>
 				<th>Filliere</th>
 				<th>Promo</th>
-				<th>Membre</th>
             </tr>
         </thead>
         <tbody>
@@ -199,27 +175,25 @@ $(function() {
 			else
 			{
 				while($res = Database::fetch($result))
-				{ 
-					echo "<tr>";
+				{
 					$eleve = new Eleve($res);
-					echo "<td>".$eleve->id."</td>";
-					echo "<td>".$eleve->nom."</td>";
-					echo "<td>".$eleve->prenom."</td>";
-					echo "<td>".$eleve->login."</td>";
-					echo "<td>".$eleve->filliere."</td>";
-					echo "<td>".$eleve->promo."</td>";
 					if($eleve->isMember)
-						echo "<td>Oui</td>";
-					else
-						echo "<td>Non</td>";
-					echo "</tr>";
+					{
+						echo "<tr>";
+						echo "<td>".$eleve->id."</td>";
+						echo "<td>".$eleve->nom."</td>";
+						echo "<td>".$eleve->prenom."</td>";
+						echo "<td>".$eleve->login."</td>";
+						echo "<td>".$eleve->filliere."</td>";
+						echo "<td>".$eleve->promo."</td>";
+						echo "</tr>";
+					}
 				} 
 			}
 		?>
         </tbody>
     </table>
 </div>
-<button id="create-user">Creer nouvel Eleve</button>
 		
 		<?php
 // -----------------------------------

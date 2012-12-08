@@ -64,7 +64,7 @@ CREATE  TABLE IF NOT EXISTS `projetSGBD`.`EVENEMENT` (
   `id_evt` INT NOT NULL AUTO_INCREMENT ,
   `date_evt` DATE NOT NULL ,
   `nbparticipants` INT NOT NULL DEFAULT 0 ,
-  `lieu` VARCHAR(45) NULL DEFAULT 'enseirb\'' ,
+  `lieu` VARCHAR(45) NULL DEFAULT 'enseirb' ,
   PRIMARY KEY (`id_evt`) )
 ENGINE = InnoDB;
 
@@ -81,7 +81,7 @@ CREATE  TABLE IF NOT EXISTS `projetSGBD`.`COMMENTAIRE` (
   `id_eleve` INT NOT NULL ,
   `id_jeu` INT NULL ,
   `id_evt` INT NULL ,
-  PRIMARY KEY (`id_eleve`, `id_jeu`, `id_evt`) ,
+  PRIMARY KEY (`id_commentaire`) ,
   INDEX `fk_COMMENTAIRE_ELEVE1` (`id_eleve` ASC) ,
   INDEX `fk_COMMENTAIRE_JEU1` (`id_jeu` ASC) ,
   INDEX `fk_COMMENTAIRE_EVENEMENT1` (`id_evt` ASC) ,

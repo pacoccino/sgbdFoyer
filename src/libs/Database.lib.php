@@ -29,7 +29,28 @@ class Database implements genericInterface {
     public static function executeSqlFile($file)
     {
 		$sqlbrut=file_get_contents($file);
-		Database::$base->multi_query($sqlbrut);
+		Core::addDebug("Execution de $file");
+		if(Database::$base->multi_query($sqlbrut)==true)
+		{
+			do {
+		        /* Stockage du premier résultat */
+				$err = Database::$base->error;
+				if (!empty($err))
+				{
+					Core::addDebug($err);
+					return false;
+				}
+				if ($result = Database::$base->store_result())
+		            $result->free();
+		    } while (Database::$base->more_results() && Database::$base->next_result());
+		    Core::addDebug("Fichier execute avec succes");
+			return true;
+		}
+		else 
+		{
+			Core::addDebug("Erreur :".Database::$base->error);
+			return false;
+		}
     }
     
     public static function errorMsg()
