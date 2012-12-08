@@ -6,15 +6,14 @@ class Database implements genericInterface {
 	
 	public static function init() {
 		$mysqlDB=Config::$mysqlDB;
-		
-		try {
-		Database::$base = new mysqli($mysqlDB->host, $mysqlDB->user, $mysqlDB->password, $mysqlDB->db, $mysqlDB->port);
-		} catch(Exception $e)
-		{
-			die($e);
-		}
 
+		Database::$base = new mysqli($mysqlDB->host, $mysqlDB->user, $mysqlDB->password, $mysqlDB->db, $mysqlDB->port);
 		
+		if (Database::$base->connect_error) {
+			Core::addDebug("Erreur de connexion");
+			die('Erreur de connexion (' . Database::$base->connect_errno . ') '
+			            . Database::$base->connect_error);
+		}		
 	}
 
 	// en MySQL, les requetes multiples doivent etre separees par des ';'
