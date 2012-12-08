@@ -47,7 +47,7 @@ function request(callback) {
 
 function readData(sData) {
 
-	alert("m"+sData);
+	alert(sData);
 }
 
 //-->

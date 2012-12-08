@@ -1,6 +1,6 @@
 body {
 	
-	font-family:Arial;
+	font-family: 'Open Sans', sans-serif;
 	background-color:#EBEBEB; 
 	}
 	
@@ -85,7 +85,7 @@ div#footer{
 
 div#debug{
 	position:	fixed;
-	right:		0px;
+	right:		10px;
 	bottom:		60px;
 	
 	height:		80px;

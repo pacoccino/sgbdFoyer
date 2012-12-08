@@ -49,6 +49,7 @@ abstract class Layout {
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		
 		<link rel="stylesheet" href="ressources/style.css" />
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 		<script type="text/javascript" src="ressources/script.js"></script>
 	</head>
 
@@ -79,12 +80,11 @@ abstract class Layout {
 		</div>
 	<div id="right">
 		<div id="body">    
-<?php		
-	}
-	
-	public function footerHTML() {
+<?php
+			}
 
-?>
+			public function footerHTML() {
+		?>
 </div>
 		<div id="sql_req">
 			<h1>Requete SQL :</h1>
@@ -95,7 +95,7 @@ abstract class Layout {
 					<input type="text" name="sqlreq" id="sqlreq" placeholder="Ex : select * from TABLE;" size="30" />
 				</p>
 				<p>Resultat : </p>
-				<p> <?php $this->core->sqlHTML(); ?></p>
+				<p> <?php $this -> core -> sqlHTML(); ?></p>
 				</form>
 		</div>
 	
@@ -108,16 +108,15 @@ abstract class Layout {
 		</div>
 		<div id="debug">
 		<b>Debug :</b><br />
-		<?php $this->core->debugHTML(); ?>
+		<?php $this -> core -> debugHTML(); ?>
 		</div>
 	</div>
 	</body>
 </html>
 
 
-<?php		
+<?php
 	}
-	
-}
 
+	}
 ?>

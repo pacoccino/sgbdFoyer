@@ -26,6 +26,5 @@ spl_autoload_register('pages_autoload');
 $core = new Core();
 $core->showPage();
 
-
 ?>
 
