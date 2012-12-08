@@ -61,6 +61,9 @@ class Core {
 				case "ajout":
 					$page = new Ajout($this);
 					break;
+				case "sql":
+					$page = new SqlPage($this);
+					break;
 				case "suppression":
 					$page = new Suppression($this);
 					break;
@@ -103,7 +106,7 @@ class Core {
 	public function sqlHTML() {
 		if(isset($_POST['sqlreq']))
 		{
-			$result= Database::query($_POST['sqlreq']);;
+			$result= Database::query($_POST['sqlreq']);
 			if($result==false)
 			{
 				echo "Erreur de requete : ".Database::errorMsg();

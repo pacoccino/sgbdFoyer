@@ -7,10 +7,10 @@ class Eleve {
 	public $login;
 	public $filliere;
 	public $promo;
-	public $isMember;
+	public $isMember=false;
 	public $c;
 	
-	private static $tableName="Eleves";
+	private static $tableName="ELEVE";
 	
 	public function __construct($eleve = false)
 	{
@@ -20,14 +20,24 @@ class Eleve {
 	
 	public function fetch($result)
 	{
-		$this->id = $result['id'];
-		$this->nom = $result['Nom'];
-		$this->prenom = $result['Prenom'];
+		$this->id = $result['id_eleve'];
+		$this->nom = $result['nom_eleve'];
+		$this->prenom = $result['prenom_eleve'];
+		$this->filliere = $result['filliere'];
+		$this->login = $result['login'];
+		$this->promo = $result['promo'];
+		
+		$query = "select * from Membre where id_eleve=$i";
+		Database::query($query);
+		if(Database::$lastResult->num_rows == 1)
+			$isMember=true;
 	}
 
 	public static function getEleve($i)
 	{
-		$query = "select * from $this->tablename where id_eleve=$i";
+		$query = "select * from ".Eleve::$tableName." where id_eleve=$i";
+		$results = Database::query($query);
+		return $results;
 	}
 	
 	public static function getListe() 
@@ -40,7 +50,7 @@ class Eleve {
 	
 	public function getFromDatabase($i)
 	{
-		$query = "select * from ".Eleve::$tableName." where id=$i";
+		$query = "select * from ".Eleve::$tableName." where id_eleve=$i";
 		Database::query($query,true);
 		$result = Database::fetch();
 		$this->fetch($result);
@@ -54,7 +64,7 @@ class Eleve {
 			Core::addDebug("Il manque des arguments");
 			return false;
 		}
-		$query="insert into Eleves (Nom, Prenom) values ('".$this->nom."', '".$this->prenom."')";
+		$query="insert into ".Eleve::$tableName." (nom_eleve, prenom_eleve, filliere, login, promo) values ('".$this->nom."', '".$this->prenom."', '".$this->filliere."', '".$this->login."', '".$this->promo."')";
 
 		return Database::query($query, true);
 	}

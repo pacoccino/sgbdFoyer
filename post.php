@@ -36,13 +36,38 @@ if(isset($_POST['action']))
 			$eleveadd = new Eleve();
 			$eleveadd->nom = $_POST['nom'];
 			$eleveadd->prenom = $_POST['prenom'];
+			$eleveadd->login = $_POST['login'];
+			$eleveadd->filliere = $_POST['filliere'];
+			$eleveadd->promo = $_POST['promo'];
+			if($_POST['isMember'] == "on")
+				$eleveadd->isMember = true;
+			else
+				$eleveadd->isMember = false;
 
 			if($eleveadd->addToDatabase())
 				echo "Eleve ajouté.";
 			else 
-				echo "Erreur d'ajout.";
+				echo "Erreur d'ajout: ".Database::errorMsg();
 	}
-	
+	if($_POST['action'] == 'sqlreq')
+	{
+			$result= Database::query($_POST['sql']);
+			if($result==false)
+			{
+				echo "Erreur de requete : ".Database::errorMsg();
+			}
+			elseif(Database::testEmpty())
+				echo "Requete executee avec succes, mais sans resultat";
+			else
+			{
+				echo "Donnees : <br />";
+				while($res = Database::fetch()){ 
+					foreach($res as $field=>$value) {
+						echo $field ." : ".$value." <br />";
+					}
+				} 
+			}
+	}
 }
 else echo "Moutonneux Sven Taton";
 ?>

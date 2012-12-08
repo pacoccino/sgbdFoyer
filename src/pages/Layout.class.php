@@ -5,6 +5,7 @@ abstract class Layout {
 	
 	protected $core;
 	protected $AJAX = false;
+
 	
 	public function __construct($core) {
 		$this->core=$core;
@@ -24,6 +25,9 @@ abstract class Layout {
 	public function bodyHTML() {
 		echo "should not be initialized <br />";
 		$this->core->pageHTML();
+	}
+	
+	public function headerPlus() {
 	}
 	
 	public function headerHTML() {
@@ -49,8 +53,12 @@ abstract class Layout {
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		
 		<link rel="stylesheet" href="ressources/style.css" />
+		<link rel="stylesheet" href="ressources/jquery-ui-1.9.2.css" />
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+		<script src="ressources/jquery-1.8.3.min.js"></script>
+		<script src="ressources/jquery-ui-1.9.2.js"></script>
 		<script type="text/javascript" src="ressources/script.js"></script>
+		<?php $this->headerPlus(); ?>
 	</head>
 
 	<body>
@@ -62,6 +70,9 @@ abstract class Layout {
 					</li>
 					<li>
 						<a href="?action=liste">Liste d'élèves</a>
+					</li>
+					<li>
+						<a href="?action=sql">Requete SQL</a>
 					</li>
 					<li>
 						<a href="#">Le bureau</a>
@@ -86,18 +97,6 @@ abstract class Layout {
 			public function footerHTML() {
 		?>
 </div>
-		<div id="sql_req">
-			<h1>Requete SQL :</h1>
-				<form method="post" action="index.php">
-				<input type="hidden" name="sqlpost" value="true">
-				<p>
-					<label for="sqlreq">Requete :</label>
-					<input type="text" name="sqlreq" id="sqlreq" placeholder="Ex : select * from TABLE;" size="30" />
-				</p>
-				<p>Resultat : </p>
-				<p> <?php $this -> core -> sqlHTML(); ?></p>
-				</form>
-		</div>
 	
 		<div id="footer">
 			<footer>

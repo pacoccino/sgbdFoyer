@@ -2,55 +2,195 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
+DROP SCHEMA IF EXISTS `projetSGBD` ;
 CREATE SCHEMA IF NOT EXISTS `projetSGBD` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci ;
 USE `projetSGBD` ;
 
 -- -----------------------------------------------------
--- Table `projetSGBD`.`Eleves`
+-- Table `projetSGBD`.`ELEVE`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `projetSGBD`.`Eleves` ;
+DROP TABLE IF EXISTS `projetSGBD`.`ELEVE` ;
 
-CREATE  TABLE IF NOT EXISTS `projetSGBD`.`Eleves` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `Nom` VARCHAR(45) NULL ,
-  `Prenom` VARCHAR(45) NULL ,
-  PRIMARY KEY (`id`) )
+CREATE  TABLE IF NOT EXISTS `projetSGBD`.`ELEVE` (
+  `id_eleve` INT NOT NULL AUTO_INCREMENT ,
+  `nom_eleve` VARCHAR(45) NOT NULL ,
+  `prenom_eleve` VARCHAR(45) NOT NULL ,
+  `filliere` VARCHAR(45) NOT NULL ,
+  `login` VARCHAR(45) NOT NULL ,
+  `promo` INT NOT NULL ,
+  PRIMARY KEY (`id_eleve`) )
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `projetSGBD`.`Membres`
+-- Table `projetSGBD`.`MEMBRE`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `projetSGBD`.`Membres` ;
+DROP TABLE IF EXISTS `projetSGBD`.`MEMBRE` ;
 
-CREATE  TABLE IF NOT EXISTS `projetSGBD`.`Membres` (
-  `id` INT NOT NULL ,
+CREATE  TABLE IF NOT EXISTS `projetSGBD`.`MEMBRE` (
+  `id_eleve` INT NOT NULL ,
   `Annee` INT NULL ,
-  `Eleves_id` INT NOT NULL ,
-  PRIMARY KEY (`id`, `Eleves_id`) ,
-  INDEX `fk_Membres_Eleves` (`Eleves_id` ASC) ,
+  PRIMARY KEY (`id_eleve`) ,
+  INDEX `fk_Membres_Eleves` (`id_eleve` ASC) ,
   CONSTRAINT `fk_Membres_Eleves`
-    FOREIGN KEY (`Eleves_id` )
-    REFERENCES `projetSGBD`.`Eleves` (`id` )
+    FOREIGN KEY (`id_eleve` )
+    REFERENCES `projetSGBD`.`ELEVE` (`id_eleve` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Placeholder table for view `projetSGBD`.`view1`
+-- Table `projetSGBD`.`JEU`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `projetSGBD`.`view1` (`id` INT);
+DROP TABLE IF EXISTS `projetSGBD`.`JEU` ;
+
+CREATE  TABLE IF NOT EXISTS `projetSGBD`.`JEU` (
+  `id_jeu` INT NOT NULL AUTO_INCREMENT ,
+  `nom_jeu` VARCHAR(45) NOT NULL ,
+  `date_jeu` DATE NULL ,
+  `prix_jeu` FLOAT NULL ,
+  `etat` VARCHAR(45) NULL ,
+  PRIMARY KEY (`id_jeu`) )
+ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
--- View `projetSGBD`.`view1`
+-- Table `projetSGBD`.`EVENEMENT`
 -- -----------------------------------------------------
-DROP VIEW IF EXISTS `projetSGBD`.`view1` ;
-DROP TABLE IF EXISTS `projetSGBD`.`view1`;
-USE `projetSGBD`;
-CREATE  OR REPLACE VIEW `mydb`.`view1` AS 
-SELECT * FROM Membres outer join Eleves;
-;
+DROP TABLE IF EXISTS `projetSGBD`.`EVENEMENT` ;
+
+CREATE  TABLE IF NOT EXISTS `projetSGBD`.`EVENEMENT` (
+  `id_evt` INT NOT NULL AUTO_INCREMENT ,
+  `date_evt` DATE NOT NULL ,
+  `nbparticipants` INT NOT NULL DEFAULT 0 ,
+  `lieu` VARCHAR(45) NULL DEFAULT 'enseirb\'' ,
+  PRIMARY KEY (`id_evt`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `projetSGBD`.`COMMENTAIRE`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `projetSGBD`.`COMMENTAIRE` ;
+
+CREATE  TABLE IF NOT EXISTS `projetSGBD`.`COMMENTAIRE` (
+  `id_commentaire` INT NOT NULL AUTO_INCREMENT ,
+  `texte` BLOB NULL ,
+  `note` TINYINT NULL ,
+  `id_eleve` INT NOT NULL ,
+  `id_jeu` INT NULL ,
+  `id_evt` INT NULL ,
+  PRIMARY KEY (`id_eleve`, `id_jeu`, `id_evt`) ,
+  INDEX `fk_COMMENTAIRE_ELEVE1` (`id_eleve` ASC) ,
+  INDEX `fk_COMMENTAIRE_JEU1` (`id_jeu` ASC) ,
+  INDEX `fk_COMMENTAIRE_EVENEMENT1` (`id_evt` ASC) ,
+  CONSTRAINT `fk_COMMENTAIRE_ELEVE1`
+    FOREIGN KEY (`id_eleve` )
+    REFERENCES `projetSGBD`.`ELEVE` (`id_eleve` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_COMMENTAIRE_JEU1`
+    FOREIGN KEY (`id_jeu` )
+    REFERENCES `projetSGBD`.`JEU` (`id_jeu` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_COMMENTAIRE_EVENEMENT1`
+    FOREIGN KEY (`id_evt` )
+    REFERENCES `projetSGBD`.`EVENEMENT` (`id_evt` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `projetSGBD`.`LIVRE`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `projetSGBD`.`LIVRE` ;
+
+CREATE  TABLE IF NOT EXISTS `projetSGBD`.`LIVRE` (
+  `id_livre` INT NOT NULL AUTO_INCREMENT ,
+  `titre` VARCHAR(45) NOT NULL ,
+  `auteur` VARCHAR(45) NOT NULL ,
+  `editeur` VARCHAR(45) NOT NULL ,
+  `ISBN` INT NOT NULL ,
+  PRIMARY KEY (`id_livre`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `projetSGBD`.`EXEMPLAIRE`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `projetSGBD`.`EXEMPLAIRE` ;
+
+CREATE  TABLE IF NOT EXISTS `projetSGBD`.`EXEMPLAIRE` (
+  `id_exemplaire` INT NOT NULL AUTO_INCREMENT ,
+  `empruntable` TINYINT(1) NOT NULL DEFAULT true ,
+  `date_livre` DATE NULL ,
+  `prix_livre` FLOAT NOT NULL DEFAULT 0 ,
+  `id_livre` INT NOT NULL ,
+  `emprunte_par` INT NULL ,
+  PRIMARY KEY (`id_exemplaire`) ,
+  INDEX `fk_EXEMPLAIRE_LIVRE1` (`id_livre` ASC) ,
+  INDEX `fk_EXEMPLAIRE_ELEVE1` (`emprunte_par` ASC) ,
+  CONSTRAINT `fk_EXEMPLAIRE_LIVRE1`
+    FOREIGN KEY (`id_livre` )
+    REFERENCES `projetSGBD`.`LIVRE` (`id_livre` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_EXEMPLAIRE_ELEVE1`
+    FOREIGN KEY (`emprunte_par` )
+    REFERENCES `projetSGBD`.`ELEVE` (`id_eleve` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `projetSGBD`.`PARTICIPE`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `projetSGBD`.`PARTICIPE` ;
+
+CREATE  TABLE IF NOT EXISTS `projetSGBD`.`PARTICIPE` (
+  `id_eleve` INT NULL ,
+  `EVENEMENT_id_evt` INT NULL ,
+  PRIMARY KEY (`id_eleve`, `EVENEMENT_id_evt`) ,
+  INDEX `fk_PARTICIPE_EVENEMENT1` (`EVENEMENT_id_evt` ASC) ,
+  CONSTRAINT `fk_PARTICIPE_ELEVE1`
+    FOREIGN KEY (`id_eleve` )
+    REFERENCES `projetSGBD`.`ELEVE` (`id_eleve` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_PARTICIPE_EVENEMENT1`
+    FOREIGN KEY (`EVENEMENT_id_evt` )
+    REFERENCES `projetSGBD`.`EVENEMENT` (`id_evt` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `projetSGBD`.`UTILISE`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `projetSGBD`.`UTILISE` ;
+
+CREATE  TABLE IF NOT EXISTS `projetSGBD`.`UTILISE` (
+  `id_jeu` INT NOT NULL ,
+  `id_evt` INT NOT NULL ,
+  PRIMARY KEY (`id_jeu`, `id_evt`) ,
+  INDEX `fk_UTILISE_EVENEMENT1` (`id_evt` ASC) ,
+  CONSTRAINT `fk_UTILISE_JEU1`
+    FOREIGN KEY (`id_jeu` )
+    REFERENCES `projetSGBD`.`JEU` (`id_jeu` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_UTILISE_EVENEMENT1`
+    FOREIGN KEY (`id_evt` )
+    REFERENCES `projetSGBD`.`EVENEMENT` (`id_evt` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

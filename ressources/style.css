@@ -125,14 +125,14 @@ div#debug{
 
 }
 
-#liste
+#liste table
 {
 	display: table;
 	border-collapse: collapse;
 	width: 	70%;
 }
 
- #liste  td, th
+#liste  td, th
 {
 	background-color:#D1D1D1;
 	text-align:center;
