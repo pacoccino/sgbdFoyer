@@ -17,11 +17,11 @@ class Livre {
 	
 	public function fetch($result)
 	{
-		$this->id = $result['id_livree'];
+		$this->id = $result['id_livre'];
 		$this->titre = $result['titre'];
 		$this->auteur = $result['auteur'];
 		$this->editeur = $result['editeur'];
-		$this->isbn = $result['isbn'];
+		$this->isbn = $result['ISBN'];
 		
 	}
 

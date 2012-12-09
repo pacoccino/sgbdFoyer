@@ -8,11 +8,11 @@ class JeuxPage extends Layout{
 		Core::addDebug("InListe");
 		if(isset($_POST['a_adding']))
 		{
-			$eleveadd = new Eleve();
-			$eleveadd->nom = $_POST['nom'];
-			$eleveadd->prenom = $_POST['prenom'];
+			$jeuadd = new Eleve();
+			$jeuadd->nom = $_POST['nom'];
+			$jeuadd->date = $_POST['date'];
 
-			if($eleveadd->addToDatabase())
+			if($jeuadd->addToDatabase())
 				Core::addDebug("Eleve ajouté.");
 			else 
 				Core::addDebug("<br /> Erreur d'ajout.");
@@ -46,10 +46,10 @@ class JeuxPage extends Layout{
 <!-- 
 
 function addEleve(param) {
-	$.post("post.php", { action: "adduser", nom: param[0].value, prenom: param[1].value , login: param[2].value , filliere: param[3].value , promo: param[4].value , isMember: param[5].value },
+	$.post("post.php", { action: "addjeu", nom: param[0].value, date: param[1].value , prix: param[2].value , etat: param[3].value },
 	  function(data){
-	    $( "#eleve-added" ).html(data); 
-	    $( "#eleve-added" ).dialog( "open" );
+	    $( "#jeu-added" ).html(data); 
+	    $( "#jeu-added" ).dialog( "open" );
 	  });
 }
 
@@ -61,12 +61,10 @@ $(function() {
 <script>
 $(function() {
     var nom = $( "#nom" ),
-        prenom = $( "#prenom" ),
-        login = $( "#login" ),
-        filliere = $( "#filliere" ),
-        promo = $( "#promo" ),
-		isMember = $( "#isMember" ),
-        allFields = $( [] ).add( nom ).add( prenom ).add( login).add( filliere).add( promo ).add( isMember ),
+        date = $( "#date" ),
+        prix = $( "#prix" ),
+        etat = $( "#etat" ),
+        allFields = $( [] ).add( nom ).add( date ).add( prix).add( etat),
         tips = $( ".validateTips" );
  
         function updateTips( t ) {
@@ -101,19 +99,18 @@ $(function() {
  
         $( "#dialog-form" ).dialog({
         autoOpen: false,
-        height: 500,
+        height: 410,
         width: 350,
         modal: true,
         show: "explode",
         buttons: {
-            "Create an account": function() {
+            "Ajouter": function() {
                 var bValid = true;
                 
                 bValid = bValid && checkLength( nom, "nom", 2, 20 );
-                bValid = bValid && checkLength( prenom, "prenom", 2, 20 );
-                bValid = bValid && checkLength( login, "login", 3, 20 );
-                bValid = bValid && checkLength( filliere, "filliere", 2, 5 );
-                bValid = bValid && checkLength( promo, "promo", 4, 4 );
+                //bValid = bValid && checkLength( date, "date", 2, 20 );
+                //bValid = bValid && checkLength( prix, "prix", 1, 20 );
+                //bValid = bValid && checkLength( etat, "etat", 2, 30 );
  
                     if ( bValid ) {
 
@@ -121,16 +118,14 @@ $(function() {
                         $( "#users tbody" ).append( "<tr>" +
                         "<td>0</td>" + 
                         "<td>" + nom.val() + "</td>" + 
-                        "<td>" + prenom.val() + "</td>" + 
-                        "<td>" + login.val() + "</td>" +
-                        "<td>" + filliere.val() + "</td>" +
-                        "<td>" + promo.val() + "</td>" +
-                        "<td>" + isMember.val() + "</td>" +
+                        "<td>" + date.val() + "</td>" + 
+                        "<td>" + prix.val() + "</td>" +
+                        "<td>" + etat.val() + "</td>" +
                     "</tr>" ); 
                     $( this ).dialog( "close" );
                		}
             },
-            Cancel: function() {
+            "Annuler": function() {
                 $( this ).dialog( "close" );
             }
         },
@@ -145,10 +140,16 @@ $(function() {
             $( "#dialog-form" ).dialog( "open" );
         });
         
-        $( "#eleve-added" ).dialog({
+        $( "#jeu-added" ).dialog({
             autoOpen: false,
             show: "blind",
             hide: "explode"
+        });
+        
+        $( "#date" ).datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "yy-mm-dd"
         });
 });
 </script>
@@ -159,15 +160,14 @@ $(function() {
             <tr class="ui-widget-header ">
 				<th>Id</th>
 				<th>Nom</th>
-				<th>Prenom</th>
-				<th>Login</th>
-				<th>Filliere</th>
-				<th>Promo</th>
+				<th>Date d'achat</th>
+				<th>Prix d'achat</th>
+				<th>Etat</th>
             </tr>
         </thead>
         <tbody>
 		<?php
-			$result=Eleve::getListe();
+			$result=Jeu::getListe();
 			if(!($result))
 			{
 				echo "Erreur de requete : ".Database::errorMsg();
@@ -176,18 +176,14 @@ $(function() {
 			{
 				while($res = Database::fetch($result))
 				{
-					$eleve = new Eleve($res);
-					if($eleve->isMember)
-					{
+					$jeu = new Jeu($res);
 						echo "<tr>";
-						echo "<td>".$eleve->id."</td>";
-						echo "<td>".$eleve->nom."</td>";
-						echo "<td>".$eleve->prenom."</td>";
-						echo "<td>".$eleve->login."</td>";
-						echo "<td>".$eleve->filliere."</td>";
-						echo "<td>".$eleve->promo."</td>";
+						echo "<td>".$jeu->id."</td>";
+						echo "<td>".$jeu->nom."</td>";
+						echo "<td>".$jeu->date."</td>";
+						echo "<td>".$jeu->prix."</td>";
+						echo "<td>".$jeu->etat."</td>";
 						echo "</tr>";
-					}
 				} 
 			}
 		?>
@@ -195,6 +191,26 @@ $(function() {
     </table>
 </div>
 		
+    <button id="create-user">Ajouter un nouveau jeu</button>
+    <div id="jeu-added" title="Status">
+    <p>Le jeu a bien été ajouté.</p>
+</div>
+    <div id="dialog-form" title="Ajouter un jeu">
+    <p class="validateTips">Tous les champs sont requis.</p>
+ 
+    <form>
+    <fieldset>
+        <label for="nom">Nom</label>
+        <input type="text" name="nom" id="nom" class="text ui-widget-content ui-corner-all" />
+        <label for="date">Date d'achat</label>
+        <input type="text" id="date"  class="text ui-widget-content ui-corner-all"/>
+        <label for="prix">Prix d'achat</label>
+        <input type="text" name="prix" id="prix" value="" class="text ui-widget-content ui-corner-all" />
+        <label for="etat">Etat</label>
+        <input type="text" name="etat" id="etat" value="" class="text ui-widget-content ui-corner-all" />
+    </fieldset>
+    </form>
+</div>
 		<?php
 // -----------------------------------
 // Fin Body

@@ -69,7 +69,7 @@ abstract class Layout {
 						<a href="index.php">Accueil</a>
 					</li>
 					<li>
-						<a href="?action=liste">Liste d'élèves</a>
+						<a href="?action=eleves">Liste d'élèves</a>
 					</li>
 
 					<li>

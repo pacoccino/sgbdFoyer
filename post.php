@@ -49,6 +49,35 @@ if(isset($_POST['action']))
 			else 
 				echo "Erreur d'ajout: ".Database::errorMsg();
 	}
+	if($_POST['action'] == 'addlivre')
+	{
+			$livreadd = new Livre();
+			$livreadd->titre = $_POST['titre'];
+			$livreadd->auteur = $_POST['auteur'];
+			$livreadd->editeur = $_POST['editeur'];
+			$livreadd->isbn = $_POST['isbn'];
+			
+			if($livreadd->addToDatabase())
+				echo "Livre ajouté.";
+			else 
+				echo "Erreur d'ajout: ".Database::errorMsg();
+	}
+	if($_POST['action'] == 'addjeu')
+	{
+			$jeuadd = new Jeu();
+			$jeuadd->nom = $_POST['nom'];
+			$jeuadd->date = $_POST['date'];
+			$jeuadd->prix = $_POST['prix'];
+			$jeuadd->etat = $_POST['etat'];
+			
+			if($jeuadd->addToDatabase())
+				echo "Jeu ajouté.";
+			else 
+				{
+					echo "Erreur d'ajout: ".Database::errorMsg();
+					Core::debugHTML();
+				}
+	}
 	if($_POST['action'] == 'sqlreq')
 	{
 			$result= Database::query($_POST['sql']);

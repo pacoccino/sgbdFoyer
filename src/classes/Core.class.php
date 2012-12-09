@@ -55,8 +55,8 @@ class Core {
 			$this->testP();
 		elseif(isset($_GET['action'])) {
 			switch($_GET['action']) {
-				case "liste":
-					$page = new Liste($this);
+				case "eleves":
+					$page = new ElevesPage($this);
 					break;
 				case "ajout":
 					$page = new Ajout($this);

@@ -46,7 +46,7 @@ class LivrePage extends Layout{
 <!-- 
 
 function addLivre(param) {
-	$.post("post.php", { action: "adduser", titre: param[0].value, auteur: param[1].value , editeur: param[2].value , isbn: param[3].value , promo: param[4].value , isMember: param[5].value },
+	$.post("post.php", { action: "addlivre", titre: param[0].value, auteur: param[1].value , editeur: param[2].value , isbn: param[3].value },
 	  function(data){
 	    $( "#livre-added" ).html(data); 
 	    $( "#livre-added" ).dialog( "open" );
@@ -99,12 +99,12 @@ $(function() {
  
         $( "#dialog-form" ).dialog({
         autoOpen: false,
-        height: 500,
+        height: 410,
         width: 350,
         modal: true,
         show: "explode",
         buttons: {
-            "Create an account": function() {
+            "Ajouter": function() {
                 var bValid = true;
                 
                 bValid = bValid && checkLength( titre, "titre", 2, 20 );
@@ -126,7 +126,7 @@ $(function() {
                     $( this ).dialog( "close" );
                		}
             },
-            Cancel: function() {
+            "Annuler": function() {
                 $( this ).dialog( "close" );
             }
         },
@@ -157,8 +157,7 @@ $(function() {
 				<th>Titre</th>
 				<th>Auteur</th>
 				<th>Editeur</th>
-				<th>isbn</th>
-				<th>Promo</th>
+				<th>ISBN</th>
             </tr>
         </thead>
         <tbody>
@@ -173,8 +172,6 @@ $(function() {
 				while($res = Database::fetch($result))
 				{
 					$livre = new Livre($res);
-					if($livre->isMember)
-					{
 						echo "<tr>";
 						echo "<td>".$livre->id."</td>";
 						echo "<td>".$livre->titre."</td>";
@@ -182,13 +179,34 @@ $(function() {
 						echo "<td>".$livre->editeur."</td>";
 						echo "<td>".$livre->isbn."</td>";
 						echo "</tr>";
-					}
 				} 
 			}
 		?>
         </tbody>
     </table>
 </div>
+
+    <button id="create-user">Ajouter un nouveau livre</button>
+    <div id="livre-added" title="Status">
+    <p>Le livre a bien été ajouté.</p>
+</div>
+    <div id="dialog-form" title="Ajouter un livre">
+    <p class="validateTips">Tous les champs sont requis.</p>
+ 
+    <form>
+    <fieldset>
+        <label for="titre">Titre</label>
+        <input type="text" name="titre" id="titre" class="text ui-widget-content ui-corner-all" />
+        <label for="auteur">Auteur</label>
+        <input type="text" name="auteur" id="auteur" value="" class="text ui-widget-content ui-corner-all" />
+        <label for="editeur">Editeur</label>
+        <input type="text" name="editeur" id="editeur" value="" class="text ui-widget-content ui-corner-all" />
+        <label for="isbn">ISBN</label>
+        <input type="text" name="isbn" id="isbn" value="" class="text ui-widget-content ui-corner-all" />
+    </fieldset>
+    </form>
+</div>
+
 		
 		<?php
 // -----------------------------------
