@@ -43,7 +43,6 @@ class LivrePage extends Layout{
 ?>
 
 <script type="text/javascript">
-<!-- 
 
 function addLivre(param) {
 	$.post("post.php", { action: "addlivre", titre: param[0].value, auteur: param[1].value , editeur: param[2].value , isbn: param[3].value },
@@ -54,48 +53,11 @@ function addLivre(param) {
 }
 
 $(function() {
-    $( "button" ).button()
-});
-//-->
-</script>
-<script>
-$(function() {
     var titre = $( "#titre" ),
         auteur = $( "#auteur" ),
         editeur = $( "#editeur" ),
         isbn = $( "#isbn" ),
-        allFields = $( [] ).add( titre ).add( auteur ).add( editeur).add( isbn),
-        tips = $( ".validateTips" );
- 
-        function updateTips( t ) {
-            tips
-                .text( t )
-                .addClass( "ui-state-highlight" );
-        setTimeout(function() {
-            tips.removeClass( "ui-state-highlight", 1500 );
-            }, 500 );
-        }
- 
-        function checkLength( o, n, min, max ) {
-            if ( o.val().length > max || o.val().length < min ) {
-                o.addClass( "ui-state-error" );
-            updateTips( "La taille de " + n + " doit etre comprise entre " +
-                min + " et " + max + "." );
-                return false;
-            } else {
-                return true;
-            }
-        }
- 
-        function checkRegexp( o, regexp, n ) {
-            if ( !( regexp.test( o.val() ) ) ) {
-                o.addClass( "ui-state-error" );
-                updateTips( n );
-                return false;
-            } else {
-                return true;
-            }
-        }
+        allFields = $( [] ).add( titre ).add( auteur ).add( editeur).add( isbn);
  
         $( "#dialog-form" ).dialog({
         autoOpen: false,
@@ -146,6 +108,8 @@ $(function() {
             show: "blind",
             hide: "explode"
         });
+        
+        $( "button" ).button();
 });
 </script>
 <div id="liste" class="ui-widget">

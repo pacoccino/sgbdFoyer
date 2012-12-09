@@ -95,6 +95,8 @@ div#debug{
 	border:1px solid black;
 	font-size:	0.8em;
 	overflow:	scroll;
+	
+	background-color:#EBEBEB; 
 }
 
 

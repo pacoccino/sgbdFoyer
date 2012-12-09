@@ -1,6 +1,6 @@
 <?php
 
-class Liste extends Layout{
+class ElevesPage extends Layout{
 	
 	public function __construct($core) {
 		parent::__construct($core);
@@ -41,10 +41,7 @@ class Liste extends Layout{
 // Debut Body
 // -----------------------------------
 ?>
-
 <script type="text/javascript">
-<!-- 
-
 function addEleve(param) {
 	$.post("post.php", { action: "adduser", nom: param[0].value, prenom: param[1].value , login: param[2].value , filliere: param[3].value , promo: param[4].value , isMember: param[5].value },
 	  function(data){
@@ -54,51 +51,16 @@ function addEleve(param) {
 }
 
 $(function() {
-    $( "button" ).button()
-});
-//-->
-</script>
-<script>
-$(function() {
     var nom = $( "#nom" ),
         prenom = $( "#prenom" ),
         login = $( "#login" ),
         filliere = $( "#filliere" ),
         promo = $( "#promo" ),
 		isMember = $( "#isMember" ),
-        allFields = $( [] ).add( nom ).add( prenom ).add( login).add( filliere).add( promo ).add( isMember ),
-        tips = $( ".validateTips" );
- 
-        function updateTips( t ) {
-            tips
-                .text( t )
-                .addClass( "ui-state-highlight" );
-        setTimeout(function() {
-            tips.removeClass( "ui-state-highlight", 1500 );
-            }, 500 );
-        }
- 
-        function checkLength( o, n, min, max ) {
-            if ( o.val().length > max || o.val().length < min ) {
-                o.addClass( "ui-state-error" );
-            updateTips( "La taille de " + n + " doit etre comprise entre " +
-                min + " et " + max + "." );
-                return false;
-            } else {
-                return true;
-            }
-        }
- 
-        function checkRegexp( o, regexp, n ) {
-            if ( !( regexp.test( o.val() ) ) ) {
-                o.addClass( "ui-state-error" );
-                updateTips( n );
-                return false;
-            } else {
-                return true;
-            }
-        }
- 
+        allFields = $( [] ).add( nom ).add( prenom ).add( login).add( filliere).add( promo ).add( isMember );
+        
+        
+
         $( "#dialog-form" ).dialog({
         autoOpen: false,
         height: 500,
@@ -106,7 +68,7 @@ $(function() {
         modal: true,
         show: "explode",
         buttons: {
-            "Create an account": function() {
+            "Creer": function() {
                 var bValid = true;
                 
                 bValid = bValid && checkLength( nom, "nom", 2, 20 );
@@ -130,7 +92,7 @@ $(function() {
                     $( this ).dialog( "close" );
                		}
             },
-            Cancel: function() {
+            "Annuler": function() {
                 $( this ).dialog( "close" );
             }
         },
@@ -150,30 +112,10 @@ $(function() {
             show: "blind",
             hide: "explode"
         });
+        
+        $( "button" ).button()
 });
 </script>
-    <div id="eleve-added" title="Status">
-    <p>L'eleve a bien été ajouté.</p>
-</div>
-    <div id="dialog-form" title="Creer un nouvel Eleve">
-    <p class="validateTips">Tous les champs sont requis.</p>
- 
-    <form>
-    <fieldset>
-        <label for="nom">Nom</label>
-        <input type="text" name="nom" id="nom" class="text ui-widget-content ui-corner-all" />
-        <label for="prenom">Prenom</label>
-        <input type="text" name="prenom" id="prenom" value="" class="text ui-widget-content ui-corner-all" />
-        <label for="login">Login</label>
-        <input type="text" name="login" id="login" value="" class="text ui-widget-content ui-corner-all" />
-        <label for="filliere">Filliere</label>
-        <input type="text" name="filliere" id="filliere" value="" class="text ui-widget-content ui-corner-all" />
-        <label for="promo">Promo</label>
-        <input type="text" name="promo" id="promo" value="" class="text ui-widget-content ui-corner-all" />
-        <input type="checkbox" id="isMember" /><label for="isMember">Membre</label>
-    </fieldset>
-    </form>
-</div>
 
 <div id="liste" class="ui-widget">
     <h1>Liste des élèves:</h1>
@@ -220,7 +162,29 @@ $(function() {
     </table>
 </div>
 <button id="create-user">Creer nouvel Eleve</button>
-		
+<div id="eleve-added" title="Status">
+    <p>L'eleve a bien été ajouté.</p>
+</div>
+    <div id="dialog-form" title="Creer un nouvel Eleve">
+    <p class="validateTips">Tous les champs sont requis.</p>
+ 
+    <form>
+    <fieldset>
+        <label for="nom">Nom</label>
+        <input type="text" name="nom" id="nom" class="text ui-widget-content ui-corner-all" />
+        <label for="prenom">Prenom</label>
+        <input type="text" name="prenom" id="prenom" value="" class="text ui-widget-content ui-corner-all" />
+        <label for="login">Login</label>
+        <input type="text" name="login" id="login" value="" class="text ui-widget-content ui-corner-all" />
+        <label for="filliere">Filliere</label>
+        <input type="text" name="filliere" id="filliere" value="" class="text ui-widget-content ui-corner-all" />
+        <label for="promo">Promo</label>
+        <input type="text" name="promo" id="promo" value="" class="text ui-widget-content ui-corner-all" />
+        <input type="checkbox" id="isMember" /><label for="isMember">Membre</label>
+    </fieldset>
+    </form>
+</div>
+
 		<?php
 // -----------------------------------
 // Fin Body

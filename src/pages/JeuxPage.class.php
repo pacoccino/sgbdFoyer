@@ -43,8 +43,6 @@ class JeuxPage extends Layout{
 ?>
 
 <script type="text/javascript">
-<!-- 
-
 function addEleve(param) {
 	$.post("post.php", { action: "addjeu", nom: param[0].value, date: param[1].value , prix: param[2].value , etat: param[3].value },
 	  function(data){
@@ -54,48 +52,12 @@ function addEleve(param) {
 }
 
 $(function() {
-    $( "button" ).button()
-});
-//-->
-</script>
-<script>
-$(function() {
     var nom = $( "#nom" ),
         date = $( "#date" ),
         prix = $( "#prix" ),
         etat = $( "#etat" ),
         allFields = $( [] ).add( nom ).add( date ).add( prix).add( etat),
         tips = $( ".validateTips" );
- 
-        function updateTips( t ) {
-            tips
-                .text( t )
-                .addClass( "ui-state-highlight" );
-        setTimeout(function() {
-            tips.removeClass( "ui-state-highlight", 1500 );
-            }, 500 );
-        }
- 
-        function checkLength( o, n, min, max ) {
-            if ( o.val().length > max || o.val().length < min ) {
-                o.addClass( "ui-state-error" );
-            updateTips( "La taille de " + n + " doit etre comprise entre " +
-                min + " et " + max + "." );
-                return false;
-            } else {
-                return true;
-            }
-        }
- 
-        function checkRegexp( o, regexp, n ) {
-            if ( !( regexp.test( o.val() ) ) ) {
-                o.addClass( "ui-state-error" );
-                updateTips( n );
-                return false;
-            } else {
-                return true;
-            }
-        }
  
         $( "#dialog-form" ).dialog({
         autoOpen: false,
@@ -151,6 +113,8 @@ $(function() {
             changeYear: true,
             dateFormat: "yy-mm-dd"
         });
+        
+        $( "button" ).button();
 });
 </script>
 <div id="liste" class="ui-widget">

@@ -43,7 +43,6 @@ class BureauPage extends Layout{
 ?>
 
 <script type="text/javascript">
-<!-- 
 
 function addEleve(param) {
 	$.post("post.php", { action: "adduser", nom: param[0].value, prenom: param[1].value , login: param[2].value , filliere: param[3].value , promo: param[4].value , isMember: param[5].value },
@@ -54,20 +53,13 @@ function addEleve(param) {
 }
 
 $(function() {
-    $( "button" ).button()
-});
-//-->
-</script>
-<script>
-$(function() {
     var nom = $( "#nom" ),
         prenom = $( "#prenom" ),
         login = $( "#login" ),
         filliere = $( "#filliere" ),
         promo = $( "#promo" ),
 		isMember = $( "#isMember" ),
-        allFields = $( [] ).add( nom ).add( prenom ).add( login).add( filliere).add( promo ).add( isMember ),
-        tips = $( ".validateTips" );
+        allFields = $( [] ).add( nom ).add( prenom ).add( login).add( filliere).add( promo ).add( isMember );
  
         function updateTips( t ) {
             tips
@@ -150,6 +142,8 @@ $(function() {
             show: "blind",
             hide: "explode"
         });
+        
+        $( "button" ).button();
 });
 </script>
 <div id="liste" class="ui-widget">

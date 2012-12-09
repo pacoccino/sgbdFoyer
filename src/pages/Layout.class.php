@@ -46,7 +46,7 @@ abstract class Layout {
 		<meta name="description" content="" />
 		<meta name="author" content="Pacien Boisson" />
 
-		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
 		<link rel="shortcut icon" href="/favicon.ico" />
@@ -56,7 +56,7 @@ abstract class Layout {
 		<link rel="stylesheet" href="ressources/jquery-ui-1.9.2.css" />
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 		<script src="ressources/jquery-1.8.3.min.js"></script>
-		<script src="ressources/jquery-ui-1.9.2.js"></script>
+		<script src="ressources/jquery-ui-1.9.2.min.js"></script>
 		<script type="text/javascript" src="ressources/script.js"></script>
 		<?php $this->headerPlus(); ?>
 	</head>
