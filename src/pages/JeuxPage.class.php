@@ -56,8 +56,7 @@ $(function() {
         date = $( "#date" ),
         prix = $( "#prix" ),
         etat = $( "#etat" ),
-        allFields = $( [] ).add( nom ).add( date ).add( prix).add( etat),
-        tips = $( ".validateTips" );
+        allFields = $( [] ).add( nom ).add( date ).add( prix).add( etat);
  
         $( "#dialog-form" ).dialog({
         autoOpen: false,
