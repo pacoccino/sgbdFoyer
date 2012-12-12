@@ -2,21 +2,8 @@
 
 class JeuxPage extends Layout{
 	
-	public function __construct($core) {
-		parent::__construct($core);
-
-		Core::addDebug("InListe");
-		if(isset($_POST['a_adding']))
-		{
-			$jeuadd = new Eleve();
-			$jeuadd->nom = $_POST['nom'];
-			$jeuadd->date = $_POST['date'];
-
-			if($jeuadd->addToDatabase())
-				Core::addDebug("Eleve ajouté.");
-			else 
-				Core::addDebug("<br /> Erreur d'ajout.");
-		}
+	public function __construct() {
+		$this->pageTitle = "Jeux";
 	}
 	
 	public function headerPlus() {

@@ -3,13 +3,9 @@
 // Classe de base contenant tout le html autour de corps de page
 abstract class Layout {
 	
-	protected $core;
 	protected $AJAX = false;
-
+	protected $pageTitle = "Default";
 	
-	public function __construct($core) {
-		$this->core=$core;
-	}	
 	
 	public function showHTML()
 	{
@@ -24,7 +20,6 @@ abstract class Layout {
 	
 	public function bodyHTML() {
 		echo "should not be initialized <br />";
-		$this->core->pageHTML();
 	}
 	
 	public function headerPlus() {
@@ -42,7 +37,7 @@ abstract class Layout {
 		Remove this if you use the .htaccess -->
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-		<title>HTML</title>
+		<title>Projet SGBD - <?php echo $this->pageTitle; ?></title>
 		<meta name="description" content="" />
 		<meta name="author" content="Pacien Boisson" />
 
@@ -108,7 +103,7 @@ abstract class Layout {
 		</div>
 		<div id="debug">
 		<b>Debug :</b><br />
-		<?php $this -> core -> debugHTML(); ?>
+		<?php Core::debugHTML(); ?>
 		</div>
 	</div>
 	</body>

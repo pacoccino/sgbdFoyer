@@ -50,31 +50,28 @@ class Core {
 		
 		$page=null;
 		if(isset($_GET['raz']))
-			$this->razDB();
+			$this::razDB();
 		elseif(isset($_GET['test']))
 			$this->testP();
 		elseif(isset($_GET['action'])) {
 			switch($_GET['action']) {
 				case "eleves":
-					$page = new ElevesPage($this);
-					break;
-				case "ajout":
-					$page = new Ajout($this);
+					$page = new ElevesPage();
 					break;
 				case "bureau":
-					$page = new BureauPage($this);
+					$page = new BureauPage();
 					break;
 				case "livres":
-					$page = new LivrePage($this);
+					$page = new LivrePage();
 					break;
 				case "jeux":
-					$page = new JeuxPage($this);
+					$page = new JeuxPage();
 					break;
 				case "sql":
-					$page = new SqlPage($this);
+					$page = new SqlPage();
 					break;
 				case "suppression":
-					$page = new Suppression($this);
+					$page = new Suppression();
 					break;
 				/* Pour ajouter une page, décommenter ici
 				case "nouvellepage":
@@ -82,7 +79,7 @@ class Core {
 					break;
 				*/
 				default:
-					$page = new Accueil($this);
+					$page = new Accueil();
 			}
 			
 		}
@@ -132,13 +129,16 @@ class Core {
 		
 	}
 	
-	public function razDB() {
+	public static function razDB() {
+		Core::addDebug("<b>Reinitialisation de la base de donnees : </b><br />");
+		
 		Database::executeSqlFile("sql/deleteDatabase.sql");
 		Database::executeSqlFile("sql/createDatabase.sql");
 		Database::executeSqlFile("sql/initialData.sql");
 		
-		echo "<b>Reinitialisation de la base de donnees : </b><br />";
-		$this->debugHTML();
+		Core::addDebug("<a href='index.php'>Retour a l'accueil</a><br />");
+		
+		Core::debugHTML();
 	}
 	 
 	public function testP() {

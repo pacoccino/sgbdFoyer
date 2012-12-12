@@ -2,21 +2,8 @@
 
 class BureauPage extends Layout{
 	
-	public function __construct($core) {
-		parent::__construct($core);
-
-		Core::addDebug("InListe");
-		if(isset($_POST['a_adding']))
-		{
-			$eleveadd = new Eleve();
-			$eleveadd->nom = $_POST['nom'];
-			$eleveadd->prenom = $_POST['prenom'];
-
-			if($eleveadd->addToDatabase())
-				Core::addDebug("Eleve ajouté.");
-			else 
-				Core::addDebug("<br /> Erreur d'ajout.");
-		}
+	public function __construct() {
+		$this->pageTitle = "Bureau des élèves";
 	}
 	
 	public function headerPlus() {

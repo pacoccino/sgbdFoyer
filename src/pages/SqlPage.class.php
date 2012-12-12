@@ -1,6 +1,10 @@
 <?php
 
 class SqlPage extends Layout{
+		
+	public function __construct() {
+		$this->pageTitle = "Requete SQL";
+	}
 	
 	// cette fonction est ce que va afficher la page web
 	public function bodyHTML() {

@@ -2,26 +2,13 @@
 
 class LivrePage extends Layout{
 	
-	public function __construct($core) {
-		parent::__construct($core);
-
-		Core::addDebug("InListe");
-		if(isset($_POST['a_adding']))
-		{
-			$livreadd = new Livre();
-			$livreadd->titre = $_POST['titre'];
-			$livreadd->auteur = $_POST['auteur'];
-
-			if($livreadd->addToDatabase())
-				Core::addDebug("Livre ajouté.");
-			else 
-				Core::addDebug("<br /> Erreur d'ajout.");
-		}
+	public function __construct() {
+		$this->pageTitle = "Livres";
 	}
 	
 	public function headerPlus() {
 		?>
-		    <style>
+	<style>
 		#dialog-form { font-size: 62.5%; }
         label, input { display:block; }
         input.text { margin-bottom:12px; width:95%; padding: .4em; }

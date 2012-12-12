@@ -2,9 +2,10 @@
 
 class ElevesPage extends Layout{
 	
-	public function __construct($core) {
-		parent::__construct($core);
-
+	public function __construct() {
+		$this->pageTitle = "Eleves";
+	
+		/*	
 		Core::addDebug("InListe");
 		if(isset($_POST['a_adding']))
 		{
@@ -16,7 +17,7 @@ class ElevesPage extends Layout{
 				Core::addDebug("Eleve ajouté.");
 			else 
 				Core::addDebug("<br /> Erreur d'ajout.");
-		}
+		}*/
 	}
 	
 	public function headerPlus() {

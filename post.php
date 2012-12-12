@@ -89,11 +89,11 @@ if(isset($_POST['action']))
 				echo "Requete executee avec succes, mais sans resultat";
 			else
 			{
-				echo "Donnees : <br />";
 				while($res = Database::fetch()){ 
 					foreach($res as $field=>$value) {
 						echo $field ." : ".$value." <br />";
 					}
+					echo "<br/>";
 				} 
 			}
 	}
