@@ -1,3 +1,8 @@
+-- ============================================================
+--    ELEVE
+-- ============================================================
+
+
 INSERT INTO ELEVE (nom_eleve, prenom_eleve, filliere, login, promo) values ('Smith', 'Will', 'INFO', 'wsmith', 2010);
 INSERT INTO ELEVE (nom_eleve, prenom_eleve, filliere, login, promo) values ('Willis', 'Bruce', 'INFO', 'bwillis', 2011);
 INSERT INTO ELEVE (nom_eleve, prenom_eleve, filliere, login, promo) values ('Norris', 'Chuck', 'INFO', 'cnorris', 2012);
@@ -23,12 +28,12 @@ INSERT INTO ELEVE (nom_eleve, prenom_eleve, filliere, login, promo) values ('Pro
 INSERT INTO ELEVE (nom_eleve, prenom_eleve, filliere, login, promo) values ('Guinness', 'Alec', 'MTMK', 'aguinness', 2014);
 INSERT INTO ELEVE (nom_eleve, prenom_eleve, filliere, login, promo) values ('Cushing', 'Peter', 'MTMK', 'pcushing', 2014);
 
--- ============================================================
---    verification des donnees
--- ============================================================
 
 select count(*), '= 24 ?','ELEVE' from ELEVE ;
 
+-- ============================================================
+--    MEMBRE
+-- ============================================================
 
 INSERT INTO MEMBRE (id_eleve, Annee) values (1, 2009);
 INSERT INTO MEMBRE (id_eleve, Annee) values (19, 2009);
@@ -39,11 +44,12 @@ INSERT INTO MEMBRE (id_eleve, Annee) values (21, 2011);
 INSERT INTO MEMBRE (id_eleve, Annee) values (22, 2012);
 INSERT INTO MEMBRE (id_eleve, Annee) values (18, 2012);
 
--- ============================================================
---    verification des donnees
--- ============================================================
 
 select count(*), '= 8 ?','MEMBRE' from MEMBRE ;
+
+-- ============================================================
+--    EVENEMENT
+-- ============================================================
 
 
 INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2009-01-06', 3, 'Enseirb');
@@ -55,11 +61,12 @@ INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2011-11-27', 2, 
 INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2012-02-14', 3, 'Enseirb');
 INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2012-12-15', 2, 'Pin Galant');
 
--- ============================================================
---    verification des donnees
--- ============================================================
 
 select count(*), '= 8 ?','EVENEMENT' from EVENEMENT ;
+
+-- ============================================================
+--    PARTICIPE
+-- ============================================================
 
 
 INSERT INTO PARTICIPE (id_evt, id_eleve) values (1, 1);
@@ -85,11 +92,21 @@ INSERT INTO PARTICIPE (id_evt, id_eleve) values (8, 11);
 
 select count(*), '= 20 ?','PARTICIPE' from PARTICIPE ;
 
+-- ============================================================
+--    JEU
+-- ============================================================
+
 INSERT INTO JEU (nom_jeu, date_jeu, prix_jeu, etat) values ('Monopoly', '2007-05-01', 29.99, 'BON ETAT');
 INSERT INTO JEU (nom_jeu, date_jeu, prix_jeu, etat) values ('Jungle Speed', '2007-05-01', 19.99, 'MAUVAIS ETAT');
 INSERT INTO JEU (nom_jeu, date_jeu, prix_jeu, etat) values ('Dr Maboule', '2008-06-03', 30.87, 'TRES BON ETAT');
 INSERT INTO JEU (nom_jeu, date_jeu, prix_jeu, etat) values ('Tarot', '2010-02-19', 30.87, 'BON ETAT');
 INSERT INTO JEU (nom_jeu, date_jeu, prix_jeu, etat) values ('Cluedo', '2011-04-23', 30.87, 'TRES BON ETAT');
+
+select count(*), '= 5 ?','JEU' from JEU ;
+
+-- ============================================================
+--    UTILISE
+-- ============================================================
 
 INSERT INTO UTILISE (id_jeu, id_evt) values (1, 1);
 INSERT INTO UTILISE (id_jeu, id_evt) values (2, 1);
@@ -108,6 +125,12 @@ INSERT INTO UTILISE (id_jeu, id_evt) values (4, 7);
 INSERT INTO UTILISE (id_jeu, id_evt) values (5, 8);
 INSERT INTO UTILISE (id_jeu, id_evt) values (2, 8);
 
+select count(*), '= 16 ?','UTILISE' from UTILISE ;
+
+-- ============================================================
+--    LIVRE
+-- ============================================================
+
 INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('Fascination', 'Meyer', 'Coucou', 12);
 INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('Tentation', 'Meyer', 'Coucou', 13);
 INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('Hésitation', 'Meyer', 'Hachette', 14);
@@ -118,6 +141,12 @@ INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('Harry Potter', 'Rowlin
 INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('H2G2', 'Adams', 'Coucou',  42);
 INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('Le trone de fer', 'Martin', 'Coucou', 1);
 INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('Paris', 'Marseille', 'Coucou', 1242);
+
+select count(*), '= 10 ?','LIVRE' from LIVRE ;
+
+-- ============================================================
+--    EXEMPLAIRE
+-- ============================================================
 
 INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2007-03-21', 12, 1);
 INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2012-03-12', 7, 1);
@@ -131,6 +160,12 @@ INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (T
 INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2010-11-13', 3, 9);
 INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2009-02-14', 8, 5);
 
+select count(*), '= 11 ?','EXEMPLAIRE' from EXEMPLAIRE ;
+
+-- ============================================================
+--    EMPRUNT
+-- ============================================================
+
 INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (2, 2, '2012-04-14');
 INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (4, 8, '2011-06-08');
 INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (1, 8, '2012-09-20');
@@ -138,4 +173,5 @@ INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (11, 2, '2013-0
 INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (3, 1, '2010-04-14');
 INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (6, 17, '2012-04-14');
 
+select count(*), '= 6 ?','EMPRUNT' from EMPRUNT ;
 
