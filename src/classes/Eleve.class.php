@@ -27,7 +27,7 @@ class Eleve {
 		$this->login = $result['login'];
 		$this->promo = $result['promo'];
 		
-		$query = "select * from Membre where id_eleve=$i";
+		$query = "select * from Membre where id_eleve=".$this->id;
 		Database::query($query);
 		if(Database::$lastResult->num_rows == 1)
 			$isMember=true;

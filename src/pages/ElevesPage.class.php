@@ -143,7 +143,7 @@ $(function() {
 			{
 				while($res = Database::fetch($result))
 				{ 
-					echo "<tr>";
+					echo "<tr onclick=\"document.location = '#';\">";
 					$eleve = new Eleve($res);
 					echo "<td>".$eleve->id."</td>";
 					echo "<td>".$eleve->nom."</td>";

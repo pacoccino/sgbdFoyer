@@ -2,15 +2,23 @@
 
 class BureauPage extends Layout{
 	
+	private $annee_bureau;
+	
 	public function __construct() {
 		$this->pageTitle = "Bureau des élèves";
+		
+		if(isset($_GET['annee_bureau']))
+		{
+			$this->annee_bureau = $_GET['annee_bureau'];
+		}
+		else 
+			$this->annee_bureau = date('Y');
 	}
 	
 	public function headerPlus() {
 		?>
 		    <style>
 		#dialog-form { font-size: 62.5%; }
-        label, input { display:block; }
         input.text { margin-bottom:12px; width:95%; padding: .4em; }
         fieldset { padding:0; border:0; margin-top:25px; }
         h1 { font-size: 1.2em; margin: .6em 0; }
@@ -131,10 +139,30 @@ $(function() {
         });
         
         $( "button" ).button();
+        $( "input[type=submit]" ).button();
+        $("#annee_actuelle").click(function(){
+		     document.location.href='index.php?action=bureau';
+		  });
+        $("#historique").click(function(){
+		     document.location.href='index.php?action=bureau&historique';
+		  });
 });
 </script>
 <div id="liste" class="ui-widget">
-    <h1>Liste des Membres du bureau :</h1>
+	<?php
+	if(isset($_GET['historique']))
+		echo "<h1>Historique des Membres du bureau :</h1>";
+	else 
+		echo "<h1>Liste des Membres du bureau :</h1>";
+    ?>
+    <form method=GET action="index.php">
+    	<input type="hidden" name="action" id="action" value="bureau">
+    	<label for="annee_bureau">Année :</label>
+        <input type="text" name="annee_bureau" id="annee_bureau" value="<?php echo $this->annee_bureau; ?>" class="text ui-widget-content ui-corner-all" />
+        <input type="submit" value="Changer année" />
+    </form>
+    <button id="annee_actuelle">Membres actuels</button> 
+    <button id="historique">Historique</button> 
     <table id="users" class="ui-widget ui-widget-content">
         <thead>
             <tr class="ui-widget-header ">
@@ -144,11 +172,21 @@ $(function() {
 				<th>Login</th>
 				<th>Filliere</th>
 				<th>Promo</th>
+				<th>Année</th>
             </tr>
         </thead>
         <tbody>
 		<?php
-			$result=Eleve::getListe();
+			if(isset($_GET['historique']))
+				$result=Database::query("
+							SELECT *
+							FROM ELEVE, MEMBRE
+							WHERE ELEVE.id_eleve = MEMBRE.id_eleve AND MEMBRE.annee < ".$this->annee_bureau);
+			else {
+				$result=Database::query("SELECT *
+							FROM ELEVE, MEMBRE
+							WHERE ELEVE.id_eleve = MEMBRE.id_eleve AND MEMBRE.annee = ".$this->annee_bureau);
+			}
 			if(!($result))
 			{
 				echo "Erreur de requete : ".Database::errorMsg();
@@ -158,8 +196,6 @@ $(function() {
 				while($res = Database::fetch($result))
 				{
 					$eleve = new Eleve($res);
-					if($eleve->isMember)
-					{
 						echo "<tr>";
 						echo "<td>".$eleve->id."</td>";
 						echo "<td>".$eleve->nom."</td>";
@@ -167,10 +203,11 @@ $(function() {
 						echo "<td>".$eleve->login."</td>";
 						echo "<td>".$eleve->filliere."</td>";
 						echo "<td>".$eleve->promo."</td>";
+						echo "<td>".$res['Annee']."</td>";
 						echo "</tr>";
-					}
 				} 
 			}
+			echo $this->annee_bureau;
 		?>
         </tbody>
     </table>
