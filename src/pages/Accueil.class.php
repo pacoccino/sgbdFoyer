@@ -2,6 +2,10 @@
 
 class Accueil extends Layout{
 	
+	public function __construct()
+	{
+		$this->pageTitle = "Accueil";
+	}
 	// cette fonction est ce que va afficher la page web
 	public function bodyHTML() {
 ?>

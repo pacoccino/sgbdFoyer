@@ -71,7 +71,7 @@ abstract class Layout {
 						<a href="?action=bureau">Le bureau</a>
 					</li>
 					<li>
-						<a href="#">Evenements</a>
+						<a href="?action=evt">Evenements</a>
 					</li>
 					<li>
 						<a href="?action=livres">Les livres</a>
