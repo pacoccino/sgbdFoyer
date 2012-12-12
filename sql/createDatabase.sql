@@ -129,18 +129,11 @@ CREATE  TABLE IF NOT EXISTS `projetSGBD`.`EXEMPLAIRE` (
   `date_livre` DATE NULL ,
   `prix_livre` FLOAT NOT NULL DEFAULT 0 ,
   `id_livre` INT NOT NULL ,
-  `emprunte_par` INT NULL ,
   PRIMARY KEY (`id_exemplaire`) ,
   INDEX `fk_EXEMPLAIRE_LIVRE1` (`id_livre` ASC) ,
-  INDEX `fk_EXEMPLAIRE_ELEVE1` (`emprunte_par` ASC) ,
   CONSTRAINT `fk_EXEMPLAIRE_LIVRE1`
     FOREIGN KEY (`id_livre` )
     REFERENCES `projetSGBD`.`LIVRE` (`id_livre` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_EXEMPLAIRE_ELEVE1`
-    FOREIGN KEY (`emprunte_par` )
-    REFERENCES `projetSGBD`.`ELEVE` (`id_eleve` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -187,6 +180,31 @@ CREATE  TABLE IF NOT EXISTS `projetSGBD`.`UTILISE` (
   CONSTRAINT `fk_UTILISE_EVENEMENT1`
     FOREIGN KEY (`id_evt` )
     REFERENCES `projetSGBD`.`EVENEMENT` (`id_evt` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `projetSGBD`.`EMPRUNT`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `projetSGBD`.`EMPRUNT` ;
+
+CREATE  TABLE IF NOT EXISTS `projetSGBD`.`EMPRUNT` (
+  `id_exemplaire` INT NOT NULL ,
+  `id_eleve` INT NOT NULL ,
+  `date_rendu` DATE NULL ,
+  INDEX `fk_EMPRUNT_EXEMPLAIRE1` (`id_exemplaire` ASC) ,
+  INDEX `fk_EMPRUNT_ELEVE1` (`id_eleve` ASC) ,
+  PRIMARY KEY (`id_exemplaire`) ,
+  CONSTRAINT `fk_EMPRUNT_EXEMPLAIRE1`
+    FOREIGN KEY (`id_exemplaire` )
+    REFERENCES `projetSGBD`.`EXEMPLAIRE` (`id_exemplaire` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_EMPRUNT_ELEVE1`
+    FOREIGN KEY (`id_eleve` )
+    REFERENCES `projetSGBD`.`ELEVE` (`id_eleve` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
