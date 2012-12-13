@@ -55,7 +55,7 @@ WHERE EVENEMENT.id_evt = PARTICIPE.id_evt
 AND EVENEMENT.id_evt = 3;
 */
 
-/* Nombre d'emprunt par élève pour un livre donné
+/* Nombre d'emprunt par élève pour un livre donné (ici "Fascination")
 
 select COUNT(*), nom_eleve 
 FROM ELEVE, LIVRE, EXEMPLAIRE, EMPRUNT 
@@ -66,10 +66,30 @@ AND LIVRE.titre = "Fascination"
 GROUP BY nom_eleve;
 */
 
-/* Moyenne des emprunts de livres par mois sur une année donnée
+/* Moyenne des emprunts de livres par mois sur une année donnée (ici 2012)
+
 SELECT sum(total.an)/ 12 AS moyenne 
 FROM (SELECT count(*) AS an 
-		FROM EMPRUNT 
-		WHERE YEAR(date_rendu)='2012' 
-		GROUP BY MONTH(date_rendu)) AS total;
+        FROM EMPRUNT 
+  	WHERE YEAR(date_rendu)='2012' 
+	GROUP BY MONTH(date_rendu)) AS total;
+*/
+
+/* Classement des livres les plus lus
+
+SELECT LIVRE.titre, count(*) as nombre 
+FROM LIVRE, EXEMPLAIRE, EMPRUNT 
+WHERE LIVRE.id_livre = EXEMPLAIRE.id_livre 
+AND EXEMPLAIRE.id_exemplaire = EMPRUNT.id_exemplaire 
+GROUP BY LIVRE.titre 
+ORDER BY nombre DESC;
+*/
+
+/* Classement des jeux selon le nombre d’entrée total réalisé lors des événements durant lesquels ils ont été utilisés
+
+SELECT date_evt, lieu, count(*) AS nombre 
+FROM PARTICIPE, EVENEMENT 
+WHERE EVENEMENT.id_evt = PARTICIPE.id_evt 
+GROUP BY EVENEMENT.id_evt 
+ORDER BY nombre DESC;
 */
