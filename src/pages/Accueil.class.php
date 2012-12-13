@@ -10,8 +10,8 @@ class Accueil extends Layout{
 	public function bodyHTML() {
 ?>
 
-<h1>Outils</h1>
-<a href="index.php?raz">Réinitialiser la base de données.</a>
+<h1>Accueil</h1>
+<p>Page d'accueil pour le projet de base de données.</p>
 
 <?php
 	}

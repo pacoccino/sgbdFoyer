@@ -53,7 +53,7 @@ class Evenement {
 	
 	public function addToDatabase()
 	{
-		if($this->nom=="" || $this->prenom=="")
+		if($this->date=="" || $this->lieu=="")
 		{
 			Core::addDebug("Il manque des arguments");
 			return false;

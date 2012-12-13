@@ -155,6 +155,7 @@ div#debug{
 
 #dialog-form { font-size: 62.5%; }
 input.text { margin-bottom:12px; width:95%; padding: .4em; }
+input { margin-bottom:4px; padding: .4em; }
 fieldset { padding:0; border:0; margin-top:25px; }
 div#liste { margin: 20px 0; }
 div#liste table { margin: 1em 0; border-collapse: collapse; width: 100%; }

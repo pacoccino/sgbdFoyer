@@ -46,6 +46,13 @@ if(isset($_GET['action']))
 			} 
 			echo "</ul>";
 	}
+	if($_GET['action'] == 'get_eleve_info' && $_GET['id_el'])
+	{
+			$eleve = new Eleve();
+			$eleve->getFromDatabase($_GET['id_el']);
+			echo $eleve->prenom." ".$eleve->nom." a participé depuis le debut de l'année a ".$eleve->part_evt." évenements.";
+	}
+
 }
 else echo "Moutonneux Sven Taton";
 ?>

@@ -2,7 +2,7 @@
 
 SELECT *
 FROM ELEVE, MEMBRE
-WHERE ELEVE.id_eleve = MEMBRE.id_eleve;
+WHERE ELEVE.id_eleve = MEMBRE.id_eleve AND MEMBRE.annee < YEAR(NOW());
 */
 
 /* Membres du bureau à une date donnée, ici avec annee = 2009
@@ -10,6 +10,13 @@ WHERE ELEVE.id_eleve = MEMBRE.id_eleve;
 SELECT *
 FROM ELEVE, MEMBRE
 WHERE ELEVE.id_eleve = MEMBRE.id_eleve AND MEMBRE.annee = 2009;
+*/
+
+/* Membres du bureau actuellement
+
+SELECT *
+FROM ELEVE, MEMBRE
+WHERE ELEVE.id_eleve = MEMBRE.id_eleve AND MEMBRE.annee = YEAR(NOW());
 */
 
 /* Liste des jeux utilisés pour un évènement donné, ici avec id = 3
@@ -21,7 +28,7 @@ AND UTILISE.id_evt = EVENEMENT.id_evt
 AND EVENEMENT.id_evt = 3;
 */
 
-/* Liste des membres du bureau qui ont été à un évènement avant de rejoindre le bureau
+/* Liste des membres du bureau qui ont été à un évènement apres avoir rejoint le bureau
 
 SELECT DISTINCT *
 FROM ELEVE, EVENEMENT, PARTICIPE, MEMBRE
@@ -31,14 +38,13 @@ AND PARTICIPE.id_evt = EVENEMENT.id_evt
 AND year(EVENEMENT.date_evt) > MEMBRE.annee;
 */
 
-/* Nombre d'évènements auquel a participé un membre depuis le début de l'année, ici id_eleve = 4, annee = 2012
+/* Nombre d'évènements auquel a participé un membre depuis le début de l'année, ici id_eleve = 18
 
 SELECT COUNT(*)
-FROM ELEVE, EVENEMENT, PARTICIPE
-WHERE PARTICIPE.id_eleve = ELEVE.id_eleve
-AND ELEVE.id_eleve = 22
-AND PARTICIPE.id_evt = EVENEMENT.id_evt
-AND year(EVENEMENT.date_evt) = 2012;
+			FROM EVENEMENT, PARTICIPE
+			WHERE PARTICIPE.id_eleve = 18
+			AND PARTICIPE.id_evt = EVENEMENT.id_evt
+			AND year(EVENEMENT.date_evt) = YEAR(NOW())
 */
 
 /* Nombre de participants à un évènement, ici avec id_evt

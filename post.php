@@ -47,7 +47,11 @@ if(isset($_POST['action']))
 			if($eleveadd->addToDatabase())
 				echo "Eleve ajouté.";
 			else 
+			{
 				echo "Erreur d'ajout: ".Database::errorMsg();
+				Core::debugHTML();
+			}
+				
 	}
 	if($_POST['action'] == 'addlivre')
 	{
@@ -61,6 +65,21 @@ if(isset($_POST['action']))
 				echo "Livre ajouté.";
 			else 
 				echo "Erreur d'ajout: ".Database::errorMsg();
+	}
+	if($_POST['action'] == 'addevt')
+	{
+			$evtadd = new Evenement();
+			$evtadd->date = $_POST['date'];
+			$evtadd->lieu = $_POST['lieu'];
+			
+			if($evtadd->addToDatabase())
+				echo "Evènement ajouté.";
+			else 
+			{
+				echo "Erreur d'ajout: ".Database::errorMsg();
+				Core::debugHTML();
+			}
+				
 	}
 	if($_POST['action'] == 'addjeu')
 	{

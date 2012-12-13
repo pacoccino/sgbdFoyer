@@ -8,7 +8,7 @@ class Eleve {
 	public $filliere;
 	public $promo;
 	public $isMember=false;
-	public $c;
+	public $part_evt=0;
 	
 	private static $tableName="ELEVE";
 	
@@ -27,10 +27,20 @@ class Eleve {
 		$this->login = $result['login'];
 		$this->promo = $result['promo'];
 		
+		// L'eleve est il membre ?
 		$query = "select * from MEMBRE where id_eleve=".$this->id;
 		Database::query($query);
 		if(Database::$lastResult->num_rows == 1)
 			$isMember=true;
+		
+		// A combien d'evenements l'eleve a t'il participé depuis le debut de l'année ?
+		Database::query("SELECT COUNT(*)
+			FROM EVENEMENT, PARTICIPE
+			WHERE PARTICIPE.id_eleve = ".$this->id."
+			AND PARTICIPE.id_evt = EVENEMENT.id_evt
+			AND year(EVENEMENT.date_evt) = YEAR(NOW())");
+		$res=Database::fetch();
+		$this->part_evt=$res['COUNT(*)'];
 	}
 
 	public static function get($i)

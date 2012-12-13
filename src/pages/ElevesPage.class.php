@@ -37,6 +37,14 @@ function addEleve(param) {
 	  });
 }
 
+function open_info( id ) {
+	$.get("get.php", { action: "get_eleve_info", id_el: id },
+	  function(data){
+	    $( "#dialog-info" ).html(data);
+   		 $( "#dialog-info" ).dialog( "open" );
+	  });
+}
+    
 $(function() {
     var nom = $( "#nom" ),
         prenom = $( "#prenom" ),
@@ -100,12 +108,59 @@ $(function() {
             hide: "explode"
         });
         
-        $( "button" ).button()
+        $( "#dialog-info" ).dialog({
+	        autoOpen: false,
+	        height: 500,
+	        width: 350,
+	        modal: true,
+	        show: "explode",
+	        buttons: {
+	            "Fermer": function() {
+	                $( this ).dialog( "close" );
+	            }}
+        	});
+ 
+        $( "#open-info" )
+        .button()
+        .click(function() {
+            $( "#dialog-info" ).dialog( "open" );
+        });
+        
+        $('.bubu').button({
+            icons: {
+                primary: "ui-icon-search"
+            },
+            text: false
+        });
+        
+        $( "button" ).button();
+        
+        $("#actual").click(function(){
+        	event.preventDefault();
+		    document.location.href='index.php?action=eleves';
+		  });
+        $("#historique").click(function(){
+        	event.preventDefault();
+		    document.location.href='index.php?action=eleves&historique';
+		  });
+		  
+		$( "#actual" ).button({
+        	icons: {
+                primary: "ui-icon-play"
+           }});
+		$( "#historique" ).button({
+        	icons: {
+                primary: "ui-icon-script"
+           }});
 });
 </script>
 
 <div id="liste" class="ui-widget">
     <h1>Liste des élèves:</h1>
+    
+		<button id="actual">Eleves actuels</button> 
+		<button id="historique">Historique</button> 
+		
     <table id="users" class="ui-widget ui-widget-content">
         <thead>
             <tr class="ui-widget-header ">
@@ -116,6 +171,7 @@ $(function() {
 				<th>Filliere</th>
 				<th>Promo</th>
 				<th>Membre</th>
+				<th>Stats</th>
             </tr>
         </thead>
         <tbody>
@@ -129,19 +185,24 @@ $(function() {
 			{
 				while($res = Database::fetch($result))
 				{ 
-					echo "<tr onclick=\"document.location = '#';\">";
 					$eleve = new Eleve($res);
-					echo "<td>".$eleve->id."</td>";
-					echo "<td>".$eleve->nom."</td>";
-					echo "<td>".$eleve->prenom."</td>";
-					echo "<td>".$eleve->login."</td>";
-					echo "<td>".$eleve->filliere."</td>";
-					echo "<td>".$eleve->promo."</td>";
-					if($eleve->isMember)
-						echo "<td>Oui</td>";
-					else
-						echo "<td>Non</td>";
-					echo "</tr>";
+					if((!isset($_GET['historique']) && $eleve->promo >= date('Y')) || (isset($_GET['historique']) && $eleve->promo < date('Y')))
+					{
+						echo "<tr onclick='javascript:open_info(".$eleve->id.")'>";
+						echo "<td>".$eleve->id."</td>";
+						echo "<td>".$eleve->nom."</td>";
+						echo "<td>".$eleve->prenom."</td>";
+						echo "<td>".$eleve->login."</td>";
+						echo "<td>".$eleve->filliere."</td>";
+						echo "<td>".$eleve->promo."</td>";
+						if($eleve->isMember)
+							echo "<td>Oui</td>";
+						else
+							echo "<td>Non</td>";
+						echo "<td><button class='bubu' onclick='javascript:open_info(".$eleve->id.")'></button></td>";
+		
+						echo "</tr>";
+					}
 				} 
 			}
 		?>
@@ -170,6 +231,10 @@ $(function() {
         <input type="checkbox" id="isMember" /><label for="isMember">Membre</label>
     </fieldset>
     </form>
+</div>
+
+<div id="dialog-info" title="Statistiques">
+   infos
 </div>
 
 		<?php

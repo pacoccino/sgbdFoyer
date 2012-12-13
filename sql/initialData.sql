@@ -52,14 +52,15 @@ select count(*), '= 8 ?','MEMBRE' from MEMBRE ;
 -- ============================================================
 
 
-INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2009-01-06', 3, 'Enseirb');
 INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2009-06-23', 2, 'Pin Galant');
 INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2010-05-03', 3, 'Enseirb');
-INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2010-12-09', 2, '7eme Art');
 INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2011-04-13', 3, 'Cock and Bull');
 INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2011-11-27', 2, 'Enseirb');
 INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2012-02-14', 3, 'Enseirb');
+INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2012-05-07', 3, 'La MAC');
+INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2012-07-14', 3, 'Ibiza');
 INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2012-12-15', 2, 'Pin Galant');
+
 
 
 select count(*), '= 8 ?','EVENEMENT' from EVENEMENT ;
@@ -84,9 +85,11 @@ INSERT INTO PARTICIPE (id_evt, id_eleve) values (5, 5);
 INSERT INTO PARTICIPE (id_evt, id_eleve) values (5, 10);
 INSERT INTO PARTICIPE (id_evt, id_eleve) values (6, 21);
 INSERT INTO PARTICIPE (id_evt, id_eleve) values (6, 8);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (7, 22);
+INSERT INTO PARTICIPE (id_evt, id_eleve) values (7, 21);
+INSERT INTO PARTICIPE (id_evt, id_eleve) values (7, 18);
 INSERT INTO PARTICIPE (id_evt, id_eleve) values (7, 23);
 INSERT INTO PARTICIPE (id_evt, id_eleve) values (7, 10);
+INSERT INTO PARTICIPE (id_evt, id_eleve) values (8, 21);
 INSERT INTO PARTICIPE (id_evt, id_eleve) values (8, 18);
 INSERT INTO PARTICIPE (id_evt, id_eleve) values (8, 11);
 

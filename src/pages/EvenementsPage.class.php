@@ -23,11 +23,11 @@ class EvenementsPage extends Layout{
 
 <script type="text/javascript">
 
-function addEleve(param) {
-	$.post("post.php", { action: "adduser", date: param[0].value, lieu: param[1].value },
+function addEvt(param) {
+	$.post("post.php", { action: "addevt", date: param[0].value, lieu: param[1].value },
 	  function(data){
-	    $( "#evenement-added" ).html(data); 
-	    $( "#evenement-added" ).dialog( "open" );
+	    $( "#evt-added" ).html(data); 
+	    $( "#evt-added" ).dialog( "open" );
 	  });
 }
 
@@ -56,7 +56,7 @@ $(function() {
         function checkLength( o, n, min, max ) {
             if ( o.val().length > max || o.val().length < min ) {
                 o.addClass( "ui-state-error" );
-            updateTips( "La taille de " + n + " doit etre comprise entre " +
+           		updateTips( "La taille de " + n + " doit etre comprise entre " +
                 min + " et " + max + "." );
                 return false;
             } else {
@@ -81,18 +81,20 @@ $(function() {
         modal: true,
         show: "explode",
         buttons: {
-            "Create an account": function() {
+            "Creer": function() {
                 var bValid = true;
                 
                 bValid = bValid && checkLength( lieu, "lieu", 2, 20 );
  
                     if ( bValid ) {
 
-                    	addEleve(allFields);
+                    	addEvt(allFields);
                         $( "#users tbody" ).append( "<tr>" +
                         "<td>0</td>" + 
                         "<td>" + date.val() + "</td>" + 
+                        "<td>0</td>" + 
                         "<td>" + lieu.val() + "</td>" + 
+                        "<td></td>" + 
                     "</tr>" ); 
                     $( this ).dialog( "close" );
                		}
@@ -106,7 +108,7 @@ $(function() {
             }
         });
  
-        $( "#create-user" )
+        $( "#create-evt" )
         .button()
         .click(function() {
             $( "#dialog-form" ).dialog( "open" );
@@ -140,10 +142,16 @@ $(function() {
         $( "button" ).button();
         $( "input[type=submit]" ).button();
         $("#all_evt").click(function(){
+        	 event.preventDefault();
 		     document.location.href='index.php?action=evt';
 		  });
 		  
 		$( "#date_ev" ).datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "yy-mm-dd"
+        });
+		$( "#date" ).datepicker({
             changeMonth: true,
             changeYear: true,
             dateFormat: "yy-mm-dd"
@@ -154,6 +162,11 @@ $(function() {
                 primary: "ui-icon-search"
             },
             text: false
+        });
+        $('.cal').button({
+            icons: {
+                primary: "ui-icon-calendar"
+            }
         });
  		
 });
@@ -171,17 +184,18 @@ $(function() {
     ?>
     <form method=GET action="index.php">
     	<input type="hidden" name="action" id="action" value="evt">
-        <input type="text" name="date_ev" id="date_ev" value="<?php echo $this->date_ev; ?>" class="text ui-widget-content ui-corner-all"/>
-        <input type="submit" value="Filtrer par date" />
+        <input type="text" name="date_ev" id="date_ev" value="<?php echo $this->date_ev; ?>" class="ui-widget-content ui-corner-all"/>
+        <button class="cal">Filtrer par date</button>
+        <button id="all_evt">Tous les évènements</button> 
     </form> 
-    <button id="all_evt">Tous les évènements</button> 
+
     <table id="users" class="ui-widget ui-widget-content">
         <thead class="ui-widget-header ">
 				<th>Id</th>
 				<th>Date</th>
 				<th>Nb Participants</th>
 				<th>Lieu</th>
-				<th></th>
+				<th>Infos</th>
         </thead>
         <tbody>
 		<?php
@@ -214,8 +228,6 @@ $(function() {
 </div>
 
 <button id="create-evt">Ajouter un nouvel évènement</button>
-<button id="open-info">Open</button>
-<a href="#" onclick="javascript:openn();">pouet</a>
 <div id="evt-added" title="Status">
     <p>L'évènement a bien été ajouté.</p>
 </div>
@@ -224,14 +236,10 @@ $(function() {
  
     <form>
     <fieldset>
-        <label for="nom">Nom</label>
-        <input type="text" name="nom" id="nom" class="text ui-widget-content ui-corner-all" />
-        <label for="date">Date d'achat</label>
-        <input type="text" id="date"  class="text ui-widget-content ui-corner-all"/>
-        <label for="prix">Prix d'achat</label>
-        <input type="text" name="prix" id="prix" value="" class="text ui-widget-content ui-corner-all" />
-        <label for="etat">Etat</label>
-        <input type="text" name="etat" id="etat" value="" class="text ui-widget-content ui-corner-all" />
+        <label for="date">Date</label>
+        <input type="text" name="date" id="date" class="text ui-widget-content ui-corner-all" />
+        <label for="date">Lieu</label>
+        <input type="text" id="lieu"  class="text ui-widget-content ui-corner-all"/>
     </fieldset>
     </form>
 </div>
