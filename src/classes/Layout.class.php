@@ -80,6 +80,9 @@ abstract class Layout {
 						<a href="?action=jeux">Les jeux</a>
 					</li>
 					<li>
+						<a href="?action=stats">Statistiques</a>
+					</li>
+					<li>
 						<a href="?action=sql">Requete SQL</a>
 					</li>
 					<li>

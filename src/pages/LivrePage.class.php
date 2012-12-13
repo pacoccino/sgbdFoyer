@@ -26,6 +26,14 @@ function addLivre(param) {
 	  });
 }
 
+function open_info( id ) {
+	$.get("get.php", { action: "get_livre_info", id_li: id },
+	  function(data){
+	    $( "#dialog-info" ).html(data);
+   		 $( "#dialog-info" ).dialog( "open" );
+	  });
+}
+    
 $(function() {
     var titre = $( "#titre" ),
         auteur = $( "#auteur" ),
@@ -84,6 +92,31 @@ $(function() {
         });
         
         $( "button" ).button();
+        
+                $( "#dialog-info" ).dialog({
+	        autoOpen: false,
+	        height: 500,
+	        width: 350,
+	        modal: true,
+	        show: "explode",
+	        buttons: {
+	            "Fermer": function() {
+	                $( this ).dialog( "close" );
+	            }}
+        	});
+ 
+        $( "#open-info" )
+        .button()
+        .click(function() {
+            $( "#dialog-info" ).dialog( "open" );
+        });
+        
+        $('.bubu').button({
+            icons: {
+                primary: "ui-icon-search"
+            },
+            text: false
+        });
 });
 </script>
 <div id="liste" class="ui-widget">
@@ -96,6 +129,7 @@ $(function() {
 				<th>Auteur</th>
 				<th>Editeur</th>
 				<th>ISBN</th>
+				<th>Emprunts</th>
             </tr>
         </thead>
         <tbody>
@@ -110,12 +144,13 @@ $(function() {
 				while($res = Database::fetch($result))
 				{
 					$livre = new Livre($res);
-						echo "<tr>";
+						echo "<tr onclick='javascript:open_info(".$livre->id.")'>";
 						echo "<td>".$livre->id."</td>";
 						echo "<td>".$livre->titre."</td>";
 						echo "<td>".$livre->auteur."</td>";
 						echo "<td>".$livre->editeur."</td>";
 						echo "<td>".$livre->isbn."</td>";
+						echo "<td><button class='bubu' onclick='javascript:open_info(".$livre->id.")'></button></td>";
 						echo "</tr>";
 				} 
 			}
@@ -145,7 +180,9 @@ $(function() {
     </form>
 </div>
 
-		
+<div id="dialog-info" title="Statistiques">
+   infos
+</div>
 		<?php
 // -----------------------------------
 // Fin Body

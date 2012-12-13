@@ -73,6 +73,9 @@ class Core {
 				case "sql":
 					$page = new SqlPage();
 					break;
+				case "stats":
+					$page = new StatsPage();
+					break;
 				case "tools":
 					$page = new ToolsPage();
 					break;

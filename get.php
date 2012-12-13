@@ -52,6 +52,29 @@ if(isset($_GET['action']))
 			$eleve->getFromDatabase($_GET['id_el']);
 			echo $eleve->prenom." ".$eleve->nom." a participé depuis le debut de l'année a ".$eleve->part_evt." évenements.";
 	}
+	if($_GET['action'] == 'get_livre_info' && $_GET['id_li'])
+	{
+			echo "<h3>Liste adhérents ayant lu :</h3>";
+			$livre = new Livre();
+			$livre->getFromDatabase($_GET['id_li']);
+			echo "<b>".$livre->titre."</b><br/>";
+			$result=Database::query("SELECT date_rendu, nom_eleve, prenom_eleve 
+			FROM ELEVE, LIVRE, EXEMPLAIRE, EMPRUNT  
+			WHERE ELEVE.id_eleve = EMPRUNT.id_eleve  
+			AND EMPRUNT.id_exemplaire = EXEMPLAIRE.id_exemplaire  
+			AND EXEMPLAIRE.id_livre = LIVRE.id_livre  
+			AND LIVRE.id_livre=".$_GET['id_li']." ORDER BY date_rendu DESC");
+			echo "<div id='liste'><table><tr><th>Nom</th><th>Prenom</th><th>Date de rendu</th></tr>";
+			while($res = Database::fetch($result))
+			{
+				echo "<tr>";
+				echo "<td>".$res['nom_eleve']."</td>";
+				echo "<td>".$res['prenom_eleve']."</td>";
+				echo "<td>".$res['date_rendu']."</td>";
+				echo "</tr>";
+			} 
+			echo "</table></div>";
+	}
 
 }
 else echo "Moutonneux Sven Taton";
