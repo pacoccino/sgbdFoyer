@@ -38,6 +38,18 @@ function open_info( id ) {
    		 $( "#dialog-info" ).dialog( "open" );
 	  });
 }
+
+function delete_evt( id, nom ) {
+	if(confirm("Etes vous sur de vouloir supprimer l'évènement "+nom+" ?"))
+	{
+		$.get("get.php", { action: "delete_evt", id_el: id },
+	  function(data){
+	    alert(data);
+	    location.reload();
+	  });
+	}
+	
+}
         
 $(function() {
     var date = $( "#date" ),
@@ -89,14 +101,7 @@ $(function() {
                     if ( bValid ) {
 
                     	addEvt(allFields);
-                        $( "#users tbody" ).append( "<tr>" +
-                        "<td>0</td>" + 
-                        "<td>" + date.val() + "</td>" + 
-                        "<td>0</td>" + 
-                        "<td>" + lieu.val() + "</td>" + 
-                        "<td></td>" + 
-                    "</tr>" ); 
-                    $( this ).dialog( "close" );
+                        $( this ).dialog( "close" );
                		}
             },
             Cancel: function() {
@@ -117,7 +122,12 @@ $(function() {
         $( "#evt-added" ).dialog({
             autoOpen: false,
             show: "blind",
-            hide: "explode"
+            hide: "explode",
+            buttons: {
+            "Ok": function() {
+  				 location.reload();
+               		}
+            }
         });
         
         $( "#dialog-info" ).dialog({
@@ -163,6 +173,13 @@ $(function() {
             },
             text: false
         });
+        $('.bubu_del').button({
+            icons: {
+                primary: "ui-icon-trash"
+            },
+            text: false
+        });
+        
         $('.cal').button({
             icons: {
                 primary: "ui-icon-calendar"
@@ -188,7 +205,10 @@ $(function() {
         <button class="cal">Filtrer par date</button>
         <button id="all_evt">Tous les évènements</button> 
     </form> 
-
+	<button id="create-evt">Ajouter un nouvel évènement</button>
+	<div id="evt-added" title="Status">
+	    <p>L'évènement a bien été ajouté.</p>
+	</div>
     <table id="users" class="ui-widget ui-widget-content">
         <thead class="ui-widget-header ">
 				<th>Id</th>
@@ -211,12 +231,15 @@ $(function() {
 					$evenement = new Evenement($res);
 					if(empty($this->date_ev) || $evenement->date == $this->date_ev)
 					{
-						echo "<tr onclick='javascript:open_info(".$evenement->id.")'>";
+						echo "<tr>";
 						echo "<td>".$evenement->id."</td>";
 						echo "<td>".$evenement->date."</td>";
 						echo "<td>".$evenement->nbParticipants."</td>";
 						echo "<td>".$evenement->lieu."</td>";
-						echo "<td><button class='bubu' onclick='javascript:open_info(".$evenement->id.")'></button></td>";
+						echo "<td>
+						<button title='Jeux utilisés' class='bubu' onclick='javascript:open_info(".$evenement->id.")'></button>
+						<button title='Supprimer' class='bubu_del' onclick='javascript:delete_evt(".$evenement->id.", \"".$evenement->id."\")'></button>
+						</td>";
 						echo "</tr>";
 					}
 				} 
@@ -227,10 +250,6 @@ $(function() {
     </table>
 </div>
 
-<button id="create-evt">Ajouter un nouvel évènement</button>
-<div id="evt-added" title="Status">
-    <p>L'évènement a bien été ajouté.</p>
-</div>
 <div id="dialog-form" title="Ajouter un évènement">
     <p class="validateTips">Tous les champs sont requis.</p>
  

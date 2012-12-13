@@ -33,6 +33,18 @@ function open_info( id ) {
    		 $( "#dialog-info" ).dialog( "open" );
 	  });
 }
+
+function delete_livre( id, nom ) {
+	if(confirm("Etes vous sur de vouloir supprimer le livre "+nom+" ?"))
+	{
+		$.get("get.php", { action: "delete_livre", id_el: id },
+	  function(data){
+	    alert(data);
+	    location.reload();
+	  });
+	}
+	
+}
     
 $(function() {
     var titre = $( "#titre" ),
@@ -60,13 +72,6 @@ $(function() {
                     if ( bValid ) {
 
                     	addLivre(allFields);
-                        $( "#users tbody" ).append( "<tr>" +
-                        "<td>0</td>" + 
-                        "<td>" + titre.val() + "</td>" + 
-                        "<td>" + auteur.val() + "</td>" + 
-                        "<td>" + editeur.val() + "</td>" +
-                        "<td>" + isbn.val() + "</td>" +
-                    "</tr>" ); 
                     $( this ).dialog( "close" );
                		}
             },
@@ -88,7 +93,12 @@ $(function() {
         $( "#livre-added" ).dialog({
             autoOpen: false,
             show: "blind",
-            hide: "explode"
+            hide: "explode",
+            buttons: {
+            "Ok": function() {
+  				 location.reload();
+               		}
+            }
         });
         
         $( "button" ).button();
@@ -117,10 +127,21 @@ $(function() {
             },
             text: false
         });
+        $('.bubu_del').button({
+            icons: {
+                primary: "ui-icon-trash"
+            },
+            text: false
+        });
 });
 </script>
+
 <div id="liste" class="ui-widget">
     <h1>Liste des livres :</h1>
+	<button id="create-user">Ajouter un nouveau livre</button>
+	<div id="livre-added" title="Status">
+	<p>Le livre a bien été ajouté.</p>
+	</div>
     <table id="users" class="ui-widget ui-widget-content">
         <thead>
             <tr class="ui-widget-header ">
@@ -129,7 +150,7 @@ $(function() {
 				<th>Auteur</th>
 				<th>Editeur</th>
 				<th>ISBN</th>
-				<th>Emprunts</th>
+				<th>Infos</th>
             </tr>
         </thead>
         <tbody>
@@ -144,13 +165,16 @@ $(function() {
 				while($res = Database::fetch($result))
 				{
 					$livre = new Livre($res);
-						echo "<tr onclick='javascript:open_info(".$livre->id.")'>";
+						echo "<tr>";
 						echo "<td>".$livre->id."</td>";
 						echo "<td>".$livre->titre."</td>";
 						echo "<td>".$livre->auteur."</td>";
 						echo "<td>".$livre->editeur."</td>";
 						echo "<td>".$livre->isbn."</td>";
-						echo "<td><button class='bubu' onclick='javascript:open_info(".$livre->id.")'></button></td>";
+						echo "<td>
+							<button class='bubu' onclick='javascript:open_info(".$livre->id.")'></button>
+							<button class='bubu_del' onclick='javascript:delete_livre(".$livre->id.", \"".$livre->titre."\")'></button>
+							</td>";
 						echo "</tr>";
 				} 
 			}
@@ -159,10 +183,7 @@ $(function() {
     </table>
 </div>
 
-    <button id="create-user">Ajouter un nouveau livre</button>
-    <div id="livre-added" title="Status">
-    <p>Le livre a bien été ajouté.</p>
-</div>
+
     <div id="dialog-form" title="Ajouter un livre">
     <p class="validateTips">Tous les champs sont requis.</p>
  
@@ -180,7 +201,7 @@ $(function() {
     </form>
 </div>
 
-<div id="dialog-info" title="Statistiques">
+<div id="dialog-info" title="Informations">
    infos
 </div>
 		<?php

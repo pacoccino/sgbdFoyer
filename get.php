@@ -52,6 +52,54 @@ if(isset($_GET['action']))
 			$eleve->getFromDatabase($_GET['id_el']);
 			echo $eleve->prenom." ".$eleve->nom." a participé depuis le debut de l'année a ".$eleve->part_evt." évenements.";
 	}
+	if($_GET['action'] == 'delete_eleve' && $_GET['id_el'])
+	{
+			$eleve = new Eleve();
+			$eleve->getFromDatabase($_GET['id_el']);
+			if($eleve->id!=0 && $eleve->deleteFromDatabase())
+			{
+				echo "L'utilisateur a bien été supprimé";
+			}
+			else {
+				echo "Requete invalide";
+			}
+	}
+	if($_GET['action'] == 'delete_evt' && $_GET['id_el'])
+	{
+			$evenement = new Evenement();
+			$evenement->getFromDatabase($_GET['id_el']);
+			if($evenement->id!=0 && $evenement->deleteFromDatabase())
+			{
+				echo "L'évènement a bien été supprimé";
+			}
+			else {
+				echo "Requete invalide";
+			}
+	}
+	if($_GET['action'] == 'delete_jeu' && $_GET['id_el'])
+	{
+			$jeu = new Jeu();
+			$jeu->getFromDatabase($_GET['id_el']);
+			if($jeu->id!=0 && $jeu->deleteFromDatabase())
+			{
+				echo "Le jeu a bien été supprimé";
+			}
+			else {
+				echo "Requete invalide";
+			}
+	}
+	if($_GET['action'] == 'delete_livre' && $_GET['id_el'])
+	{
+			$livre = new Livre();
+			$livre->getFromDatabase($_GET['id_el']);
+			if($livre->id!=0 && $livre->deleteFromDatabase())
+			{
+				echo "Le livre a bien été supprimé";
+			}
+			else {
+				echo "Requete invalide";
+			}
+	}
 	if($_GET['action'] == 'get_livre_info' && $_GET['id_li'])
 	{
 			echo "<h3>Liste adhérents ayant lu :</h3>";

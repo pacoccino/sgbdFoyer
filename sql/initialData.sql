@@ -35,14 +35,14 @@ select count(*), '= 24 ?','ELEVE' from ELEVE ;
 --    MEMBRE
 -- ============================================================
 
-INSERT INTO MEMBRE (id_eleve, Annee) values (1, 2009);
-INSERT INTO MEMBRE (id_eleve, Annee) values (19, 2009);
-INSERT INTO MEMBRE (id_eleve, Annee) values (8, 2010);
-INSERT INTO MEMBRE (id_eleve, Annee) values (12, 2010);
-INSERT INTO MEMBRE (id_eleve, Annee) values (15, 2011);
-INSERT INTO MEMBRE (id_eleve, Annee) values (21, 2011);
-INSERT INTO MEMBRE (id_eleve, Annee) values (22, 2012);
-INSERT INTO MEMBRE (id_eleve, Annee) values (18, 2012);
+INSERT INTO MEMBRE (id_eleve, annee) values (1, 2009);
+INSERT INTO MEMBRE (id_eleve, annee) values (19, 2009);
+INSERT INTO MEMBRE (id_eleve, annee) values (8, 2010);
+INSERT INTO MEMBRE (id_eleve, annee) values (12, 2010);
+INSERT INTO MEMBRE (id_eleve, annee) values (15, 2011);
+INSERT INTO MEMBRE (id_eleve, annee) values (21, 2011);
+INSERT INTO MEMBRE (id_eleve, annee) values (22, 2012);
+INSERT INTO MEMBRE (id_eleve, annee) values (18, 2012);
 
 
 select count(*), '= 8 ?','MEMBRE' from MEMBRE ;

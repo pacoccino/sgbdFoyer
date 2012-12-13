@@ -30,7 +30,7 @@ class ElevesPage extends Layout{
 ?>
 <script type="text/javascript">
 function addEleve(param) {
-	$.post("post.php", { action: "adduser", nom: param[0].value, prenom: param[1].value , login: param[2].value , filliere: param[3].value , promo: param[4].value , isMember: param[5].value },
+	$.post("post.php", { action: "adduser", nom: param[0].value, prenom: param[1].value , login: param[2].value , filliere: param[3].value , promo: param[4].value , mem_an: param[5].value },
 	  function(data){
 	    $( "#eleve-added" ).html(data); 
 	    $( "#eleve-added" ).dialog( "open" );
@@ -44,6 +44,18 @@ function open_info( id ) {
    		 $( "#dialog-info" ).dialog( "open" );
 	  });
 }
+
+function delete_el( id, nom ) {
+	if(confirm("Etes vous sur de vouloir supprimer l'élève "+nom+" ?"))
+	{
+		$.get("get.php", { action: "delete_eleve", id_el: id },
+	  function(data){
+	    alert(data);
+	    location.reload();
+	  });
+	}
+	
+}
     
 $(function() {
     var nom = $( "#nom" ),
@@ -51,8 +63,8 @@ $(function() {
         login = $( "#login" ),
         filliere = $( "#filliere" ),
         promo = $( "#promo" ),
-		isMember = $( "#isMember" ),
-        allFields = $( [] ).add( nom ).add( prenom ).add( login).add( filliere).add( promo ).add( isMember );
+		mem_an = $( "#mem_an" ),
+        allFields = $( [] ).add( nom ).add( prenom ).add( login).add( filliere).add( promo ).add( mem_an );
         
         
 
@@ -75,15 +87,6 @@ $(function() {
                     if ( bValid ) {
 
                     	addEleve(allFields);
-                        $( "#users tbody" ).append( "<tr>" +
-                        "<td>0</td>" + 
-                        "<td>" + nom.val() + "</td>" + 
-                        "<td>" + prenom.val() + "</td>" + 
-                        "<td>" + login.val() + "</td>" +
-                        "<td>" + filliere.val() + "</td>" +
-                        "<td>" + promo.val() + "</td>" +
-                        "<td>" + isMember.val() + "</td>" +
-                    "</tr>" ); 
                     $( this ).dialog( "close" );
                		}
             },
@@ -105,7 +108,12 @@ $(function() {
         $( "#eleve-added" ).dialog({
             autoOpen: false,
             show: "blind",
-            hide: "explode"
+            hide: "explode",
+            buttons: {
+            "Ok": function() {
+  				 location.reload();
+               		}
+            }
         });
         
         $( "#dialog-info" ).dialog({
@@ -129,6 +137,12 @@ $(function() {
         $('.bubu').button({
             icons: {
                 primary: "ui-icon-search"
+            },
+            text: false
+        });
+        $('.bubu_del').button({
+            icons: {
+                primary: "ui-icon-trash"
             },
             text: false
         });
@@ -160,7 +174,10 @@ $(function() {
     
 		<button id="actual">Eleves actuels</button> 
 		<button id="historique">Historique</button> 
-		
+		<button id="create-user">Creer nouvel Eleve</button>
+		<div id="eleve-added" title="Status">
+		    <p>L'eleve a bien été ajouté.</p>
+		</div>
     <table id="users" class="ui-widget ui-widget-content">
         <thead>
             <tr class="ui-widget-header ">
@@ -188,7 +205,7 @@ $(function() {
 					$eleve = new Eleve($res);
 					if((!isset($_GET['historique']) && $eleve->promo >= date('Y')) || (isset($_GET['historique']) && $eleve->promo < date('Y')))
 					{
-						echo "<tr onclick='javascript:open_info(".$eleve->id.")'>";
+						echo "<tr>";
 						echo "<td>".$eleve->id."</td>";
 						echo "<td>".$eleve->nom."</td>";
 						echo "<td>".$eleve->prenom."</td>";
@@ -199,7 +216,10 @@ $(function() {
 							echo "<td>Oui</td>";
 						else
 							echo "<td>Non</td>";
-						echo "<td><button class='bubu' onclick='javascript:open_info(".$eleve->id.")'></button></td>";
+						echo "<td>
+						<button class='bubu' onclick='javascript:open_info(".$eleve->id.")'></button>
+						<button class='bubu_del' onclick='javascript:delete_el(".$eleve->id.", \"".$eleve->prenom." ".$eleve->nom."\")'></button>
+						</td>";
 		
 						echo "</tr>";
 					}
@@ -209,10 +229,7 @@ $(function() {
         </tbody>
     </table>
 </div>
-<button id="create-user">Creer nouvel Eleve</button>
-<div id="eleve-added" title="Status">
-    <p>L'eleve a bien été ajouté.</p>
-</div>
+
     <div id="dialog-form" title="Creer un nouvel Eleve">
     <p class="validateTips">Tous les champs sont requis.</p>
  
@@ -228,12 +245,13 @@ $(function() {
         <input type="text" name="filliere" id="filliere" value="" class="text ui-widget-content ui-corner-all" />
         <label for="promo">Promo</label>
         <input type="text" name="promo" id="promo" value="" class="text ui-widget-content ui-corner-all" />
-        <input type="checkbox" id="isMember" /><label for="isMember">Membre</label>
+        <label for="mem_an">Année de direction (laisser vide sinon)</label>
+        <input type="text" name="mem_an" id="mem_an" class="text ui-widget-content ui-corner-all" placeholder="Facultatif"  />
     </fieldset>
     </form>
 </div>
 
-<div id="dialog-info" title="Statistiques">
+<div id="dialog-info" title="Informations">
    infos
 </div>
 

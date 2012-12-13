@@ -49,6 +49,12 @@ class Livre {
 
 	}
 	
+	public function deleteFromDatabase()
+	{
+		$query = "DELETE FROM ".Livre::$tableName." WHERE id_livre=".$this->id;
+		return Database::query($query);
+	}
+	
 	public function addToDatabase()
 	{
 		if($this->titre=="" || $this->auteur=="" || $this->isbn=="")

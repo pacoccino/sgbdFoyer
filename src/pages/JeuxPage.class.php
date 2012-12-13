@@ -17,12 +17,24 @@ class JeuxPage extends Layout{
 ?>
 
 <script type="text/javascript">
-function addEleve(param) {
+function addJeu(param) {
 	$.post("post.php", { action: "addjeu", nom: param[0].value, date: param[1].value , prix: param[2].value , etat: param[3].value },
 	  function(data){
 	    $( "#jeu-added" ).html(data); 
 	    $( "#jeu-added" ).dialog( "open" );
 	  });
+}
+
+function delete_jeu( id, nom ) {
+	if(confirm("Etes vous sur de vouloir supprimer le jeu "+nom+" ?"))
+	{
+		$.get("get.php", { action: "delete_jeu", id_el: id },
+	  function(data){
+	    alert(data);
+	    location.reload();
+	  });
+	}
+	
 }
 
 $(function() {
@@ -49,14 +61,7 @@ $(function() {
  
                     if ( bValid ) {
 
-                    	addEleve(allFields);
-                        $( "#users tbody" ).append( "<tr>" +
-                        "<td>0</td>" + 
-                        "<td>" + nom.val() + "</td>" + 
-                        "<td>" + date.val() + "</td>" + 
-                        "<td>" + prix.val() + "</td>" +
-                        "<td>" + etat.val() + "</td>" +
-                    "</tr>" ); 
+                    	addJeu(allFields);
                     $( this ).dialog( "close" );
                		}
             },
@@ -78,7 +83,12 @@ $(function() {
         $( "#jeu-added" ).dialog({
             autoOpen: false,
             show: "blind",
-            hide: "explode"
+            hide: "explode",
+            buttons: {
+            "Ok": function() {
+  				 location.reload();
+               		}
+            }
         });
         
         $( "#date" ).datepicker({
@@ -88,10 +98,22 @@ $(function() {
         });
         
         $( "button" ).button();
+        $('.bubu_del').button({
+            icons: {
+                primary: "ui-icon-trash"
+            },
+            text: false
+        });
 });
 </script>
+
+
 <div id="liste" class="ui-widget">
     <h1>Liste des jeux :</h1>
+	<button id="create-user">Ajouter un nouveau jeu</button>
+	<div id="jeu-added" title="Status">
+	<p>Le jeu a bien été ajouté.</p>
+	</div>
     <table id="users" class="ui-widget ui-widget-content">
         <thead>
             <tr class="ui-widget-header ">
@@ -100,6 +122,7 @@ $(function() {
 				<th>Date d'achat</th>
 				<th>Prix d'achat</th>
 				<th>Etat</th>
+				<th>Edition</th>
             </tr>
         </thead>
         <tbody>
@@ -120,6 +143,9 @@ $(function() {
 						echo "<td>".$jeu->date."</td>";
 						echo "<td>".$jeu->prix."</td>";
 						echo "<td>".$jeu->etat."</td>";
+						echo "<td>
+							<button class='bubu_del' onclick='javascript:delete_jeu(".$jeu->id.", \"".$jeu->nom."\")'></button>
+						</td>";
 						echo "</tr>";
 				} 
 			}
@@ -128,10 +154,7 @@ $(function() {
     </table>
 </div>
 		
-    <button id="create-user">Ajouter un nouveau jeu</button>
-    <div id="jeu-added" title="Status">
-    <p>Le jeu a bien été ajouté.</p>
-</div>
+
     <div id="dialog-form" title="Ajouter un jeu">
     <p class="validateTips">Tous les champs sont requis.</p>
  

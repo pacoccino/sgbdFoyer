@@ -51,6 +51,13 @@ class Evenement {
 
 	}
 	
+	public function deleteFromDatabase()
+	{
+		$query = "DELETE FROM ".Evenement::$tableName." WHERE id_evt=".$this->id;
+		return Database::query($query);
+	}
+	
+	
 	public function addToDatabase()
 	{
 		if($this->date=="" || $this->lieu=="")

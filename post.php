@@ -39,8 +39,11 @@ if(isset($_POST['action']))
 			$eleveadd->login = $_POST['login'];
 			$eleveadd->filliere = $_POST['filliere'];
 			$eleveadd->promo = $_POST['promo'];
-			if($_POST['isMember'] == "on")
+			if(!empty($_POST['mem_an']) && is_numeric($_POST['mem_an']))
+			{
 				$eleveadd->isMember = true;
+				$eleveadd->annee_membre = $_POST['mem_an'];
+			}
 			else
 				$eleveadd->isMember = false;
 

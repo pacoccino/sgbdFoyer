@@ -48,6 +48,13 @@ class Jeu {
 
 	}
 	
+	public function deleteFromDatabase()
+	{
+		$query = "DELETE FROM ".Jeu::$tableName." WHERE id_jeu=".$this->id;
+		return Database::query($query);
+	}
+	
+	
 	public function addToDatabase()
 	{
 		if($this->nom=="")
