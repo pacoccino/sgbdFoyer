@@ -63,7 +63,16 @@ GROUP BY nom_eleve;
 /* Moyenne des emprunts de livres par mois sur une année donnée
 SELECT sum(total.an)/ 12 AS moyenne 
 FROM (SELECT count(*) AS an 
-		FROM EMPRUNT 
-		WHERE YEAR(date_rendu)='2012' 
-		GROUP BY MONTH(date_rendu)) AS total;
+        FROM EMPRUNT 
+  	WHERE YEAR(date_rendu)='2012' 
+	GROUP BY MONTH(date_rendu)) AS total;
+*/
+
+/* Classement des livres les plus lus
+SELECT LIVRE.titre, count(*) as nombre 
+FROM LIVRE, EXEMPLAIRE, EMPRUNT 
+WHERE LIVRE.id_livre = EXEMPLAIRE.id_livre 
+AND EXEMPLAIRE.id_exemplaire = EMPRUNT.id_exemplaire 
+GROUP BY LIVRE.titre 
+ORDER BY nombre DESC;
 */
