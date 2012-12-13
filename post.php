@@ -33,6 +33,9 @@ if(isset($_POST['action']))
 {
 	if($_POST['action'] == 'adduser')
 	{
+		$id = intval($_POST['id']);
+		if($id==-1 && is_numeric($_POST['promo']))
+		{
 			$eleveadd = new Eleve();
 			$eleveadd->nom = $_POST['nom'];
 			$eleveadd->prenom = $_POST['prenom'];
@@ -54,7 +57,35 @@ if(isset($_POST['action']))
 				echo "Erreur d'ajout: ".Database::errorMsg();
 				Core::debugHTML();
 			}
-				
+		}
+		elseif($id>0)
+		{
+			$eleveadd = new Eleve();
+			$eleveadd->id = $id;
+			$eleveadd->nom = $_POST['nom'];
+			$eleveadd->prenom = $_POST['prenom'];
+			$eleveadd->login = $_POST['login'];
+			$eleveadd->filliere = $_POST['filliere'];
+			$eleveadd->promo = $_POST['promo'];
+			if(!empty($_POST['mem_an']) && is_numeric($_POST['mem_an']))
+			{
+				$eleveadd->isMember = true;
+				$eleveadd->annee_membre = $_POST['mem_an'];
+			}
+			else
+				$eleveadd->isMember = false;
+
+			if($eleveadd->modifyDatabase())
+				echo "Eleve modifié.";
+			else 
+			{
+				echo "Erreur de modification: ".Database::errorMsg();
+				Core::debugHTML();
+			}
+		}
+		else {
+			echo "Erreur d'arguments.";
+		}
 	}
 	if($_POST['action'] == 'addlivre')
 	{

@@ -52,6 +52,20 @@ if(isset($_GET['action']))
 			$eleve->getFromDatabase($_GET['id_el']);
 			echo $eleve->prenom." ".$eleve->nom." a participé depuis le debut de l'année a ".$eleve->part_evt." évenements.";
 	}
+	if($_GET['action'] == 'get_eleve_data' && $_GET['id_el'])
+	{
+			$eleve = new Eleve();
+			$eleve->getFromDatabase($_GET['id_el']);
+			$out = array(
+				"nom" => $eleve->nom,
+				"prenom" => $eleve->prenom,
+				"login" => $eleve->login,
+				"filliere" => $eleve->filliere,
+				"promo" => $eleve->promo,
+				"mem_an" => $eleve->annee_membre
+			);
+			echo json_encode($out);
+	}
 	if($_GET['action'] == 'delete_eleve' && $_GET['id_el'])
 	{
 			$eleve = new Eleve();

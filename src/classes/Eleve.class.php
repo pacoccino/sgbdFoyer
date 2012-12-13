@@ -9,7 +9,7 @@ class Eleve {
 	public $promo;
 	public $isMember=false;
 	public $part_evt=0;
-	public $annee_membre=0;
+	public $annee_membre="";
 	
 	private static $tableName="ELEVE";
 	
@@ -29,11 +29,15 @@ class Eleve {
 		$this->promo = $result['promo'];
 		
 		// L'eleve est il membre ?
-		$query = "select COUNT(*) from MEMBRE where id_eleve=".$this->id;
+		$query = "select COUNT(*), annee from MEMBRE where id_eleve=".$this->id;
 		Database::query($query);
 		$cou=Database::fetch();
 		if($cou['COUNT(*)']==1)
+		{
+			$this->annee_membre=$cou['annee'];
 			$this->isMember=true;
+		}
+			
 		else
 			$this->isMember=false;
 		
@@ -98,6 +102,25 @@ class Eleve {
 		if($this->isMember)
 		{
 			$query="insert into MEMBRE (id_eleve, annee) values (LAST_INSERT_ID(), ".$this->annee_membre.")";
+			$ret = $ret && Database::query($query);
+		}
+		return $ret;
+	}
+	
+	public function modifyDatabase()
+	{
+		if($this->nom=="" || $this->prenom=="")
+		{
+			Core::addDebug("Il manque des arguments");
+			return false;
+		}
+		$ret = true;
+		$query="UPDATE ".Eleve::$tableName." SET nom_eleve='".$this->nom."', prenom_eleve='".$this->prenom."', filliere='".$this->filliere."', login='".$this->login."', promo='".$this->promo."' WHERE id_eleve=".$this->id;
+		
+		$ret = $ret && Database::query($query, true);
+		if($this->isMember == false)
+		{
+			$query="DELETE FROM MEMBRE WHERE id_eleve=".$this->id;
 			$ret = $ret && Database::query($query);
 		}
 		return $ret;

@@ -30,7 +30,7 @@ class ElevesPage extends Layout{
 ?>
 <script type="text/javascript">
 function addEleve(param) {
-	$.post("post.php", { action: "adduser", nom: param[0].value, prenom: param[1].value , login: param[2].value , filliere: param[3].value , promo: param[4].value , mem_an: param[5].value },
+	$.post("post.php", { action: "adduser", nom: param[0].value, prenom: param[1].value , login: param[2].value , filliere: param[3].value , promo: param[4].value , mem_an: param[5].value , id: param[6].value},
 	  function(data){
 	    $( "#eleve-added" ).html(data); 
 	    $( "#eleve-added" ).dialog( "open" );
@@ -43,6 +43,20 @@ function open_info( id ) {
 	    $( "#dialog-info" ).html(data);
    		 $( "#dialog-info" ).dialog( "open" );
 	  });
+}
+function edit( id ) {
+	$("#id_el").val(id);
+	$("#dialog-form").dialog("option", "title", "Modifier élève");
+	$.get("get.php", { action: "get_eleve_data", id_el: id },
+	  function(data){
+	    $("#nom").val(data.nom);
+	    $("#prenom").val(data.prenom);
+	    $("#login").val(data.login);
+	    $("#filliere").val(data.filliere);
+	    $("#promo").val(data.promo);
+	    $("#mem_an").val(data.mem_an);
+	  } , "json");
+	$( "#dialog-form" ).dialog( "open" );
 }
 
 function delete_el( id, nom ) {
@@ -64,9 +78,8 @@ $(function() {
         filliere = $( "#filliere" ),
         promo = $( "#promo" ),
 		mem_an = $( "#mem_an" ),
-        allFields = $( [] ).add( nom ).add( prenom ).add( login).add( filliere).add( promo ).add( mem_an );
-        
-        
+		id = $( "#id_el" ),
+        allFields = $( [] ).add( nom ).add( prenom ).add( login).add( filliere).add( promo ).add( mem_an ).add( id );
 
         $( "#dialog-form" ).dialog({
         autoOpen: false,
@@ -102,6 +115,8 @@ $(function() {
         $( "#create-user" )
         .button()
         .click(function() {
+        	$("#id_el").val(-1);
+        	$("#dialog-form").dialog("option", "title", "Creer un nouvel Eleve");
             $( "#dialog-form" ).dialog( "open" );
         });
         
@@ -118,7 +133,7 @@ $(function() {
         
         $( "#dialog-info" ).dialog({
 	        autoOpen: false,
-	        height: 500,
+	        height: 300,
 	        width: 350,
 	        modal: true,
 	        show: "explode",
@@ -137,6 +152,12 @@ $(function() {
         $('.bubu').button({
             icons: {
                 primary: "ui-icon-search"
+            },
+            text: false
+        });
+        $('.bubu_edit').button({
+            icons: {
+                primary: "ui-icon-contact"
             },
             text: false
         });
@@ -188,7 +209,7 @@ $(function() {
 				<th>Filliere</th>
 				<th>Promo</th>
 				<th>Membre</th>
-				<th>Stats</th>
+				<th>Infos</th>
             </tr>
         </thead>
         <tbody>
@@ -215,10 +236,11 @@ $(function() {
 						if($eleve->isMember)
 							echo "<td>Oui</td>";
 						else
-							echo "<td>Non</td>";
+							echo "<td></td>";
 						echo "<td>
-						<button class='bubu' onclick='javascript:open_info(".$eleve->id.")'></button>
-						<button class='bubu_del' onclick='javascript:delete_el(".$eleve->id.", \"".$eleve->prenom." ".$eleve->nom."\")'></button>
+						<button title='Voir nombre d'evenements' class='bubu' onclick='javascript:open_info(".$eleve->id.")'></button>
+						<button title='Editer' class='bubu_edit' onclick='javascript:edit(".$eleve->id.")'></button>
+						<button title='Supprimer' class='bubu_del' onclick='javascript:delete_el(".$eleve->id.", \"".$eleve->prenom." ".$eleve->nom."\")'></button>
 						</td>";
 		
 						echo "</tr>";
@@ -235,6 +257,7 @@ $(function() {
  
     <form>
     <fieldset>
+
         <label for="nom">Nom</label>
         <input type="text" name="nom" id="nom" class="text ui-widget-content ui-corner-all" />
         <label for="prenom">Prenom</label>
@@ -247,6 +270,7 @@ $(function() {
         <input type="text" name="promo" id="promo" value="" class="text ui-widget-content ui-corner-all" />
         <label for="mem_an">Année de direction (laisser vide sinon)</label>
         <input type="text" name="mem_an" id="mem_an" class="text ui-widget-content ui-corner-all" placeholder="Facultatif"  />
+    	<input type="hidden" id="id_el" name="id_el" value="-1" />
     </fieldset>
     </form>
 </div>
