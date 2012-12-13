@@ -66,6 +66,12 @@ AND LIVRE.titre = "Fascination"
 GROUP BY nom_eleve;
 */
 
+/* Historique des emprunts d'un livre donné (ici "Fascination")
+
+SELECT date_rendu, nom_eleve  FROM ELEVE, LIVRE, EXEMPLAIRE, EMPRUNT  WHERE ELEVE.id_eleve = EMPRUNT.id_eleve  AND EMPRUNT.id_exemplaire = EXEMPLAIRE.id_exemplaire  AND EXEMPLAIRE.id_livre = LIVRE.id_livre  AND LIVRE.titre = "Fascination" ORDER BY date_rendu DESC;
+*/
+
+
 /* Moyenne des emprunts de livres par mois sur une année donnée (ici 2012)
 
 SELECT sum(total.an)/ 12 AS moyenne 
