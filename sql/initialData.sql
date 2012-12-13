@@ -177,5 +177,25 @@ INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (2, 2, '2011-04
 INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (3, 1, '2010-04-14');
 INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (2, 17, '2012-04-14');
 
-select count(*), '= 6 ?','EMPRUNT' from EMPRUNT ;
+select count(*), '= 7 ?','EMPRUNT' from EMPRUNT ;
 
+-- ============================================================
+--    COMMENTAIRE
+-- ============================================================
+
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('Tres rigolo', 17, 1, 5);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('Bon', 12, 1, 3);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('NUL NUL !!', 2, 1, 1);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('Moyen... :|', 9, 2, 4);
+INSERT INTO COMMENTAIRE (texte, id_eleve, id_jeu) values ('distrayant', 3, 4);
+INSERT INTO COMMENTAIRE (note, id_eleve, id_jeu) values (9, 2, 3);
+INSERT INTO COMMENTAIRE (note, id_eleve, id_jeu) values (16, 7, 5);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('Y avait que des cons', 6, 12 , 8);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('On a bien rigole', 14, 6, 3);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('Les parties etaient trop longues. dommage...', 12, 12, 7);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('Commentaire de remplissage', 9, 1, 4);
+INSERT INTO COMMENTAIRE (texte, id_eleve, id_evt) values ('Trop facile le tournoi', 5, 4);
+INSERT INTO COMMENTAIRE (note, id_eleve, id_evt) values (9, 14, 6);
+INSERT INTO COMMENTAIRE (note, id_eleve, id_evt) values (16, 8, 3);
+
+select count(*), '= 14 ?','COMMENTAIRE' from COMMENTAIRE ;
