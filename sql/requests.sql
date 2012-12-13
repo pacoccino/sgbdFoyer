@@ -113,3 +113,24 @@ AND UTILISE.id_evt = PARTICIPATION.id_evt
 GROUP BY JEU.id_jeu
 ORDER BY total DESC;
 */
+
+/* Les commentaires d'un jeu
+SELECT texte, note 
+FROM COMMENTAIRE
+WHERE COMMENTAIRE.id_jeu = 4;
+*/
+
+/*Les commentaires d'un evenement
+SELECT texte, note 
+FROM COMMENTAIRE
+WHERE COMMENTAIRE.id_evt = 4;
+*/
+
+/* Affichage de la liste des commentaires d'un élève
+SELECT IFNULL(texte, 'Non renseigné') AS texte,
+       IFNULL(note, 'Non renseigné') AS note,
+       IF(COMMENTAIRE.id_evt, 'evt', 'jeu') AS type, 
+       IF(COMMENTAIRE.id_evt, COMMENTAIRE.id_evt, COMMENTAIRE.id_jeu) AS id
+FROM COMMENTAIRE
+WHERE id_eleve = 1;
+*/
