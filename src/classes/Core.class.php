@@ -67,6 +67,9 @@ class Core {
 				case "jeux":
 					$page = new JeuxPage();
 					break;
+				case "evt":
+					$page = new EvenementsPage();
+					break;
 				case "sql":
 					$page = new SqlPage();
 					break;
