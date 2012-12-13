@@ -50,6 +50,15 @@ function edit( id ) {
 	$( "#dialog-form" ).dialog( "open" );
 }
 
+function open_comments( id ) {
+	$.get("get.php", { action: "get_jeu_comments", id_jeu: id },
+	  function(data){
+	    $( "#dialog-info" ).html(data);
+   		 $( "#dialog-info" ).dialog( "open" );
+	  });
+}
+
+
 $(function() {
     var nom = $( "#nom" ),
         date = $( "#date" ),
@@ -107,6 +116,18 @@ $(function() {
             }
         });
         
+        $( "#dialog-info" ).dialog({
+	        autoOpen: false,
+	        height: 500,
+	        width: 350,
+	        modal: true,
+	        show: "explode",
+	        buttons: {
+	            "Fermer": function() {
+	                $( this ).dialog( "close" );
+	            }}
+        	});
+        	
         $( "#date" ).datepicker({
             changeMonth: true,
             changeYear: true,
@@ -123,6 +144,12 @@ $(function() {
         $('.bubu_edit').button({
             icons: {
                 primary: "ui-icon-contact"
+            },
+            text: false
+        });
+        $('.bubu_com').button({
+            icons: {
+                primary: "ui-icon-script"
             },
             text: false
         });
@@ -144,7 +171,7 @@ $(function() {
 				<th>Date d'achat</th>
 				<th>Prix d'achat</th>
 				<th>Etat</th>
-				<th>Edition</th>
+				<th>Infos</th>
             </tr>
         </thead>
         <tbody>
@@ -166,6 +193,7 @@ $(function() {
 						echo "<td>".$jeu->prix."</td>";
 						echo "<td>".$jeu->etat."</td>";
 						echo "<td>
+							<button title='Commentaires' class='bubu_com' onclick='javascript:open_comments(".$jeu->id.")'></button>
 							<button title='Editer' class='bubu_edit' onclick='javascript:edit(".$jeu->id.")'></button>
 							<button title='Supprimer' class='bubu_del' onclick='javascript:delete_jeu(".$jeu->id.", \"".$jeu->nom."\")'></button>
 						</td>";
@@ -194,6 +222,9 @@ $(function() {
         <input type="hidden" id="id_jeu" name="id_jeu" value="-1" />
     </fieldset>
     </form>
+</div>
+<br /><div id="dialog-info" title="Informations">
+   infos
 </div>
 		<?php
 // -----------------------------------

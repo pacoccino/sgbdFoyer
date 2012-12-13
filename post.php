@@ -190,7 +190,7 @@ if(isset($_POST['action']))
 			$jeuadd->etat = $_POST['etat'];
 
 			if($jeuadd->modifyDatabase())
-				echo "jeu modifié.";
+				echo "Jeu modifié.";
 			else 
 			{
 				echo "Erreur de modification: ".Database::errorMsg();

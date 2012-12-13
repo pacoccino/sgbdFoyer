@@ -234,7 +234,7 @@ $(function() {
 						echo "<td>".$eleve->filliere."</td>";
 						echo "<td>".$eleve->promo."</td>";
 						if($eleve->isMember)
-							echo "<td>Oui</td>";
+							echo "<td>Oui (".$eleve->annee_membre.")</td>";
 						else
 							echo "<td></td>";
 						echo "<td>

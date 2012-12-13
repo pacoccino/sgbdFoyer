@@ -39,6 +39,14 @@ function open_info( id ) {
 	  });
 }
 
+function open_comments( id ) {
+	$.get("get.php", { action: "get_evt_comments", id_evt: id },
+	  function(data){
+	    $( "#dialog-info" ).html(data);
+   		 $( "#dialog-info" ).dialog( "open" );
+	  });
+}
+
 function delete_evt( id, nom ) {
 	if(confirm("Etes vous sur de vouloir supprimer l'évènement "+nom+" ?"))
 	{
@@ -149,7 +157,7 @@ $(function() {
         $( "#dialog-info" ).dialog({
 	        autoOpen: false,
 	        height: 500,
-	        width: 350,
+	        width: 400,
 	        modal: true,
 	        show: "explode",
 	        buttons: {
@@ -207,6 +215,12 @@ $(function() {
                 primary: "ui-icon-calendar"
             }
         });
+        $('.bubu_com').button({
+            icons: {
+                primary: "ui-icon-script"
+            },
+            text: false
+        });
  		
 });
 </script>
@@ -261,6 +275,7 @@ $(function() {
 						echo "<td>".$evenement->nbParticipantsMax."</td>";
 						echo "<td>".$evenement->lieu."</td>";
 						echo "<td>
+						<button title='Commentaires' class='bubu_com' onclick='javascript:open_comments(".$evenement->id.")'></button>
 						<button title='Jeux utilisés' class='bubu' onclick='javascript:open_info(".$evenement->id.")'></button>
 						<button title='Editer' class='bubu_edit' onclick='javascript:edit(".$evenement->id.")'></button>
 						<button title='Supprimer' class='bubu_del' onclick='javascript:delete_evt(".$evenement->id.", \"".$evenement->id."\")'></button>

@@ -120,7 +120,7 @@ $(function() {
         
         $( "button" ).button();
         
-                $( "#dialog-info" ).dialog({
+        $( "#dialog-info" ).dialog({
 	        autoOpen: false,
 	        height: 500,
 	        width: 350,
@@ -131,12 +131,6 @@ $(function() {
 	                $( this ).dialog( "close" );
 	            }}
         	});
- 
-        $( "#open-info" )
-        .button()
-        .click(function() {
-            $( "#dialog-info" ).dialog( "open" );
-        });
         
         $('.bubu').button({
             icons: {
@@ -156,6 +150,7 @@ $(function() {
             },
             text: false
         });
+
 });
 </script>
 

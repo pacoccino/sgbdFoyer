@@ -172,6 +172,52 @@ if(isset($_GET['action']))
 			} 
 			echo "</table></div>";
 	}
+	if($_GET['action'] == 'get_jeu_comments' && $_GET['id_jeu'])
+	{
+			echo "<h3>Commentaires du jeu :</h3>";
+			$jeu = new Jeu();
+			$jeu->getFromDatabase($_GET['id_jeu']);
+			echo "<b>".$jeu->nom."</b><br/>";
+			$result=Database::query("SELECT id_eleve, texte, note 
+						FROM COMMENTAIRE
+						WHERE COMMENTAIRE.id_jeu = ".$_GET['id_jeu']);
+
+			echo "<div id='liste'><table><tr><th>Eleve</th><th>Commentaire</th><th>Note</th></tr>";
+			while($res = Database::fetch($result))
+			{
+				$eleve= new Eleve();
+				$eleve->getFromDatabase($res['id_eleve']);
+				echo "<tr>";
+				echo "<td>".$eleve->prenom." ".$eleve->nom."</td>";
+				echo "<td>".$res['texte']."</td>";
+				echo "<td>".$res['note']."</td>";
+				echo "</tr>";
+			} 
+			echo "</table></div>";
+	}
+	if($_GET['action'] == 'get_evt_comments' && $_GET['id_evt'])
+	{
+			echo "<h3>Commentaires de l'évènement :</h3>";
+			$evt = new Evenement();
+			$evt->getFromDatabase($_GET['id_evt']);
+			echo "<b>Le ".$evt->date." à ".$evt->lieu."</b><br/>";
+			$result=Database::query("SELECT id_eleve, texte, note 
+						FROM COMMENTAIRE
+						WHERE COMMENTAIRE.id_evt = ".$_GET['id_evt']);
+
+			echo "<div id='liste'><table><tr><th>Eleve</th><th>Commentaire</th><th>Note</th></tr>";
+			while($res = Database::fetch($result))
+			{
+				$eleve= new Eleve();
+				$eleve->getFromDatabase($res['id_eleve']);
+				echo "<tr>";
+				echo "<td>".$eleve->prenom." ".$eleve->nom."</td>";
+				echo "<td>".$res['texte']."</td>";
+				echo "<td>".$res['note']."</td>";
+				echo "</tr>";
+			} 
+			echo "</table></div>";
+	}
 
 }
 else echo "Moutonneux Sven Taton";
