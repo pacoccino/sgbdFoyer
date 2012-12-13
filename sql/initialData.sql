@@ -166,12 +166,13 @@ select count(*), '= 11 ?','EXEMPLAIRE' from EXEMPLAIRE ;
 --    EMPRUNT
 -- ============================================================
 
-INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (2, 2, '2012-04-14');
+INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (2, 2, '2010-04-14');
 INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (4, 8, '2011-06-08');
 INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (1, 8, '2012-09-20');
 INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (11, 2, '2013-02-11');
+INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (2, 2, '2011-04-14');
 INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (3, 1, '2010-04-14');
-INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (6, 17, '2012-04-14');
+INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (2, 17, '2012-04-14');
 
 select count(*), '= 6 ?','EMPRUNT' from EMPRUNT ;
 
