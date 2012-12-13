@@ -89,6 +89,9 @@ if(isset($_POST['action']))
 	}
 	if($_POST['action'] == 'addlivre')
 	{
+		$id = intval($_POST['id']);
+		if($id==-1)
+		{
 			$livreadd = new Livre();
 			$livreadd->titre = $_POST['titre'];
 			$livreadd->auteur = $_POST['auteur'];
@@ -99,12 +102,37 @@ if(isset($_POST['action']))
 				echo "Livre ajouté.";
 			else 
 				echo "Erreur d'ajout: ".Database::errorMsg();
+		}
+		elseif($id>0)
+		{
+			$livreadd = new Livre();
+			$livreadd->id = $id;
+			$livreadd->titre = $_POST['titre'];
+			$livreadd->auteur = $_POST['auteur'];
+			$livreadd->editeur = $_POST['editeur'];
+			$livreadd->isbn = $_POST['isbn'];
+
+			if($livreadd->modifyDatabase())
+				echo "Livre modifié.";
+			else 
+			{
+				echo "Erreur de modification: ".Database::errorMsg();
+				Core::debugHTML();
+			}
+		}
+		else {
+			echo "Erreur d'arguments.";
+		}
 	}
 	if($_POST['action'] == 'addevt')
 	{
+		$id = intval($_POST['id']);
+		if($id==-1)
+		{
 			$evtadd = new Evenement();
 			$evtadd->date = $_POST['date'];
 			$evtadd->lieu = $_POST['lieu'];
+			$evtadd->nbParticipantsMax = $_POST['nb_part'];
 			
 			if($evtadd->addToDatabase())
 				echo "Evènement ajouté.";
@@ -113,10 +141,31 @@ if(isset($_POST['action']))
 				echo "Erreur d'ajout: ".Database::errorMsg();
 				Core::debugHTML();
 			}
-				
+		}
+		elseif($id>0)
+		{
+			$evtadd = new Evenement();
+			$evtadd->id = $id;
+			$evtadd->date = $_POST['date'];
+			$evtadd->lieu = $_POST['lieu'];
+			$evtadd->nbParticipantsMax = $_POST['nb_part'];
+			if($evtadd->modifyDatabase())
+				echo "Evenement modifié.";
+			else 
+			{
+				echo "Erreur de modification: ".Database::errorMsg();
+				Core::debugHTML();
+			}
+		}
+		else {
+			echo "Erreur d'arguments.";
+		}		
 	}
 	if($_POST['action'] == 'addjeu')
 	{
+		$id = intval($_POST['id']);
+		if($id==-1)
+		{
 			$jeuadd = new Jeu();
 			$jeuadd->nom = $_POST['nom'];
 			$jeuadd->date = $_POST['date'];
@@ -130,6 +179,27 @@ if(isset($_POST['action']))
 					echo "Erreur d'ajout: ".Database::errorMsg();
 					Core::debugHTML();
 				}
+		}
+		elseif($id>0)
+		{
+			$jeuadd = new Jeu();
+			$jeuadd->id = $id;
+			$jeuadd->nom = $_POST['nom'];
+			$jeuadd->date = $_POST['date'];
+			$jeuadd->prix = $_POST['prix'];
+			$jeuadd->etat = $_POST['etat'];
+
+			if($jeuadd->modifyDatabase())
+				echo "jeu modifié.";
+			else 
+			{
+				echo "Erreur de modification: ".Database::errorMsg();
+				Core::debugHTML();
+			}
+		}
+		else {
+			echo "Erreur d'arguments.";
+		}
 	}
 	if($_POST['action'] == 'sqlreq')
 	{

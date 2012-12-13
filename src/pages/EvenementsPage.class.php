@@ -24,7 +24,7 @@ class EvenementsPage extends Layout{
 <script type="text/javascript">
 
 function addEvt(param) {
-	$.post("post.php", { action: "addevt", date: param[0].value, lieu: param[1].value },
+	$.post("post.php", { action: "addevt", date: param[0].value, lieu: param[1].value, nb_part: param[2].value, id: param[3].value },
 	  function(data){
 	    $( "#evt-added" ).html(data); 
 	    $( "#evt-added" ).dialog( "open" );
@@ -50,11 +50,25 @@ function delete_evt( id, nom ) {
 	}
 	
 }
+
+function edit( id ) {
+	$("#id_evt").val(id);
+	$("#dialog-form").dialog("option", "title", "Modifier évènement");
+	$.get("get.php", { action: "get_evt_data", id_el: id },
+	  function(data){
+	    $("#date").val(data.date);
+	    $("#lieu").val(data.lieu);
+	    $("#nb_part").val(data.nb_part);
+	  } , "json");
+	$( "#dialog-form" ).dialog( "open" );
+}
         
 $(function() {
     var date = $( "#date" ),
         lieu = $( "#lieu" ),
-        allFields = $( [] ).add( date ).add( lieu ) ;
+        nb_part = $( "#nb_part" ),
+        id = $( "#id_evt" ),
+        allFields = $( [] ).add( date ).add( lieu ).add( id ).add( nb_part ) ;
  
         function updateTips( t ) {
             tips
@@ -116,6 +130,8 @@ $(function() {
         $( "#create-evt" )
         .button()
         .click(function() {
+        	$("#id_evt").val(-1);
+        	$("#dialog-form").dialog("option", "title", "Creer un nouvel évènement");
             $( "#dialog-form" ).dialog( "open" );
         });
         
@@ -179,6 +195,12 @@ $(function() {
             },
             text: false
         });
+        $('.bubu_edit').button({
+            icons: {
+                primary: "ui-icon-contact"
+            },
+            text: false
+        });
         
         $('.cal').button({
             icons: {
@@ -214,6 +236,7 @@ $(function() {
 				<th>Id</th>
 				<th>Date</th>
 				<th>Nb Participants</th>
+				<th>Nb Participants Max.</th>
 				<th>Lieu</th>
 				<th>Infos</th>
         </thead>
@@ -235,9 +258,11 @@ $(function() {
 						echo "<td>".$evenement->id."</td>";
 						echo "<td>".$evenement->date."</td>";
 						echo "<td>".$evenement->nbParticipants."</td>";
+						echo "<td>".$evenement->nbParticipantsMax."</td>";
 						echo "<td>".$evenement->lieu."</td>";
 						echo "<td>
 						<button title='Jeux utilisés' class='bubu' onclick='javascript:open_info(".$evenement->id.")'></button>
+						<button title='Editer' class='bubu_edit' onclick='javascript:edit(".$evenement->id.")'></button>
 						<button title='Supprimer' class='bubu_del' onclick='javascript:delete_evt(".$evenement->id.", \"".$evenement->id."\")'></button>
 						</td>";
 						echo "</tr>";
@@ -259,6 +284,9 @@ $(function() {
         <input type="text" name="date" id="date" class="text ui-widget-content ui-corner-all" />
         <label for="date">Lieu</label>
         <input type="text" id="lieu"  class="text ui-widget-content ui-corner-all"/>
+        <label for="nb_part">Nombre de participants maximum</label>
+        <input type="text" id="nb_part"  class="text ui-widget-content ui-corner-all"/>
+        <input type="hidden" id="id_evt" name="id_evt" value="-1" />
     </fieldset>
     </form>
 </div>

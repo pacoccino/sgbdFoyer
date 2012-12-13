@@ -66,5 +66,17 @@ class Jeu {
 
 		return Database::query($query, true);
 	}
+
+	public function modifyDatabase()
+	{
+		if($this->nom=="")
+		{
+			Core::addDebug("Il manque des arguments");
+			return false;
+		}
+		$query="UPDATE ".Jeu::$tableName." SET nom_jeu='".$this->nom."', date_jeu='".$this->date."', prix_jeu='".$this->prix."', etat='".$this->etat."' WHERE id_jeu=".$this->id;
+		
+		return Database::query($query, true);
+	}
 }
 ?>

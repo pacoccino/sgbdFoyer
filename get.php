@@ -66,6 +66,41 @@ if(isset($_GET['action']))
 			);
 			echo json_encode($out);
 	}
+	if($_GET['action'] == 'get_evt_data' && $_GET['id_el'])
+	{
+			$evenement = new Evenement();
+			$evenement->getFromDatabase($_GET['id_el']);
+			$out = array(
+				"date" => $evenement->date,
+				"lieu" => $evenement->lieu,
+				"nb_part" => $evenement->nbParticipantsMax
+			);
+			echo json_encode($out);
+	}
+	if($_GET['action'] == 'get_jeu_data' && $_GET['id_el'])
+	{
+			$jeu = new Jeu();
+			$jeu->getFromDatabase($_GET['id_el']);
+			$out = array(
+				"nom" => $jeu->nom,
+				"date" => $jeu->date,
+				"prix" => $jeu->prix,
+				"etat" => $jeu->etat
+			);
+			echo json_encode($out);
+	}
+	if($_GET['action'] == 'get_livre_data' && $_GET['id_el'])
+	{
+			$livre = new Livre();
+			$livre->getFromDatabase($_GET['id_el']);
+			$out = array(
+				"titre" => $livre->titre,
+				"auteur" => $livre->auteur,
+				"editeur" => $livre->editeur,
+				"isbn" => $livre->isbn
+			);
+			echo json_encode($out);
+	}
 	if($_GET['action'] == 'delete_eleve' && $_GET['id_el'])
 	{
 			$eleve = new Eleve();

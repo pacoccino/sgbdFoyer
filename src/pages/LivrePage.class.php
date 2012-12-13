@@ -19,7 +19,7 @@ class LivrePage extends Layout{
 <script type="text/javascript">
 
 function addLivre(param) {
-	$.post("post.php", { action: "addlivre", titre: param[0].value, auteur: param[1].value , editeur: param[2].value , isbn: param[3].value },
+	$.post("post.php", { action: "addlivre", titre: param[0].value, auteur: param[1].value , editeur: param[2].value , isbn: param[3].value, id: param[4].value },
 	  function(data){
 	    $( "#livre-added" ).html(data); 
 	    $( "#livre-added" ).dialog( "open" );
@@ -45,13 +45,28 @@ function delete_livre( id, nom ) {
 	}
 	
 }
+
+function edit( id ) {
+	$("#id_livre").val(id);
+	$("#dialog-form").dialog("option", "title", "Modifier Livre");
+	$.get("get.php", { action: "get_livre_data", id_el: id },
+	  function(data){
+	    $("#titre").val(data.titre);
+	    $("#auteur").val(data.auteur);
+	    $("#editeur").val(data.editeur);
+	    $("#isbn").val(data.isbn);
+	  } , "json");
+	$( "#dialog-form" ).dialog( "open" );
+}
+
     
 $(function() {
     var titre = $( "#titre" ),
         auteur = $( "#auteur" ),
         editeur = $( "#editeur" ),
         isbn = $( "#isbn" ),
-        allFields = $( [] ).add( titre ).add( auteur ).add( editeur).add( isbn);
+        id = $( "#id_livre" ),
+        allFields = $( [] ).add( titre ).add( auteur ).add( editeur).add( isbn).add( id );
  
         $( "#dialog-form" ).dialog({
         autoOpen: false,
@@ -87,6 +102,8 @@ $(function() {
         $( "#create-user" )
         .button()
         .click(function() {
+        	$("#id_livre").val(-1);
+        	$("#dialog-form").dialog("option", "title", "Creer un nouveau livre");
             $( "#dialog-form" ).dialog( "open" );
         });
         
@@ -133,6 +150,12 @@ $(function() {
             },
             text: false
         });
+        $('.bubu_edit').button({
+            icons: {
+                primary: "ui-icon-contact"
+            },
+            text: false
+        });
 });
 </script>
 
@@ -172,8 +195,9 @@ $(function() {
 						echo "<td>".$livre->editeur."</td>";
 						echo "<td>".$livre->isbn."</td>";
 						echo "<td>
-							<button class='bubu' onclick='javascript:open_info(".$livre->id.")'></button>
-							<button class='bubu_del' onclick='javascript:delete_livre(".$livre->id.", \"".$livre->titre."\")'></button>
+							<button title='Liste des emprunts' class='bubu' onclick='javascript:open_info(".$livre->id.")'></button>
+							<button title='Editer' class='bubu_edit' onclick='javascript:edit(".$livre->id.")'></button>
+							<button title='Supprimer' class='bubu_del' onclick='javascript:delete_livre(".$livre->id.", \"".$livre->titre."\")'></button>
 							</td>";
 						echo "</tr>";
 				} 
@@ -197,6 +221,7 @@ $(function() {
         <input type="text" name="editeur" id="editeur" value="" class="text ui-widget-content ui-corner-all" />
         <label for="isbn">ISBN</label>
         <input type="text" name="isbn" id="isbn" value="" class="text ui-widget-content ui-corner-all" />
+        <input type="hidden" id="id_livre" name="id_livre" value="-1" />
     </fieldset>
     </form>
 </div>

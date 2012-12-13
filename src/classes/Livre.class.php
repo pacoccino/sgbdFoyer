@@ -66,5 +66,17 @@ class Livre {
 
 		return Database::query($query, true);
 	}
+	
+	public function modifyDatabase()
+	{
+		if($this->titre=="" || $this->auteur=="" || $this->isbn=="")
+		{
+			Core::addDebug("Il manque des arguments");
+			return false;
+		}
+		$query="UPDATE ".Livre::$tableName." SET titre='".$this->titre."', auteur='".$this->auteur."', editeur='".$this->editeur."', ISBN='".$this->isbn."' WHERE id_livre=".$this->id;
+		
+		return Database::query($query, true);
+	}
 }
 ?>

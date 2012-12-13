@@ -5,6 +5,7 @@ class Evenement {
 	public $date;
 	public $lieu;
 	public $nbParticipants;
+	public $nbParticipantsMax;
 	
 	private static $tableName="EVENEMENT";
 	
@@ -19,6 +20,7 @@ class Evenement {
 		$this->id = $result['id_evt'];
 		$this->date = $result['date_evt'];
 		$this->lieu = $result['lieu'];
+		$this->nbParticipantsMax = $result['nbparticipants'];
 		Database::query("SELECT COUNT(*)
 			FROM EVENEMENT, PARTICIPE
 			WHERE EVENEMENT.id_evt = PARTICIPE.id_evt
@@ -65,8 +67,20 @@ class Evenement {
 			Core::addDebug("Il manque des arguments");
 			return false;
 		}
-		$query="insert into ".Evenement::$tableName." (lieu, date_evt) values ('".$this->lieu."', '".$this->date."')";
+		$query="insert into ".Evenement::$tableName." (lieu, date_evt, nbparticipants) values ('".$this->lieu."', '".$this->date."', '".$this->nbParticipantsMax."')";
 
+		return Database::query($query, true);
+	}
+
+	public function modifyDatabase()
+	{
+		if($this->date=="" || $this->lieu=="")
+		{
+			Core::addDebug("Il manque des arguments");
+			return false;
+		}
+		$query="UPDATE ".Evenement::$tableName." SET lieu='".$this->lieu."', date_evt='".$this->date."', nbparticipants='".$this->nbParticipantsMax."' WHERE id_evt=".$this->id;
+		
 		return Database::query($query, true);
 	}
 }

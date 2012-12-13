@@ -18,7 +18,7 @@ class JeuxPage extends Layout{
 
 <script type="text/javascript">
 function addJeu(param) {
-	$.post("post.php", { action: "addjeu", nom: param[0].value, date: param[1].value , prix: param[2].value , etat: param[3].value },
+	$.post("post.php", { action: "addjeu", nom: param[0].value, date: param[1].value , prix: param[2].value , etat: param[3].value, id: param[4].value },
 	  function(data){
 	    $( "#jeu-added" ).html(data); 
 	    $( "#jeu-added" ).dialog( "open" );
@@ -37,12 +37,26 @@ function delete_jeu( id, nom ) {
 	
 }
 
+function edit( id ) {
+	$("#id_jeu").val(id);
+	$("#dialog-form").dialog("option", "title", "Modifier jeu");
+	$.get("get.php", { action: "get_jeu_data", id_el: id },
+	  function(data){
+	    $("#nom").val(data.nom);
+	    $("#date").val(data.date);
+	    $("#prix").val(data.prix);
+	    $("#etat").val(data.etat);
+	  } , "json");
+	$( "#dialog-form" ).dialog( "open" );
+}
+
 $(function() {
     var nom = $( "#nom" ),
         date = $( "#date" ),
         prix = $( "#prix" ),
         etat = $( "#etat" ),
-        allFields = $( [] ).add( nom ).add( date ).add( prix).add( etat);
+        id = $( "#id_jeu" ),
+        allFields = $( [] ).add( nom ).add( date ).add( prix).add( etat).add( id );
  
         $( "#dialog-form" ).dialog({
         autoOpen: false,
@@ -77,6 +91,8 @@ $(function() {
         $( "#create-user" )
         .button()
         .click(function() {
+        	$("#id_jeu").val(-1);
+        	$("#dialog-form").dialog("option", "title", "Creer un nouveau jeu");
             $( "#dialog-form" ).dialog( "open" );
         });
         
@@ -101,6 +117,12 @@ $(function() {
         $('.bubu_del').button({
             icons: {
                 primary: "ui-icon-trash"
+            },
+            text: false
+        });
+        $('.bubu_edit').button({
+            icons: {
+                primary: "ui-icon-contact"
             },
             text: false
         });
@@ -144,7 +166,8 @@ $(function() {
 						echo "<td>".$jeu->prix."</td>";
 						echo "<td>".$jeu->etat."</td>";
 						echo "<td>
-							<button class='bubu_del' onclick='javascript:delete_jeu(".$jeu->id.", \"".$jeu->nom."\")'></button>
+							<button title='Editer' class='bubu_edit' onclick='javascript:edit(".$jeu->id.")'></button>
+							<button title='Supprimer' class='bubu_del' onclick='javascript:delete_jeu(".$jeu->id.", \"".$jeu->nom."\")'></button>
 						</td>";
 						echo "</tr>";
 				} 
@@ -168,6 +191,7 @@ $(function() {
         <input type="text" name="prix" id="prix" value="" class="text ui-widget-content ui-corner-all" />
         <label for="etat">Etat</label>
         <input type="text" name="etat" id="etat" value="" class="text ui-widget-content ui-corner-all" />
+        <input type="hidden" id="id_jeu" name="id_jeu" value="-1" />
     </fieldset>
     </form>
 </div>
