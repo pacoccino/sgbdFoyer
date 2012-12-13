@@ -91,11 +91,25 @@ GROUP BY LIVRE.titre
 ORDER BY nombre DESC;
 */
 
-/* Classement des jeux selon le nombre d’entrée total réalisé lors des événements durant lesquels ils ont été utilisés
+/* Classement des evenemnts le nombre d’entrée total réalisé
 
 SELECT date_evt, lieu, count(*) AS nombre 
 FROM PARTICIPE, EVENEMENT 
 WHERE EVENEMENT.id_evt = PARTICIPE.id_evt 
 GROUP BY EVENEMENT.id_evt 
 ORDER BY nombre DESC;
+*/
+
+/* Classement des jeux selon le nombre de participants aux evenements l'utilisant
+
+SELECT nom_jeu, SUM(nombre) AS total
+FROM JEU, UTILISE, 
+     (SELECT EVENEMENT.id_evt, count(*) AS nombre 
+     FROM PARTICIPE, EVENEMENT 
+     WHERE EVENEMENT.id_evt = PARTICIPE.id_evt 
+     GROUP BY EVENEMENT.id_evt) AS PARTICIPATION
+WHERE JEU.id_jeu = UTILISE.id_jeu
+AND UTILISE.id_evt = PARTICIPATION.id_evt
+GROUP BY JEU.id_jeu
+ORDER BY total DESC;
 */
