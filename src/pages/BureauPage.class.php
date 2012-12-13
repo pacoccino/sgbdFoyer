@@ -16,19 +16,7 @@ class BureauPage extends Layout{
 	}
 	
 	public function headerPlus() {
-		?>
-		    <style>
-		#dialog-form { font-size: 62.5%; }
-        input.text { margin-bottom:12px; width:95%; padding: .4em; }
-        fieldset { padding:0; border:0; margin-top:25px; }
-        h1 { font-size: 1.2em; margin: .6em 0; }
-        div#liste { width: 350px; margin: 20px 0; }
-        div#liste table { margin: 1em 0; border-collapse: collapse; width: 100%; }
-        div#liste table td, div#liste table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
-        .ui-dialog .ui-state-error { padding: .3em; }
-        .validateTips { border: 1px solid transparent; padding: 0.3em; }
-    </style>
-    <?php
+
 	}
 	
 	public function bodyHTML() {
@@ -180,12 +168,10 @@ $(function() {
 			if(isset($_GET['historique']))
 				$result=Database::query("
 							SELECT *
-							FROM ELEVE, MEMBRE
-							WHERE ELEVE.id_eleve = MEMBRE.id_eleve AND MEMBRE.annee < ".$this->annee_bureau);
+							FROM HISTORIQUE_MEMBRE");
 			else {
 				$result=Database::query("SELECT *
-							FROM ELEVE, MEMBRE
-							WHERE ELEVE.id_eleve = MEMBRE.id_eleve AND MEMBRE.annee = ".$this->annee_bureau);
+							FROM MEMBRE_ACTUEL");
 			}
 			if(!($result))
 			{
@@ -203,11 +189,11 @@ $(function() {
 						echo "<td>".$eleve->login."</td>";
 						echo "<td>".$eleve->filliere."</td>";
 						echo "<td>".$eleve->promo."</td>";
-						echo "<td>".$res['Annee']."</td>";
+						echo "<td>".$res['annee']."</td>";
 						echo "</tr>";
 				} 
 			}
-			echo $this->annee_bureau;
+		
 		?>
         </tbody>
     </table>

@@ -8,10 +8,12 @@ h1 {
 	font-weight: bold;
 	text-align: left;
 	font-family: 'Arial Black', Gadget, sans-serif;
-	font-size: 2.3em;
+	font-size: 1.5em;
 	line-height: 110%;
 	text-shadow: 7px 7.0px 5px rgba(142, 139, 143, 0.7);
+	margin: .6em 0;
 }
+
 div#menu{
 	position:		fixed;
 	left:			0;
@@ -77,26 +79,25 @@ div#footer{
 	bottom:		0px;
 
 	height:		50px;
-	width:		200px;
+	width:		230px;
 
 	font-size:	0.8em;
 	overflow:	hidden;
 }
 
 div#debug{
-	position:	fixed;
-	right:		10px;
-	bottom:		60px;
-	
+	position:	relative;
+	margin-top:		20px;
+	margin-bottom:		20px;
+
+
 	height:		80px;
-	width:		400px;
+
 	padding:	2px;
 	
-	border:1px solid black;
 	font-size:	0.8em;
 	overflow:	scroll;
-	
-	background-color:#EBEBEB; 
+
 }
 
 
@@ -151,3 +152,12 @@ div#debug{
 	color:white;
 	border: 2px solid black;
 }
+
+#dialog-form { font-size: 62.5%; }
+input.text { margin-bottom:12px; width:95%; padding: .4em; }
+fieldset { padding:0; border:0; margin-top:25px; }
+div#liste { margin: 20px 0; }
+div#liste table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+div#liste table td, div#liste table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+.ui-dialog .ui-state-error { padding: .3em; }
+.validateTips { border: 1px solid transparent; padding: 0.3em; }

@@ -1,10 +1,10 @@
 <?php
 
-class Accueil extends Layout{
+class ToolsPage extends Layout{
 	
 	public function __construct()
 	{
-		$this->pageTitle = "Accueil";
+		$this->pageTitle = "Outils";
 	}
 	// cette fonction est ce que va afficher la page web
 	public function bodyHTML() {

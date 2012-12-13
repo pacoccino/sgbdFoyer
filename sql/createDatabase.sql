@@ -29,7 +29,7 @@ DROP TABLE IF EXISTS `projetSGBD`.`MEMBRE` ;
 
 CREATE  TABLE IF NOT EXISTS `projetSGBD`.`MEMBRE` (
   `id_eleve` INT NOT NULL ,
-  `Annee` INT NULL ,
+  `annee` INT NULL ,
   PRIMARY KEY (`id_eleve`) ,
   INDEX `fk_Membres_Eleves` (`id_eleve` ASC) ,
   CONSTRAINT `fk_Membres_Eleves`
@@ -209,6 +209,50 @@ CREATE  TABLE IF NOT EXISTS `projetSGBD`.`EMPRUNT` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Placeholder table for view `projetSGBD`.`HISTORIQUE_MEMBRE`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `projetSGBD`.`HISTORIQUE_MEMBRE` (`id_eleve` INT, `nom_eleve` INT, `prenom_eleve` INT, `filliere` INT, `login` INT, `promo` INT, `annee` INT);
+
+-- -----------------------------------------------------
+-- Placeholder table for view `projetSGBD`.`MEMBRE_ACTUEL`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `projetSGBD`.`MEMBRE_ACTUEL` (`id_eleve` INT, `nom_eleve` INT, `prenom_eleve` INT, `filliere` INT, `login` INT, `promo` INT, `annee` INT);
+
+-- -----------------------------------------------------
+-- View `projetSGBD`.`HISTORIQUE_MEMBRE`
+-- -----------------------------------------------------
+DROP VIEW IF EXISTS `projetSGBD`.`HISTORIQUE_MEMBRE` ;
+DROP TABLE IF EXISTS `projetSGBD`.`HISTORIQUE_MEMBRE`;
+USE `projetSGBD`;
+CREATE  OR REPLACE VIEW HISTORIQUE_MEMBRE AS 
+SELECT ELEVE.id_eleve,
+       ELEVE.nom_eleve,
+       ELEVE.prenom_eleve,
+       ELEVE.filliere,
+       ELEVE.login,
+       ELEVE.promo,
+       MEMBRE.annee
+FROM ELEVE, MEMBRE 
+WHERE ELEVE.id_eleve = MEMBRE.id_eleve AND MEMBRE.annee < YEAR(NOW());
+
+-- -----------------------------------------------------
+-- View `projetSGBD`.`MEMBRE_ACTUEL`
+-- -----------------------------------------------------
+DROP VIEW IF EXISTS `projetSGBD`.`MEMBRE_ACTUEL` ;
+DROP TABLE IF EXISTS `projetSGBD`.`MEMBRE_ACTUEL`;
+USE `projetSGBD`;
+CREATE  OR REPLACE VIEW MEMBRE_ACTUEL AS 
+SELECT ELEVE.id_eleve,
+       ELEVE.nom_eleve,
+       ELEVE.prenom_eleve,
+       ELEVE.filliere,
+       ELEVE.login,
+       ELEVE.promo,
+       MEMBRE.annee
+FROM ELEVE, MEMBRE 
+WHERE ELEVE.id_eleve = MEMBRE.id_eleve AND MEMBRE.annee = YEAR(NOW());
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

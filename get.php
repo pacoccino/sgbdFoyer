@@ -33,12 +33,12 @@ if(isset($_GET['action']))
 {
 	if($_GET['action'] == 'get_evt_info' && $_GET['id_evt'])
 	{
-			echo "<h3>Liste des jeux utilisés evt".$_GET['id_evt'].":</h3>";
+			echo "<h3>Liste des jeux utilisés :</h3>";
 			$result=Database::query("SELECT *
-FROM JEU, EVENEMENT, UTILISE
-WHERE JEU.id_jeu = UTILISE.id_jeu
-AND UTILISE.id_evt = EVENEMENT.id_evt
-AND EVENEMENT.id_evt = ".$_GET['id_evt']);
+				FROM JEU, EVENEMENT, UTILISE
+				WHERE JEU.id_jeu = UTILISE.id_jeu
+				AND UTILISE.id_evt = EVENEMENT.id_evt
+				AND EVENEMENT.id_evt = ".$_GET['id_evt']);
 			echo "<ul>";
 			while($res = Database::fetch($result))
 			{

@@ -73,6 +73,9 @@ class Core {
 				case "sql":
 					$page = new SqlPage();
 					break;
+				case "tools":
+					$page = new ToolsPage();
+					break;
 				case "suppression":
 					$page = new Suppression();
 					break;
