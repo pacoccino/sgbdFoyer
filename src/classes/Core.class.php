@@ -76,6 +76,9 @@ class Core {
 				case "stats":
 					$page = new StatsPage();
 					break;
+				case "comment":
+					$page = new CommentPage();
+					break;
 				case "tools":
 					$page = new ToolsPage();
 					break;

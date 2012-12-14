@@ -284,7 +284,6 @@ $(function() {
 					}
 				} 
 			}
-			echo $this->annee_bureau;
 		?>
         </tbody>
     </table>
