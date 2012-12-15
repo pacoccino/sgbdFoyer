@@ -137,5 +137,7 @@ WHERE id_eleve = 1;
 
 /* Nombres d'exemplaires disponibles a l'emprunt pour un livre
 
-SELECT COUNT(*) as nombre FROM EMPRUNT, EXEMPLAIRE WHERE EXEMPLAIRE.empruntable = TRUE AND EMPRUNT.date_rendu != '';
+SELECT * FROM EXEMPLAIRE INNER JOIN LIVRE_EMPRUNTE ON EXEMPLAIRE.id_livre <> LIVRE_EMPRUNTE.id_livre WHERE EXEMPLAIRE.empruntable = TRUE AND LIVRE_EMPRUNTE.id_livre=1;
+
+
 */
