@@ -34,6 +34,23 @@ div#menu{
 	background-image:linear-gradient(90deg, #2e2e2e, #212121 20px,#595959 200px);
 }
 
+div#connect{
+	position:	fixed;
+	left:		20px;
+	bottom:		20px;
+	
+	font-family:	Arial;
+	font-size:		1em;
+	color:			#E0E0E0;
+	text-shadow:	4px 2px 3px #595959;
+
+	width:9em;
+}
+
+#connect p{
+	padding-left: 10px;
+}
+
 
 div#right {
 	position:		absolute;

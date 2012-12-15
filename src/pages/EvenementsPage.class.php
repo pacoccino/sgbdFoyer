@@ -247,7 +247,7 @@ $(function() {
 	</div>
     <table id="users" class="ui-widget ui-widget-content">
         <thead class="ui-widget-header ">
-				<th>Id</th>
+				<th width="4em">Id</th>
 				<th>Date</th>
 				<th>Nb Participants</th>
 				<th>Nb Participants Max.</th>

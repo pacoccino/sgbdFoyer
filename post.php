@@ -33,19 +33,19 @@ if(isset($_POST['action']))
 {
 	if($_POST['action'] == 'adduser')
 	{
-		$id = intval($_POST['id']);
-		if($id==-1 && is_numeric($_POST['promo']))
+		$id = intval(Core::$_clean_post['id']);
+		if($id==-1 && is_numeric(Core::$_clean_post['promo']))
 		{
 			$eleveadd = new Eleve();
-			$eleveadd->nom = $_POST['nom'];
-			$eleveadd->prenom = $_POST['prenom'];
-			$eleveadd->login = $_POST['login'];
-			$eleveadd->filliere = $_POST['filliere'];
-			$eleveadd->promo = $_POST['promo'];
-			if(!empty($_POST['mem_an']) && is_numeric($_POST['mem_an']))
+			$eleveadd->nom = Core::$_clean_post['nom'];
+			$eleveadd->prenom = Core::$_clean_post['prenom'];
+			$eleveadd->login = Core::$_clean_post['login'];
+			$eleveadd->filliere = Core::$_clean_post['filliere'];
+			$eleveadd->promo = Core::$_clean_post['promo'];
+			if(!empty($_POST['mem_an']) && is_numeric(Core::$_clean_post['mem_an']))
 			{
 				$eleveadd->isMember = true;
-				$eleveadd->annee_membre = $_POST['mem_an'];
+				$eleveadd->annee_membre = Core::$_clean_post['mem_an'];
 			}
 			else
 				$eleveadd->isMember = false;
@@ -62,15 +62,15 @@ if(isset($_POST['action']))
 		{
 			$eleveadd = new Eleve();
 			$eleveadd->id = $id;
-			$eleveadd->nom = $_POST['nom'];
-			$eleveadd->prenom = $_POST['prenom'];
-			$eleveadd->login = $_POST['login'];
-			$eleveadd->filliere = $_POST['filliere'];
-			$eleveadd->promo = $_POST['promo'];
-			if(!empty($_POST['mem_an']) && is_numeric($_POST['mem_an']))
+			$eleveadd->nom = Core::$_clean_post['nom'];
+			$eleveadd->prenom = Core::$_clean_post['prenom'];
+			$eleveadd->login = Core::$_clean_post['login'];
+			$eleveadd->filliere = Core::$_clean_post['filliere'];
+			$eleveadd->promo = Core::$_clean_post['promo'];
+			if(!empty(Core::$_clean_post['mem_an']) && is_numeric(Core::$_clean_post['mem_an']))
 			{
 				$eleveadd->isMember = true;
-				$eleveadd->annee_membre = $_POST['mem_an'];
+				$eleveadd->annee_membre = Core::$_clean_post['mem_an'];
 			}
 			else
 				$eleveadd->isMember = false;
@@ -89,14 +89,14 @@ if(isset($_POST['action']))
 	}
 	if($_POST['action'] == 'addlivre')
 	{
-		$id = intval($_POST['id']);
+		$id = intval(Core::$_clean_post['id']);
 		if($id==-1)
 		{
 			$livreadd = new Livre();
-			$livreadd->titre = $_POST['titre'];
-			$livreadd->auteur = $_POST['auteur'];
-			$livreadd->editeur = $_POST['editeur'];
-			$livreadd->isbn = $_POST['isbn'];
+			$livreadd->titre = Core::$_clean_post['titre'];
+			$livreadd->auteur = Core::$_clean_post['auteur'];
+			$livreadd->editeur = Core::$_clean_post['editeur'];
+			$livreadd->isbn = Core::$_clean_post['isbn'];
 			
 			if($livreadd->addToDatabase())
 				echo "Livre ajouté.";
@@ -107,10 +107,10 @@ if(isset($_POST['action']))
 		{
 			$livreadd = new Livre();
 			$livreadd->id = $id;
-			$livreadd->titre = $_POST['titre'];
-			$livreadd->auteur = $_POST['auteur'];
-			$livreadd->editeur = $_POST['editeur'];
-			$livreadd->isbn = $_POST['isbn'];
+			$livreadd->titre = Core::$_clean_post['titre'];
+			$livreadd->auteur = Core::$_clean_post['auteur'];
+			$livreadd->editeur = Core::$_clean_post['editeur'];
+			$livreadd->isbn = Core::$_clean_post['isbn'];
 
 			if($livreadd->modifyDatabase())
 				echo "Livre modifié.";
@@ -126,13 +126,13 @@ if(isset($_POST['action']))
 	}
 	if($_POST['action'] == 'addevt')
 	{
-		$id = intval($_POST['id']);
+		$id = intval(Core::$_clean_post['id']);
 		if($id==-1)
 		{
 			$evtadd = new Evenement();
-			$evtadd->date = $_POST['date'];
-			$evtadd->lieu = $_POST['lieu'];
-			$evtadd->nbParticipantsMax = $_POST['nb_part'];
+			$evtadd->date = Core::$_clean_post['date'];
+			$evtadd->lieu = Core::$_clean_post['lieu'];
+			$evtadd->nbParticipantsMax = Core::$_clean_post['nb_part'];
 			
 			if($evtadd->addToDatabase())
 				echo "Evènement ajouté.";
@@ -146,9 +146,9 @@ if(isset($_POST['action']))
 		{
 			$evtadd = new Evenement();
 			$evtadd->id = $id;
-			$evtadd->date = $_POST['date'];
-			$evtadd->lieu = $_POST['lieu'];
-			$evtadd->nbParticipantsMax = $_POST['nb_part'];
+			$evtadd->date = Core::$_clean_post['date'];
+			$evtadd->lieu = Core::$_clean_post['lieu'];
+			$evtadd->nbParticipantsMax = Core::$_clean_post['nb_part'];
 			if($evtadd->modifyDatabase())
 				echo "Evenement modifié.";
 			else 
@@ -163,14 +163,14 @@ if(isset($_POST['action']))
 	}
 	if($_POST['action'] == 'addjeu')
 	{
-		$id = intval($_POST['id']);
+		$id = intval(Core::$_clean_post['id']);
 		if($id==-1)
 		{
 			$jeuadd = new Jeu();
-			$jeuadd->nom = $_POST['nom'];
-			$jeuadd->date = $_POST['date'];
-			$jeuadd->prix = $_POST['prix'];
-			$jeuadd->etat = $_POST['etat'];
+			$jeuadd->nom = Core::$_clean_post['nom'];
+			$jeuadd->date = Core::$_clean_post['date'];
+			$jeuadd->prix = Core::$_clean_post['prix'];
+			$jeuadd->etat = Core::$_clean_post['etat'];
 			
 			if($jeuadd->addToDatabase())
 				echo "Jeu ajouté.";
@@ -184,10 +184,10 @@ if(isset($_POST['action']))
 		{
 			$jeuadd = new Jeu();
 			$jeuadd->id = $id;
-			$jeuadd->nom = $_POST['nom'];
-			$jeuadd->date = $_POST['date'];
-			$jeuadd->prix = $_POST['prix'];
-			$jeuadd->etat = $_POST['etat'];
+			$jeuadd->nom = Core::$_clean_post['nom'];
+			$jeuadd->date = Core::$_clean_post['date'];
+			$jeuadd->prix = Core::$_clean_post['prix'];
+			$jeuadd->etat = Core::$_clean_post['etat'];
 
 			if($jeuadd->modifyDatabase())
 				echo "Jeu modifié.";

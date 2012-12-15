@@ -5,7 +5,7 @@ abstract class Layout {
 	
 	protected $AJAX = false;
 	protected $pageTitle = "Default";
-	
+	protected $eleve_co;
 	
 	public function showHTML()
 	{
@@ -79,9 +79,11 @@ abstract class Layout {
 					<li>
 						<a href="?action=jeux">Les jeux</a>
 					</li>
+					<?php if(isset($_SESSION['loggedin'])) { ?>
 					<li>
 						<a href="?action=comment">Commenter</a>
 					</li>
+					<?php }	?>
 					<li>
 						<a href="?action=stats">Statistiques</a>
 					</li>
@@ -93,7 +95,20 @@ abstract class Layout {
 					</li>
 				</ul>
 			</nav>
-		</div>
+	<div id="connect">
+<?php
+	if(isset($_SESSION['loggedin']))
+	{
+		echo "<p>Connecté en tant que <i>".Core::$eleve_co->login."</i></p><a href='index.php?action=logout'>Se déconnecter</a>";
+	}
+	else 
+	{
+		echo "<a href='index.php?action=login'>Se connecter</a>";
+	}
+
+?>
+	</div>
+	</div>
 	<div id="right">
 		<div id="body">    
 <?php

@@ -5,8 +5,10 @@ class CommentPage extends Layout{
 	
 	public function __construct()
 	{
+		if(!isset($_SESSION['loggedin']))
+			die();
 		$this->pageTitle = "Commenter";
-		if(isset($_POST['posted']))
+		if(isset($_POST['posted']) && isset($_SESSION['loggedin']))
 		{
 			if($_POST['evt']!="-1" && $_POST['jeu']!="-1")
 			{
@@ -26,9 +28,9 @@ class CommentPage extends Layout{
 				}
 				$id_eleve=1;
 					
-				$sql="INSERT INTO COMMENTAIRE (id_eleve, texte, note, $type) values ( ".$id_eleve.", '".$_POST['texte']."', '".$_POST['note']."', $id )";
+				$sql="INSERT INTO COMMENTAIRE (id_eleve, texte, note, $type) values ( ".$_SESSION['loggedin'].", '".Core::$_clean_post['texte']."', ".intval(Core::$_clean_post['note']).", $id )";
 				if(Database::query($sql))
-					$this->status = "Commentaire ajouté";
+					$this->status = "<font color='green'>Commentaire ajouté</font>";
 				else
 					$this->status = "Erreur de requete".Database::errorMsg();
 			}
@@ -48,32 +50,10 @@ $(function() {
 });
     </script>
 <h1>Faire un commentaire</h1>
-<?php echo $this->status;?>
+<?php echo $this->status; ?>
 <form action="index.php?action=comment" method=post>
 <input type="hidden" name="posted" value="yes"/>
-<table style="padding: :20px;">
-<tr>
-	<td><label for="evt">Ajouter en tant que</label></td>
-<td><select name="id_el" id="id_el">
-        <?php
-        
-        $result=Eleve::getListe();
-			if(!($result))
-			{
-				echo "Erreur de requete : ".Database::errorMsg();
-			}
-			else
-			{
-				while($res = Database::fetch($result))
-				{
-					$eleve = new Eleve($res);
-					
-					echo "<option value='".$eleve->id."'>".$eleve->prenom." ".$eleve->nom."</option>";
-				} 
-			}
-        ?>
-</select></td>
-</tr>
+<table >
 <tr>
 	<td><label for="evt">Evenement</label></td>
 <td><select name="evt" id="evt" onchange="$('#jeu').val('-1')">
@@ -124,7 +104,7 @@ $(function() {
 <td><textarea rows="5" cols="30" name="texte" id="texte"></textarea></td>
 </tr><tr>
 <td><label for="note">Note</label></td>
-<td><select id="note">
+<td><select name="note" id="note">
 	<?php
 	for($i=0; $i<=10; $i++)
 	{

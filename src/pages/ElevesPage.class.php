@@ -202,12 +202,12 @@ $(function() {
     <table id="users" class="ui-widget ui-widget-content">
         <thead>
             <tr class="ui-widget-header ">
-				<th>Id</th>
+				<th width="4em">Id</th>
 				<th>Nom</th>
 				<th>Prenom</th>
 				<th>Login</th>
 				<th>Filliere</th>
-				<th>Promo</th>
+				<th width="6em">Promo</th>
 				<th>Membre</th>
 				<th>Infos</th>
             </tr>

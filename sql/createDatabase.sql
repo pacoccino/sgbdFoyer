@@ -145,9 +145,10 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `projetSGBD`.`PARTICIPE` ;
 
 CREATE  TABLE IF NOT EXISTS `projetSGBD`.`PARTICIPE` (
-  `id_eleve` INT NULL ,
-  `id_evt` INT NULL ,
+  `id_eleve` INT NOT NULL ,
+  `id_evt` INT NOT NULL ,
   INDEX `fk_PARTICIPE_EVENEMENT1` (`id_evt` ASC) ,
+  PRIMARY KEY (`id_eleve`, `id_evt`) ,
   CONSTRAINT `fk_PARTICIPE_ELEVE1`
     FOREIGN KEY (`id_eleve` )
     REFERENCES `projetSGBD`.`ELEVE` (`id_eleve` )
@@ -190,9 +191,10 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `projetSGBD`.`EMPRUNT` ;
 
 CREATE  TABLE IF NOT EXISTS `projetSGBD`.`EMPRUNT` (
-  `id_eleve` INT NOT NULL ,
-  `date_rendu` DATE NULL ,
   `id_emprunt` INT NOT NULL AUTO_INCREMENT ,
+  `id_eleve` INT NOT NULL ,
+  `date_emprunt` DATE NULL ,
+  `date_rendu` DATE NULL ,
   `id_exemplaire` INT NOT NULL ,
   INDEX `fk_EMPRUNT_ELEVE1` (`id_eleve` ASC) ,
   PRIMARY KEY (`id_emprunt`) ,

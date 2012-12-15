@@ -142,40 +142,37 @@ INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('Le Hobbit', 'Tolkien',
 INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('Le Silmarillon', 'Tolkien', 'Hachette', 12899);
 INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('Harry Potter', 'Rowling', 'Gallimard', 12167);
 INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('H2G2', 'Adams', 'Coucou',  42);
-INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('Le trone de fer', 'Martin', 'Coucou', 1);
-INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('Paris', 'Marseille', 'Coucou', 1242);
 
-select count(*), '= 10 ?','LIVRE' from LIVRE ;
+select count(*), '= 8 ?','LIVRE' from LIVRE ;
 
 -- ============================================================
 --    EXEMPLAIRE
 -- ============================================================
 
 INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2007-03-21', 12, 1);
-INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2012-03-12', 7, 1);
-INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2007-04-21', 7, 3);
-INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2008-06-21', 5, 2);
-INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2012-12-21', 20, 1);
-INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2009-02-21', 42, 8);
-INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2011-03-21', 6, 7);
-INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2012-03-07', 10, 10);
-INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2012-03-21', 12, 1);
-INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2010-11-13', 3, 9);
-INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2009-02-14', 8, 5);
+INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2012-03-12', 7, 2);
+INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2007-04-21', 7, 2);
+INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2008-06-21', 5, 3);
+INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (FALSE, '2012-12-21', 20, 3);
+INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2009-02-21', 42, 3);
+INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (FALSE, '2011-03-21', 6, 4);
+INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2012-03-21', 12, 4);
+INSERT INTO EXEMPLAIRE (empruntable, date_livre, prix_livre, id_livre) values (TRUE, '2009-02-14', 8, 6);
 
-select count(*), '= 11 ?','EXEMPLAIRE' from EXEMPLAIRE ;
+select count(*), '= 9 ?','EXEMPLAIRE' from EXEMPLAIRE ;
 
 -- ============================================================
 --    EMPRUNT
 -- ============================================================
 
-INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (2, 2, '2010-04-14');
-INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (4, 8, '2011-06-08');
-INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (1, 8, '2012-09-20');
-INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (11, 2, '2013-02-11');
-INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (2, 2, '2011-04-14');
-INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (3, 1, '2010-04-14');
-INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_rendu) values (2, 17, '2012-04-14');
+INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_emprunt, date_rendu) values (1, 2, '2010-02-14', '2010-04-14');
+INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_emprunt, date_rendu) values (2, 3, '2011-06-04', '2011-06-08');
+INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_emprunt, date_rendu) values (2, 3, '2012-08-16', '2012-09-20');
+INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_emprunt, date_rendu) values (4, 5, '2010-01-4', '2011-02-11');
+INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_emprunt, date_rendu) values (4, 6, '2011-03-5', '2011-04-14');
+INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_emprunt, date_rendu) values (6, 6, '2011-03-5', '2011-04-14');
+INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_emprunt) values (1, 1, '2012-11-08');
+INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_emprunt) values (2, 7, '2012-01-14');
 
 select count(*), '= 7 ?','EMPRUNT' from EMPRUNT ;
 
@@ -183,19 +180,19 @@ select count(*), '= 7 ?','EMPRUNT' from EMPRUNT ;
 --    COMMENTAIRE
 -- ============================================================
 
-INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('Tres rigolo', 17, 1, 5);
-INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('Bon', 12, 1, 3);
-INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('NUL NUL !!', 2, 1, 1);
-INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('Moyen... :|', 9, 2, 4);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('Tres rigolo', 10, 1, 5);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('Bon', 6, 1, 3);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('NUL NUL !!', 1, 1, 1);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('Moyen... :|', 4, 2, 4);
 INSERT INTO COMMENTAIRE (texte, id_eleve, id_jeu) values ('distrayant', 3, 4);
 INSERT INTO COMMENTAIRE (note, id_eleve, id_jeu) values (9, 2, 3);
 INSERT INTO COMMENTAIRE (note, id_eleve, id_jeu) values (16, 7, 5);
-INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('Y avait que des cons', 6, 12 , 8);
-INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('On a bien rigole', 14, 6, 3);
-INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('Les parties etaient trop longues. dommage...', 12, 12, 7);
-INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('Commentaire de remplissage', 9, 1, 4);
-INSERT INTO COMMENTAIRE (texte, id_eleve, id_evt) values ('Trop facile le tournoi', 5, 4);
-INSERT INTO COMMENTAIRE (note, id_eleve, id_evt) values (9, 14, 6);
-INSERT INTO COMMENTAIRE (note, id_eleve, id_evt) values (16, 8, 3);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('Y avait que des cons', 3, 12 , 8);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('On a bien rigole', 7, 6, 3);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('Les parties etaient trop longues. dommage...', 6, 12, 7);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('Commentaire de remplissage', 4, 1, 4);
+INSERT INTO COMMENTAIRE (texte, id_eleve, id_evt) values ('Trop facile le tournoi', 1, 4);
+INSERT INTO COMMENTAIRE (note, id_eleve, id_evt) values (5, 14, 6);
+INSERT INTO COMMENTAIRE (note, id_eleve, id_evt) values (9, 8, 3);
 
 select count(*), '= 14 ?','COMMENTAIRE' from COMMENTAIRE ;

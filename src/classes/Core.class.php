@@ -2,10 +2,27 @@
 class Core {
 	
 	private static $debugText="";
+	public static $eleve_co;
+	public static $_clean_post;
+	public static $_clean_get;
 	
 	public function __construct() {
 		Config::init();
 		$this->createDB();
+
+		if(isset($_SESSION['loggedin']))
+		{
+			Core::$eleve_co = new Eleve();
+			Core::$eleve_co->getFromDatabase($_SESSION['loggedin']);
+		}
+		foreach(array_keys($_POST) as $key)
+		{
+		  Core::$_clean_post[$key] = mysql_real_escape_string($_POST[$key]);
+		}
+		foreach(array_keys($_GET) as $key)
+		{
+		  Core::$_clean_get[$key] = mysql_real_escape_string($_GET[$key]);
+		}
 	}
 	
 	public function createDB() {
@@ -81,6 +98,12 @@ class Core {
 					break;
 				case "tools":
 					$page = new ToolsPage();
+					break;
+				case "login":
+					$page = new UserPage();
+					break;
+				case "logout":
+					$page = new UserPage();
 					break;
 				case "suppression":
 					$page = new Suppression();

@@ -153,14 +153,15 @@ if(isset($_GET['action']))
 	{
 			echo "<h3>Liste adhérents ayant lu :</h3>";
 			$livre = new Livre();
-			$livre->getFromDatabase($_GET['id_li']);
+			$id = intval(Core::$_clean_get['id_li']);
+			$livre->getFromDatabase($id);
 			echo "<b>".$livre->titre."</b><br/>";
 			$result=Database::query("SELECT date_rendu, nom_eleve, prenom_eleve 
-			FROM ELEVE, LIVRE, EXEMPLAIRE, EMPRUNT  
-			WHERE ELEVE.id_eleve = EMPRUNT.id_eleve  
-			AND EMPRUNT.id_exemplaire = EXEMPLAIRE.id_exemplaire  
-			AND EXEMPLAIRE.id_livre = LIVRE.id_livre  
-			AND LIVRE.id_livre=".$_GET['id_li']." ORDER BY date_rendu DESC");
+				FROM ELEVE, LIVRE, EXEMPLAIRE, EMPRUNT  
+				WHERE ELEVE.id_eleve = EMPRUNT.id_eleve  
+				AND EMPRUNT.id_exemplaire = EXEMPLAIRE.id_exemplaire  
+				AND EXEMPLAIRE.id_livre = LIVRE.id_livre  
+				AND LIVRE.id_livre=".$id." ORDER BY date_rendu DESC");
 			echo "<div id='liste'><table><tr><th>Nom</th><th>Prenom</th><th>Date de rendu</th></tr>";
 			while($res = Database::fetch($result))
 			{
@@ -181,7 +182,6 @@ if(isset($_GET['action']))
 			$result=Database::query("SELECT id_eleve, texte, note 
 						FROM COMMENTAIRE
 						WHERE COMMENTAIRE.id_jeu = ".$_GET['id_jeu']);
-
 			echo "<div id='liste'><table><tr><th>Eleve</th><th>Commentaire</th><th>Note</th></tr>";
 			while($res = Database::fetch($result))
 			{

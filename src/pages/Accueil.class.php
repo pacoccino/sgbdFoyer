@@ -10,8 +10,8 @@ class Accueil extends Layout{
 	public function bodyHTML() {
 ?>
 
-<h1>Accueil</h1>
-<p>Page d'accueil pour le projet de base de données.</p>
+<h1>Foyer de l'ENSEIRB-MATMECA</h1>
+<p>Site de gestion du foyer.</p>
 
 <?php
 	}

@@ -134,3 +134,8 @@ SELECT IFNULL(texte, 'Non renseigné') AS texte,
 FROM COMMENTAIRE
 WHERE id_eleve = 1;
 */
+
+/* Nombres d'exemplaires disponibles a l'emprunt pour un livre
+
+SELECT COUNT(*) as nombre FROM EMPRUNT, EXEMPLAIRE WHERE EXEMPLAIRE.empruntable = TRUE AND EMPRUNT.date_rendu != '';
+*/

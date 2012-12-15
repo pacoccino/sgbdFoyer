@@ -163,7 +163,7 @@ $(function() {
     <table id="users" class="ui-widget ui-widget-content">
         <thead>
             <tr class="ui-widget-header ">
-				<th>Id</th>
+				<th width="4em">Id</th>
 				<th>Titre</th>
 				<th>Auteur</th>
 				<th>Editeur</th>
