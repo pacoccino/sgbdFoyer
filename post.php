@@ -134,8 +134,23 @@ if(isset($_POST['action']))
 			$evtadd->lieu = Core::$_clean_post['lieu'];
 			$evtadd->nbParticipantsMax = Core::$_clean_post['nb_part'];
 			
+			foreach($_POST['jeux'] as $jeu)
+				echo $jeu;
+			
 			if($evtadd->addToDatabase())
-				echo "Evènement ajouté.";
+			{
+				$resb = true;
+				foreach($_POST['jeux'] as $jeu)
+				{
+					$queryadd = "INSERT INTO UTILISE (id_evt, id_jeu) values ( LAST_INSERT_ID(), ".intval($jeu).")";
+					$resb = $resb && Database::query($queryadd);
+				}
+				if($resb)
+					echo "Evènement ajouté.";
+				else {
+					echo "Erreur d'ajout des jeux";
+				}
+			}
 			else 
 			{
 				echo "Erreur d'ajout: ".Database::errorMsg();
@@ -150,7 +165,20 @@ if(isset($_POST['action']))
 			$evtadd->lieu = Core::$_clean_post['lieu'];
 			$evtadd->nbParticipantsMax = Core::$_clean_post['nb_part'];
 			if($evtadd->modifyDatabase())
-				echo "Evenement modifié.";
+			{
+				$resb = true;
+				$resb = $resb && Database::query("DELETE FROM UTILISE WHERE id_evt = ".$id);
+				foreach($_POST['jeux'] as $jeu)
+				{
+					$queryadd = "INSERT INTO UTILISE (id_evt, id_jeu) values ( ".$id.", ".intval($jeu).")";
+					$resb = $resb && Database::query($queryadd);
+				}
+				if($resb)
+					echo "Evenement modifié.";
+				else {
+					echo "Erreur de modification des jeux";
+				}
+			}
 			else 
 			{
 				echo "Erreur de modification: ".Database::errorMsg();

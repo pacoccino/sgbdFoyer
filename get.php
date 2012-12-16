@@ -70,10 +70,18 @@ if(isset($_GET['action']))
 	{
 			$evenement = new Evenement();
 			$evenement->getFromDatabase($_GET['id_el']);
+			
+			$jeux = array();
+			$query = "SELECT id_jeu FROM UTILISE WHERE id_evt = ".$_GET['id_el'];
+			$result = Database::query($query);
+			while($res = Database::fetch($result))
+					$jeux[] = $res['id_jeu'];
+			
 			$out = array(
 				"date" => $evenement->date,
 				"lieu" => $evenement->lieu,
-				"nb_part" => $evenement->nbParticipantsMax
+				"nb_part" => $evenement->nbParticipantsMax,
+				"jeux" => $jeux
 			);
 			echo json_encode($out);
 	}

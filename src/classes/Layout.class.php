@@ -86,6 +86,9 @@ abstract class Layout {
 					<li>
 						<a href="?action=emprunt">Emprunter</a>
 					</li>
+					<li>
+						<a href="?action=participer">Participer</a>
+					</li>
 					<?php }	?>
 					<li>
 						<a href="?action=stats">Statistiques</a>

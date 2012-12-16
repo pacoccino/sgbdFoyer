@@ -99,6 +99,9 @@ class Core {
 				case "emprunt":
 					$page = new EmpruntPage();
 					break;
+				case "participer":
+					$page = new ParticiperPage();
+					break;
 				case "tools":
 					$page = new ToolsPage();
 					break;

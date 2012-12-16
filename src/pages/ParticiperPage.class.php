@@ -1,6 +1,6 @@
 <?php
 
-class EmpruntPage extends Layout{
+class ParticiperPage extends Layout{
 	private $statusrend="";
 	private $statusemp="";
 	
@@ -8,7 +8,7 @@ class EmpruntPage extends Layout{
 	{
 		if(!isset($_SESSION['loggedin']))
 			die("Bad request");
-		$this->pageTitle = "Emprunts";
+		$this->pageTitle = "Participation";
 		if(isset($_GET['rendre']))
 		{
 			$testifgood = Database::query("SELECT id_emprunt FROM EMPRUNT WHERE date_rendu is null AND id_emprunt = ".$_GET['rendre']." AND id_eleve = ".$_SESSION['loggedin']);
@@ -61,7 +61,7 @@ $(function() {
 
 });
     </script>
-<h1>Liste de vos emprunts en cours</h1>
+<h1>Liste des évenements auxquels vous participez</h1>
 <?php
 echo $this->statusrend;
 $sql= "SELECT * FROM EMPRUNT WHERE date_rendu is null AND id_eleve = ".$_SESSION['loggedin'];
@@ -85,24 +85,22 @@ else
 		$livretitre = Database::query($sql);
 		$livretitre = Database::fetch($livretitre);
 		$livretitre = $livretitre['titre'];
-		echo "<li>".$livretitre." depuis le ".$res['date_emprunt'].". <a href='index.php?action=emprunt&rendre=".$res['id_emprunt']."'>Rendre ce livre</a></li>";
+		echo "<li>".$livretitre." depuis le ".$res['date_emprunt'].". <a href='index.php?action=participer&quitter=".$res['id_emprunt']."'>Quitter l'évènement</a></li>";
 	} 
 	echo "</ul>";
 }
 ?>
-<h1>Emprunter un livre</h1>
-<?php echo $this->statusemp; ?>
-<form action="index.php?action=emprunt" method=post>
+<h1>Participer a un évènement</h1>
+<?php echo $this->statuspart; ?>
+<form action="index.php?action=participer" method=post>
 <input type="hidden" name="posted" value="yes"/>
 <table >
 <tr>
-	<td><label for="id_li">Livres disponibles à l'emprunt</label></td>
-<td><select name="id_li" id="id_li">
+	<td><label for="id_ev">Prochains évènements</label></td>
+<td><select name="id_ev" id="id_ev">
 
         <?php
-        $sql = "SELECT DISTINCT EXEMPLAIRE.id_livre 
-        		FROM EXEMPLAIRE LEFT JOIN LIVRE_EMPRUNTE ON EXEMPLAIRE.id_exemplaire = LIVRE_EMPRUNTE.id_exemplaire
-				WHERE EXEMPLAIRE.empruntable = TRUE AND LIVRE_EMPRUNTE.id_emprunt is null";
+        $sql = "SELECT * FROM EVENEMENT WHERE date_evt > DATE(NOW())";
         $result=Database::query($sql);
 			if(!($result))
 			{
@@ -111,11 +109,8 @@ else
 			else
 			{
 				while($res = Database::fetch($result))
-				{
-					$livre = new Livre();
-					$livre->getFromDatabase($res['id_livre']);
-					
-					echo "<option value='".$livre->id."'>".$livre->titre."</option>";
+				{					
+					echo "<option value='".$res['id_evt']."'>".$res['date']." a ".$res['lieu']."</option>";
 				} 
 			}
         ?>

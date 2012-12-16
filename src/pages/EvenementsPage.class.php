@@ -24,7 +24,12 @@ class EvenementsPage extends Layout{
 <script type="text/javascript">
 
 function addEvt(param) {
-	$.post("post.php", { action: "addevt", date: param[0].value, lieu: param[1].value, nb_part: param[2].value, id: param[3].value },
+	var jeuxl = new Array();
+	$("#jeuxliste :checked").each(function() {
+ 		 jeuxl.push($(this).val());
+		});
+		
+	$.post("post.php", { action: "addevt", date: param[0].value, lieu: param[1].value, nb_part: param[2].value, id: param[3].value, jeux:jeuxl },
 	  function(data){
 	    $( "#evt-added" ).html(data); 
 	    $( "#evt-added" ).dialog( "open" );
@@ -67,6 +72,10 @@ function edit( id ) {
 	    $("#date").val(data.date);
 	    $("#lieu").val(data.lieu);
 	    $("#nb_part").val(data.nb_part);
+	    $('#jeuxliste :checkbox:checked').removeAttr('checked');
+	    $.each(data.jeux, function(i, val) {
+	    	 $('#jeuxliste input:checkbox[value="'+val+'"]').attr('checked',true);
+	    });
 	  } , "json");
 	$( "#dialog-form" ).dialog( "open" );
 }
@@ -132,6 +141,7 @@ $(function() {
         },
         close: function() {
             allFields.val( "" ).removeClass( "ui-state-error" );
+            $('#jeuxliste :checkbox:checked').removeAttr('checked');
             }
         });
  
@@ -300,6 +310,25 @@ $(function() {
         <input type="text" id="lieu"  class="text ui-widget-content ui-corner-all"/>
         <label for="nb_part">Nombre de participants maximum</label>
         <input type="text" id="nb_part"  class="text ui-widget-content ui-corner-all"/>
+        <label for="jeux">Jeux utilisés</label><br />
+        <div id="jeuxliste">
+        <?php
+        $query = "SELECT * FROM JEU";
+        Database::query($query);
+		$results=Database::query($query);
+		if(!($results))
+		{
+			echo "Erreur de requete : ".Database::errorMsg();
+		}
+		else
+		{
+			while($res = Database::fetch($results))
+			{
+				echo "<input type='checkbox' name='jeux[]' value='".$res['id_jeu']."'>".$res['nom_jeu']."<br />";
+			} 
+		}
+        ?>
+        </div>
         <input type="hidden" id="id_evt" name="id_evt" value="-1" />
     </fieldset>
     </form>
