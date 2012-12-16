@@ -72,7 +72,8 @@ Nous considérons aussi que lorsque le sujet mentionne l'action pour un élève 
 Le passage au modèle relationnel nécessite d'étudier les particularités de chaque association pour créer les bonnes relations. Certaines nécessitent la création de nouvelles tables, d'autres se contentent d'un ajout de clé étrangère.
 \section{Contraintes d'intégrité et dépendances fonctionnelles}
 \section{Schéma relationnel en $3^{eme}$ forme normale}
-\\L'information "nombre de participants" etait ambigue. Nous avons decidé qu'elle indiquerait le nombre maximum de participants a un evenement, et que nous calculerions grâce a une requete le nombre réel de participants a un évènement afin de respecter le principe de constance des données.
+L'information "nombre de participants" etait ambigue. Nous avons decidé qu'elle indiquerait le nombre maximum de participants a un evenement, et que nous calculerions grâce a une requete le nombre réel de participants a un évènement afin de respecter le principe de constance des données.
+\includegraphics[width=1.2\textwidth]{relationnel.png}
 \section{Création de vues}
 Afin de faciliter certaines actions et réduire les requêtes SQL, nous avons également créé des vues concernant l'historique des membres, et les livres en cours d'emprunt.
 
@@ -85,7 +86,7 @@ Nous avons choisit d'utiliser une base de données de type MySQL, correspondant 
 \section{Implémentation des commandes SQL}
 La plupart des requètes utiles sont dans le fichier sql/requests.sql. Voici une liste incomplète :
 \paragraph{}
-Historique complet des membres du bureau en passant par la vue HISTORIQUE_MEMBRE
+Historique complet des membres du bureau en passant par la vue HISTORIQUE\_MEMBRE
 \begin{verbatim}
 SELECT *
 FROM HISTORIQUE_MEMBRE
@@ -98,7 +99,7 @@ FROM ELEVE, MEMBRE
 WHERE ELEVE.id_eleve = MEMBRE.id_eleve AND MEMBRE.annee < YEAR(NOW());
 \end{verbatim}
 \paragraph{}
-Membres actuels du bureau en passant par la vue MEMBRE_ACTUEL
+Membres actuels du bureau en passant par la vue MEMBRE\_ACTUEL
 \begin{verbatim}
 SELECT *
 FROM HISTORIQUE_MEMBRE

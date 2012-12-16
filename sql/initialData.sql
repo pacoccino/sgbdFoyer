@@ -161,10 +161,10 @@ select count(*), '= 9 ?','EXEMPLAIRE' from EXEMPLAIRE ;
 
 INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_emprunt, date_rendu) values (1, 2, '2010-02-14', '2010-04-14');
 INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_emprunt, date_rendu) values (2, 3, '2011-06-04', '2011-06-08');
-INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_emprunt, date_rendu) values (2, 3, '2012-08-16', '2012-09-20');
+INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_emprunt, date_rendu) values (2, 4, '2012-08-16', '2012-09-20');
 INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_emprunt, date_rendu) values (4, 5, '2010-01-4', '2011-02-11');
 INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_emprunt, date_rendu) values (4, 6, '2011-03-5', '2011-04-14');
-INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_emprunt, date_rendu) values (6, 6, '2011-03-5', '2011-04-14');
+INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_emprunt, date_rendu) values (6, 1, '2012-01-7', '2012-02-09');
 INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_emprunt) values (1, 1, '2012-11-08');
 INSERT INTO EMPRUNT (id_exemplaire, id_eleve, date_emprunt) values (2, 7, '2012-01-14');
 
