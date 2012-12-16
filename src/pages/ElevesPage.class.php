@@ -170,11 +170,11 @@ $(function() {
         
         $( "button" ).button();
         
-        $("#actual").click(function(){
+        $("#actual").click(function(event){
         	event.preventDefault();
 		    document.location.href='index.php?action=eleves';
 		  });
-        $("#historique").click(function(){
+        $("#historique").click(function(event){
         	event.preventDefault();
 		    document.location.href='index.php?action=eleves&historique';
 		  });

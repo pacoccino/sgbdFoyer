@@ -2,7 +2,7 @@
 \usepackage{graphicx}
 \usepackage[frenchb]{babel}
 \usepackage[utf8]{inputenc}
-\title{Rapport de la Zboobteam}
+\title{Rapport du projet SGBD - Foyer}
 \author{Boisson Pacien - Sarlin Nicolas - Taton Sven}
 \date{Vendredi 14 Décembre 2012} 
 
@@ -28,20 +28,27 @@ Nous considérons aussi que lorsque le sujet mentionne l'action pour un élève 
 \section{Liste des opérations prévues sur la base}
 
 \subsection{Opérations sur les élèves}
+\begin{itemize}
 \item Obtenir la liste des èleves de l'école.
 \item Obtenir l'historique des élèves de l'école.
 \item Obtenir les informations (nom, prénom, promo, login) d'un élève donné.
 \item Ajouter, modifier, supprimer un élève à la liste.
+\end{itemize}
 \subsection{Opérations sur les membres du bureau}
+\begin{itemize}
 \item Obtenir un historique complet des membres du bureau, ou obtenir la liste des membres du bureau pendant une année donnée.
 \item Obtenir la liste des membres du bureau qui ont participé à un évènement après avoir effectué leur mandat.
+\end{itemize}
 \subsection{Opérations sur les évènements}
+\begin{itemize}
 \item Ajouter, modifier, supprimer un évènement.
 \item Obtenir la liste des évènements auquels un membre va participer.
 \item Obtenir la liste des jeux utilisés pour un évènement.
 \item Obtenir le nombre de participants à un évènement donné.
 \item Afficher tous commentaires écrits pour un évènement.
+\end{itemize}
 \subsection{Opérations sur les livres}
+\begin{itemize}
 \item Ajouter, modifier, supprimer un livre.
 \item Obtenir l'historique des emprunts d'un livre.
 \item Obtenir la liste et l'etat des exemplaires d'un livre.
@@ -49,10 +56,13 @@ Nous considérons aussi que lorsque le sujet mentionne l'action pour un élève 
 \item Obtenir la moyenne des emprunts de livre sur une année.
 \item Obtenir le classement des livres les plus lus.
 \item Afficher les commentaires écrits sur un livre.
+\end{itemize}
 \subsection{Opérations sur les jeux}
+\begin{itemize}
 \item Ajouter, modifier, supprimer un jeu.
 \item Obtenir un classement des jeux selon leur utilisation lors des évènements.
 \item Afficher les commentaires écrits sur un jeu.
+\end{itemize}
 
 \newpage
 \part{Schéma relationnel}
@@ -61,10 +71,14 @@ Nous considérons aussi que lorsque le sujet mentionne l'action pour un élève 
 Le passage au modèle relationnel nécessite d'étudier les particularités de chaque association pour créer les bonnes relations. Certaines nécessitent la création de nouvelles tables, d'autres se contentent d'un ajout de clé étrangère.
 \section{Contraintes d'intégrité et dépendances fonctionnelles}
 \section{Schéma relationnel en $3^{eme}$ forme normale}
+\section{Création de vues}
+Afin de faciliter certaines actions et réduire les requêtes SQL, nous avons également créé des vues concernant l'historique des membres, et les livres en cours d'emprunt.
+
 \newpage
 \part{Implantation}
 \setcounter{section}{0}
 \section{Création de la base de données}
+Nous avons choisit d'utiliser une base de données de type MySQL, correspondant au mieux a notre interface, et proposant des fonctionnalités telles que l'auto incrementations assez utiles.
 \section{Implémentation des commandes SQL}
 \subsection{Opérations sur les membres du bureau}
 \paragraph{}
@@ -191,11 +205,53 @@ SELECT texte, note
 FROM COMMENTAIRE
 WHERE COMMENTAIRE.id_jeu = 4;
 \end{verbatim}
+\section{Problèmes rencontrés}
+\subsection{Suppression de clés étrangères}
+Nous avons été confronté a un probleme lors de la suppression de certaines informations. Par exemple, lors de la suppression d'un élève, la base de données refusait de supprimer la ligne correspondante dans ELEVE car il restait des lignes contenant les memes clés dans les tables MEMBRE, EMPRUNT et PARTICIPE. Ce problème a été résolu en ajoutant la fonctionalité CASCADE lors de la création de la base de données. Nous avons donc ajouté ces lignes dans les tables contenant des clés étrangères (exemple avec MEMBRE ici) :
+\begin{verbatim}
+  INDEX `fk_Membres_Eleves` (`id_eleve` ASC) ,
+  CONSTRAINT `fk_Membres_Eleves`
+    FOREIGN KEY (`id_eleve` )
+    REFERENCES `projetSGBD`.`ELEVE` (`id_eleve` )
+    ON DELETE CASCADE)  // Supprime la ligne correspondante dans MEMBRE lors de la suppression dans ELEVE
+\end{verbatim}
+\subsection{Dernier element inseré}
+Lors de l'ajout de certaines informations, il est parfois necessaire de faire des insertions dans plusieurs tables differentes. Or, nous avons, pour les tables possedant des index, utilisé la fonctionnalité AUTO_INCREMENT de MySQL, qui permet d'inserer automatiquement un index unique aux données. 
+\\Le problème rencontré, est, par exemple, lors de l'ajout d'un membre. Il faut faire une insertion dans ELEVE puis dans MEMBRE. Cependant, dans MEMBRE, il faut indiquer l'index de l'eleve ajouté, ce que nous ne connaissons pas, car nous ne l'avons pas definit nous même. Pour cela MySQL nous propose une fonction, nommée $LAST_INSERT_ID()$ retournant le dernier index primaire créé automatiquement. Ainsi, nous pouvons creer la ligne dans MEMBRE selon le dernier ajout dans ELEVE. Nous avons verifié qu'il n'y a pas de probleme d'asynchronisme, car cette fonction est dependante de la session en cours, donc si plusieurs ajouts se font simultanement, il n'y a pas risque de chevauchement.
 
 \newpage
 \part{Utilisation}
 \setcounter{section}{0}
 \section{Description de l'environnement d'exécution}
+La creation d'un modele de donnée solide est important pour la mise en oeuvre d'un tel projet. Mais elle n'a d'interet que si l'on fournit à l'utilisateur une interface pratique d'utilisation. Celle-ci doit simplifier l'acces, la visibilité, l'ajout et la modification de données tout en respectant la structure de données.
+\\Pour ce projet nous avons choisit de construire une interface web, car c'est une des solutions les plus pratiques pour créer une interface utilisateur agréable rapidement. Nous avons donc créé un site web dynamique avec PHP, modulaire, dans lequel il est rapide d'ajouter des nouvelles fonctionnalités grâce au coté objet de PHP. En effet, chaque page est un objet héritant d'une page de base possedant les fonctionnalités necessaires pour les actions realisées (design, accès base de donnée simplifiée, configuration globale, outils divers). 
+\\Afin que d'avoir une experience utilisateur plus agréable, nous nous sommes servis de la librairie jQuery permettant d'avoir des pages soignées et dynamiques, notament grace aux widget et l'utilisation d'AJAX. 
 \section{Notice d'utilisation}
+\subsection{Logiciels necessaires}
+Nous avons conçu ce site web grâce a la combinaison PHP5/MySQL.
+Le site a été testé et est fonctionnel avec les logiciels suivants :
+\begin{itemize}
+\item Apache 2
+\item PHP 5.4 avec mysqli activé
+\item MySQL 5.5
+\item Chromium 22 / Firefox 16 avec javascript activé
+\end{itemize}
+\subsection{Première utilisation}
+Vous devez placer tous les fichiers du site dans votre dossier d'hebergement. La première chose a faire est d'ouvrir le fichier à la racine nommé $config.php$. Il contient les informations de bases pour se connecter a la base de donnée. Veuillez modifier les variables $\$config->mysqlDB$ adéquates pour fonctionner sur votre serveur MySQL. 
+Vous pouvez alors accéder avec votre navigateur au site.
+\\ \textit{Note : 
+En fonction de la configuration de MySQL, il sera peut-etre necessaire de créer au préalable la base de données indiquée dans ce fichier. Dans ce cas, une fois la base de données créée, aller dans le site puis dans \textbf{Outils} enfin \textbf{Reinitialiser la base de donnees}.}
 \section{Description des interfaces éventuelles}
+\subsection{Fonctionnement du site}
+Les differents accès aux informations sont regroupées par categories, les livres, les jeux, les evenements et les élèves. Pour chacune de celles ci, la liste est affichée, avec possiblité d'ajouter un élement, et pour chaque élement, on peut editer, supprimer ou d'obtenir plus d'information sur cet élement en particulier.
+\\Les actions concernant un élève en particulier n'est possible que si cet élève est connecté. Pour ceci, consulter la liste des élèves, noter les login et les utiliser dans "Se connecter". Il est alors possible d'emprunter un livre, de s'inscrire a un évènement ou faire un commentaire. Les résultats de ces actions sont visibles dans les categories correspondantes.
+\\Il est possible d'éxecuter directement une requète SQL dans le site, afin de pouvoir effectuer ses propres tests. Ceci ne serait pas mis a disposition si le site etait vraiment deployé, pour des raisons de securité.
+\subsection{Ce qu'il manque à l'interface}
+Beaucoup de fonctionnalités auraient pu être rajoutées mais cela n'a pas été effectué car n'etant pas demandé dans le sujet et ayant peu de rapport avec les bases de données, auraient eu peu d'interêt ici. Cependant, en pratique, certaines pourraient être indispensable, a savoir :
+\begin{itemize}
+\item Connexion par mot de passe pour les élèves. 
+\item Modification des données uniquement par les membres actuels du bureau. A savoir ajout d'évènement, de membres, de livres, de jeux et modification de ceux-ci.
+\item Meilleure gestion des exemplaires des livres. Il n'est actuellement pas possible d'ajouter un exemplaire a un livre.
+\end{itemize}
+
 \end{document}

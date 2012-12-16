@@ -51,11 +51,11 @@ $(function() {
                 primary: "ui-icon-script"
            }});
 
-        $("#annee_actuelle").click(function(){
+        $("#annee_actuelle").click(function(event){
         	event.preventDefault();
 		    document.location.href='index.php?action=bureau';
 		  });
-        $("#historique").click(function(){
+        $("#historique").click(function(event){
         	event.preventDefault();
 		    document.location.href='index.php?action=bureau&historique';
 		  });

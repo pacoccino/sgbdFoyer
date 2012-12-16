@@ -185,7 +185,7 @@ $(function() {
         
         $( "button" ).button();
         $( "input[type=submit]" ).button();
-        $("#all_evt").click(function(){
+        $("#all_evt").click(function(event){
         	 event.preventDefault();
 		     document.location.href='index.php?action=evt';
 		  });

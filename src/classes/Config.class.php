@@ -5,7 +5,7 @@ class Config {
 	public static $mysqlDB;
 	
 	public static function init() {
-		include "src/config.php";
+		include "config.php";
 		Config::$dbType = $config->dbType;
 		Config::$mysqlDB = $config->mysqlDB;
 	}
