@@ -79,17 +79,6 @@ abstract class Layout {
 					<li>
 						<a href="?action=jeux">Les jeux</a>
 					</li>
-					<?php if(isset($_SESSION['loggedin'])) { ?>
-					<li>
-						<a href="?action=comment">Commenter</a>
-					</li>
-					<li>
-						<a href="?action=emprunt">Emprunter</a>
-					</li>
-					<li>
-						<a href="?action=participer">Participer</a>
-					</li>
-					<?php }	?>
 					<li>
 						<a href="?action=stats">Statistiques</a>
 					</li>
@@ -102,17 +91,35 @@ abstract class Layout {
 				</ul>
 			</nav>
 	<div id="connect">
+<ul>
 <?php
 	if(isset($_SESSION['loggedin']))
 	{
-		echo "<p>Connecté en tant que <i>".Core::$eleve_co->login."</i></p><a href='index.php?action=logout'>Se déconnecter</a>";
-	}
+		echo "<li>Connecté en tant que <i>".Core::$eleve_co->login."</i></li><br />";
+?>
+
+		<li>
+			<a href="?action=comment">Commenter</a>
+		</li>
+		<li>
+			<a href="?action=emprunt">Emprunter</a>
+		</li>
+		<li>
+			<a href="?action=participer">Participer</a>
+		</li>
+		<li>
+			<a href='index.php?action=logout'>Se déconnecter</a>
+		</li>
+		
+
+<?php	}
 	else 
 	{
-		echo "<a href='index.php?action=login'>Se connecter</a>";
+		echo "<li><a href='index.php?action=login'>Se connecter</a></li>";
 	}
 
 ?>
+</ul>
 	</div>
 	</div>
 	<div id="right">

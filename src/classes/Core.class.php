@@ -67,7 +67,10 @@ class Core {
 		
 		$page=null;
 		if(isset($_GET['raz']))
+		{
 			$this::razDB();
+			unset($_SESSION['loggedin']);
+		}	
 		elseif(isset($_GET['test']))
 			$this->testP();
 		elseif(isset($_GET['action'])) {

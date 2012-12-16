@@ -43,8 +43,8 @@ div#menu{
 
 div#connect{
 	position:	fixed;
-	left:		20px;
-	bottom:		20px;
+
+	bottom:		5px;
 	
 	font-family:	Arial;
 	font-size:		1em;
@@ -52,10 +52,6 @@ div#connect{
 	text-shadow:	4px 2px 3px #595959;
 
 	width:9em;
-}
-
-#connect p{
-	padding-left: 10px;
 }
 
 

@@ -41,6 +41,8 @@ INSERT INTO MEMBRE (id_eleve, annee) values (8, 2010);
 INSERT INTO MEMBRE (id_eleve, annee) values (12, 2010);
 INSERT INTO MEMBRE (id_eleve, annee) values (15, 2011);
 INSERT INTO MEMBRE (id_eleve, annee) values (21, 2011);
+INSERT INTO MEMBRE (id_eleve, annee) values (17, 2012);
+INSERT INTO MEMBRE (id_eleve, annee) values (11, 2012);
 INSERT INTO MEMBRE (id_eleve, annee) values (22, 2012);
 INSERT INTO MEMBRE (id_eleve, annee) values (18, 2012);
 
@@ -53,13 +55,13 @@ select count(*), '= 8 ?','MEMBRE' from MEMBRE ;
 
 
 INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2009-06-23', 2, 'Pin Galant');
-INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2010-05-03', 3, 'Enseirb');
-INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2011-04-13', 3, 'Cock and Bull');
-INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2011-11-27', 2, 'Enseirb');
-INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2012-02-14', 3, 'Enseirb');
-INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2012-05-07', 3, 'La MAC');
-INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2012-07-14', 3, 'Ibiza');
-INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2012-12-15', 2, 'Pin Galant');
+INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2010-03-03', 3, 'Enseirb');
+INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2011-01-13', 3, 'Cock and Bull');
+INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2012-05-27', 2, 'Enseirb');
+INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2012-12-05', 3, 'Enseirb');
+INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2013-07-07', 3, 'La MAC');
+INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2013-09-14', 3, 'Ibiza');
+INSERT INTO EVENEMENT (date_evt, nbparticipants, lieu) values ('2013-12-15', 2, 'Pin Galant');
 
 
 
@@ -71,29 +73,23 @@ select count(*), '= 8 ?','EVENEMENT' from EVENEMENT ;
 
 
 INSERT INTO PARTICIPE (id_evt, id_eleve) values (1, 1);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (1, 6);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (1, 13);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (2, 19);
 INSERT INTO PARTICIPE (id_evt, id_eleve) values (2, 2);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (3, 8);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (3, 10);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (3, 21);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (4, 8);
+INSERT INTO PARTICIPE (id_evt, id_eleve) values (2, 3);
+INSERT INTO PARTICIPE (id_evt, id_eleve) values (3, 4);
+INSERT INTO PARTICIPE (id_evt, id_eleve) values (3, 5);
+INSERT INTO PARTICIPE (id_evt, id_eleve) values (3, 6);
+INSERT INTO PARTICIPE (id_evt, id_eleve) values (4, 2);
+INSERT INTO PARTICIPE (id_evt, id_eleve) values (4, 3);
 INSERT INTO PARTICIPE (id_evt, id_eleve) values (4, 4);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (5, 15);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (5, 5);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (5, 10);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (6, 21);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (6, 8);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (7, 21);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (7, 18);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (7, 23);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (7, 10);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (8, 21);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (8, 18);
-INSERT INTO PARTICIPE (id_evt, id_eleve) values (8, 11);
+INSERT INTO PARTICIPE (id_evt, id_eleve) values (4, 5);
+INSERT INTO PARTICIPE (id_evt, id_eleve) values (6, 3);
+INSERT INTO PARTICIPE (id_evt, id_eleve) values (6, 4);
+INSERT INTO PARTICIPE (id_evt, id_eleve) values (7, 4);
+INSERT INTO PARTICIPE (id_evt, id_eleve) values (7, 5);
+INSERT INTO PARTICIPE (id_evt, id_eleve) values (7, 6);
+INSERT INTO PARTICIPE (id_evt, id_eleve) values (7, 7);
 
-select count(*), '= 20 ?','PARTICIPE' from PARTICIPE ;
+select count(*), '= 16 ?','PARTICIPE' from PARTICIPE ;
 
 -- ============================================================
 --    JEU
@@ -178,19 +174,20 @@ select count(*), '= 7 ?','EMPRUNT' from EMPRUNT ;
 --    COMMENTAIRE
 -- ============================================================
 
-INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('Tres rigolo', 10, 1, 5);
-INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('Bon', 6, 1, 3);
-INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('NUL NUL !!', 1, 1, 1);
-INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('Moyen... :|', 4, 2, 4);
-INSERT INTO COMMENTAIRE (texte, id_eleve, id_jeu) values ('distrayant', 3, 4);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('Tres rigolo', 10, 1, 1);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('Bon', 6, 1, 2);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('NUL NUL !!', 1, 1, 2);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_jeu) values ('Moyen... :|', 4, 2, 3);
+INSERT INTO COMMENTAIRE (texte, id_eleve, id_jeu) values ('distrayant', 3, 3);
 INSERT INTO COMMENTAIRE (note, id_eleve, id_jeu) values (9, 2, 3);
-INSERT INTO COMMENTAIRE (note, id_eleve, id_jeu) values (16, 7, 5);
-INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('Y avait que des cons', 3, 12 , 8);
-INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('On a bien rigole', 7, 6, 3);
-INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('Les parties etaient trop longues. dommage...', 6, 12, 7);
-INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('Commentaire de remplissage', 4, 1, 4);
-INSERT INTO COMMENTAIRE (texte, id_eleve, id_evt) values ('Trop facile le tournoi', 1, 4);
-INSERT INTO COMMENTAIRE (note, id_eleve, id_evt) values (5, 14, 6);
-INSERT INTO COMMENTAIRE (note, id_eleve, id_evt) values (9, 8, 3);
+INSERT INTO COMMENTAIRE (note, id_eleve, id_jeu) values (16, 7, 4);
+
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('Y avait que des cons', 3, 12 , 1);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('On a bien rigole', 7, 6, 2);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('Les parties etaient trop longues. dommage...', 6, 12, 2);
+INSERT INTO COMMENTAIRE (texte, note, id_eleve, id_evt) values ('Commentaire de remplissage', 4, 1, 3);
+INSERT INTO COMMENTAIRE (texte, id_eleve, id_evt) values ('Trop facile le tournoi', 1, 3);
+INSERT INTO COMMENTAIRE (note, id_eleve, id_evt) values (5, 14, 3);
+INSERT INTO COMMENTAIRE (note, id_eleve, id_evt) values (9, 8, 4);
 
 select count(*), '= 14 ?','COMMENTAIRE' from COMMENTAIRE ;

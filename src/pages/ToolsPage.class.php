@@ -11,7 +11,7 @@ class ToolsPage extends Layout{
 ?>
 
 <h1>Outils</h1>
-<a href="index.php?raz">Réinitialiser la base de données.</a>
+<a href="index.php?raz">Réinitialiser la base de données</a>
 
 <?php
 	}
