@@ -22,9 +22,10 @@ Tous les élèves de l'école sont des utilisateurs du foyer, chaque élève est
 \section{Modèle entité-association}
 \includegraphics[width=1.2\textwidth]{ER.png}
 Les conventions de nommage utilisées sont les suivantes : Les noms d'entité/association sont écrits en majuscule. Les clés sont en minuscule. En cas d'ambigu\"ité entre deux noms, on rajoute un symbole \_, suivi du nom de la table en minuscule. Les clés primaires commencent par id.
-\paragraph{}
+\section{Considérations}
 Les entités sont celles demandées dans le sujet, à l'exception de l'entité EXEMPLAIRE. Celle ci a été créée pour distinguer le livre au sens virtuel (qui possède titre, auteur, editeur et ISBN) de l'objet physique. Ainsi, un élève emprunte un exemplaire et non pas un livre. Nous avons aussi choisi de réaliser une association A ETE EMPRUNTE PAR (emprunts actuels et passés plut\^ot que EST EMPRUNTE PAR afin de pouvoir conserver l'historique des emprunts (utile pour les requ\^etes de statistiques).\\
 Nous considérons aussi que lorsque le sujet mentionne l'action pour un élève de lire un livre, il s'agit en fait de l'emprunter (on n'enregistre pas dans la base de donnée à chaque fois qu'un élève consulte un livre sur place). 
+
 \section{Liste des opérations prévues sur la base}
 
 \subsection{Opérations sur les élèves}
@@ -71,6 +72,7 @@ Nous considérons aussi que lorsque le sujet mentionne l'action pour un élève 
 Le passage au modèle relationnel nécessite d'étudier les particularités de chaque association pour créer les bonnes relations. Certaines nécessitent la création de nouvelles tables, d'autres se contentent d'un ajout de clé étrangère.
 \section{Contraintes d'intégrité et dépendances fonctionnelles}
 \section{Schéma relationnel en $3^{eme}$ forme normale}
+\\L'information "nombre de participants" etait ambigue. Nous avons decidé qu'elle indiquerait le nombre maximum de participants a un evenement, et que nous calculerions grâce a une requete le nombre réel de participants a un évènement afin de respecter le principe de constance des données.
 \section{Création de vues}
 Afin de faciliter certaines actions et réduire les requêtes SQL, nous avons également créé des vues concernant l'historique des membres, et les livres en cours d'emprunt.
 
@@ -79,14 +81,27 @@ Afin de faciliter certaines actions et réduire les requêtes SQL, nous avons é
 \setcounter{section}{0}
 \section{Création de la base de données}
 Nous avons choisit d'utiliser une base de données de type MySQL, correspondant au mieux a notre interface, et proposant des fonctionnalités telles que l'auto incrementations assez utiles.
+
 \section{Implémentation des commandes SQL}
-\subsection{Opérations sur les membres du bureau}
+La plupart des requètes utiles sont dans le fichier sql/requests.sql. Voici une liste incomplète :
 \paragraph{}
-Historique complet des membres du bureau, ou liste des membres du bureau pendant une année donnée.
+Historique complet des membres du bureau en passant par la vue HISTORIQUE_MEMBRE
 \begin{verbatim}
 SELECT *
-FROM ELEVE, MEMBRE
+FROM HISTORIQUE_MEMBRE
+\end{verbatim}
+Cette requete donne le même resultat que :
+\begin{verbatim}
+SELECT ELEVE.*,
+       MEMBRE.annee
+FROM ELEVE, MEMBRE 
 WHERE ELEVE.id_eleve = MEMBRE.id_eleve AND MEMBRE.annee < YEAR(NOW());
+\end{verbatim}
+\paragraph{}
+Membres actuels du bureau en passant par la vue MEMBRE_ACTUEL
+\begin{verbatim}
+SELECT *
+FROM HISTORIQUE_MEMBRE
 \end{verbatim}
 \paragraph{}
 Liste des membres du bureau qui ont participé à un évènement après avoir effectué leur mandat.
@@ -103,7 +118,8 @@ AND YEAR(EVENEMENT.date_evt) > MEMBRE.annee;
 Informations (nom, prénom, promo, login) d'un élève donné.
 \begin{verbatim}
 SELECT *
-FROM ELEVE;
+FROM ELEVE 
+WHERE id_eleve=3;
 \end{verbatim}
 \paragraph{}
 Commentaires écrits par l'élève à propos d'un jeu ou d'un livre.
@@ -114,6 +130,11 @@ SELECT IFNULL(texte, 'Non renseigné') AS texte,
        IF(COMMENTAIRE.id_evt, COMMENTAIRE.id_evt, COMMENTAIRE.id_jeu) AS id
 FROM COMMENTAIRE
 WHERE id_eleve = 1;
+\end{verbatim}
+\paragraph{}
+Liste des emprunts en cours pour un élève
+\begin{verbatim}
+SELECT * FROM EMPRUNT WHERE date_rendu is null AND id_eleve = 2;
 \end{verbatim}
 \subsection{Opérations sur les évènements}
 \paragraph{}
@@ -140,17 +161,28 @@ SELECT texte, note
 FROM COMMENTAIRE
 WHERE COMMENTAIRE.id_evt = 4;
 \end{verbatim}
+\paragraph{}
+Evenements auxquels un eleve va participer dans le futur
+\begin{verbatim}
+SELECT * FROM PARTICIPE JOIN EVENEMENT ON PARTICIPE.id_evt = EVENEMENT.id_evt WHERE EVENEMENT.date_evt > DATE(NOW()) AND  PARTICIPE.id_eleve = 
+\end{verbatim}
 \subsection{Opérations sur les livres}
 \paragraph{}
-Liste des emprunts par élève pour un livre donné.
+Historique des emprunts pour un livre
 \begin{verbatim}
-SELECT date_rendu, nom_eleve  
-FROM ELEVE, LIVRE, EXEMPLAIRE, EMPRUNT  
-WHERE ELEVE.id_eleve = EMPRUNT.id_eleve  
-AND EMPRUNT.id_exemplaire = EXEMPLAIRE.id_exemplaire  
-AND EXEMPLAIRE.id_livre = LIVRE.id_livre  
-AND LIVRE.titre = "Fascination" 
-ORDER BY date_rendu DESC;
+SELECT date_rendu, nom_eleve  FROM ELEVE, LIVRE, EXEMPLAIRE, EMPRUNT  WHERE ELEVE.id_eleve = EMPRUNT.id_eleve  AND EMPRUNT.id_exemplaire = EXEMPLAIRE.id_exemplaire  AND EXEMPLAIRE.id_livre = LIVRE.id_livre  AND LIVRE.id_livre=3 ORDER BY date_rendu DESC;
+\end{verbatim}
+\paragraph{}
+Liste des livres disponibles a l'emprunt
+\begin{verbatim}
+SELECT DISTINCT EXEMPLAIRE.id_livre 
+FROM EXEMPLAIRE LEFT JOIN LIVRE_EMPRUNTE ON EXEMPLAIRE.id_exemplaire = LIVRE_EMPRUNTE.id_exemplaire
+WHERE EXEMPLAIRE.empruntable = TRUE AND LIVRE_EMPRUNTE.id_emprunt is null;
+\end{verbatim}
+\paragraph{}
+Nombres d'exemplaires disponibles a l'emprunt pour un livre
+\begin{verbatim}
+SELECT COUNT(*) FROM EXEMPLAIRE LEFT JOIN LIVRE_EMPRUNTE ON EXEMPLAIRE.id_exemplaire = LIVRE_EMPRUNTE.id_exemplaire WHERE EXEMPLAIRE.empruntable = TRUE AND LIVRE_EMPRUNTE.id_emprunt is null AND EXEMPLAIRE.id_livre = 4;
 \end{verbatim}
 \paragraph{}
 Moyenne des emprunts de livre sur une année donnée.
@@ -205,6 +237,8 @@ SELECT texte, note
 FROM COMMENTAIRE
 WHERE COMMENTAIRE.id_jeu = 4;
 \end{verbatim}
+
+
 \section{Problèmes rencontrés}
 \subsection{Suppression de clés étrangères}
 Nous avons été confronté a un probleme lors de la suppression de certaines informations. Par exemple, lors de la suppression d'un élève, la base de données refusait de supprimer la ligne correspondante dans ELEVE car il restait des lignes contenant les memes clés dans les tables MEMBRE, EMPRUNT et PARTICIPE. Ce problème a été résolu en ajoutant la fonctionalité CASCADE lors de la création de la base de données. Nous avons donc ajouté ces lignes dans les tables contenant des clés étrangères (exemple avec MEMBRE ici) :
@@ -213,11 +247,12 @@ Nous avons été confronté a un probleme lors de la suppression de certaines in
   CONSTRAINT `fk_Membres_Eleves`
     FOREIGN KEY (`id_eleve` )
     REFERENCES `projetSGBD`.`ELEVE` (`id_eleve` )
-    ON DELETE CASCADE)  // Supprime la ligne correspondante dans MEMBRE lors de la suppression dans ELEVE
+    ON DELETE CASCADE)  
+// Supprime la ligne correspondante dans MEMBRE lors de la suppression dans ELEVE
 \end{verbatim}
 \subsection{Dernier element inseré}
-Lors de l'ajout de certaines informations, il est parfois necessaire de faire des insertions dans plusieurs tables differentes. Or, nous avons, pour les tables possedant des index, utilisé la fonctionnalité AUTO_INCREMENT de MySQL, qui permet d'inserer automatiquement un index unique aux données. 
-\\Le problème rencontré, est, par exemple, lors de l'ajout d'un membre. Il faut faire une insertion dans ELEVE puis dans MEMBRE. Cependant, dans MEMBRE, il faut indiquer l'index de l'eleve ajouté, ce que nous ne connaissons pas, car nous ne l'avons pas definit nous même. Pour cela MySQL nous propose une fonction, nommée $LAST_INSERT_ID()$ retournant le dernier index primaire créé automatiquement. Ainsi, nous pouvons creer la ligne dans MEMBRE selon le dernier ajout dans ELEVE. Nous avons verifié qu'il n'y a pas de probleme d'asynchronisme, car cette fonction est dependante de la session en cours, donc si plusieurs ajouts se font simultanement, il n'y a pas risque de chevauchement.
+Lors de l'ajout de certaines informations, il est parfois necessaire de faire des insertions dans plusieurs tables differentes. Or, nous avons, pour les tables possedant des index, utilisé la fonctionnalité AUTO\_INCREMENT de MySQL, qui permet d'inserer automatiquement un index unique aux données. 
+\\Le problème rencontré, est, par exemple, lors de l'ajout d'un membre. Il faut faire une insertion dans ELEVE puis dans MEMBRE. Cependant, dans MEMBRE, il faut indiquer l'index de l'eleve ajouté, ce que nous ne connaissons pas, car nous ne l'avons pas definit nous même. Pour cela MySQL nous propose une fonction, nommée $LAST\_INSERT\_ID()$ retournant le dernier index primaire créé automatiquement. Ainsi, nous pouvons creer la ligne dans MEMBRE selon le dernier ajout dans ELEVE. Nous avons verifié qu'il n'y a pas de probleme d'asynchronisme, car cette fonction est dependante de la session en cours, donc si plusieurs ajouts se font simultanement, il n'y a pas risque de chevauchement.
 
 \newpage
 \part{Utilisation}

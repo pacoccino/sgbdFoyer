@@ -1,8 +1,7 @@
-/* Historique des membres du bureau depuis sa création
-
+/* Historique complet des membres du bureau en passant par la vue HISTORIQUE_MEMBRE
 SELECT *
-FROM ELEVE, MEMBRE
-WHERE ELEVE.id_eleve = MEMBRE.id_eleve AND MEMBRE.annee < YEAR(NOW());
+FROM HISTORIQUE_MEMBRE;
+
 */
 
 /* Membres du bureau à une date donnée, ici avec annee = 2009
@@ -15,8 +14,7 @@ WHERE ELEVE.id_eleve = MEMBRE.id_eleve AND MEMBRE.annee = 2009;
 /* Membres du bureau actuellement
 
 SELECT *
-FROM ELEVE, MEMBRE
-WHERE ELEVE.id_eleve = MEMBRE.id_eleve AND MEMBRE.annee = YEAR(NOW());
+FROM MEMBRE_ACTUEL
 */
 
 /* Liste des jeux utilisés pour un évènement donné, ici avec id = 3
@@ -140,4 +138,11 @@ WHERE id_eleve = 1;
 
 SELECT COUNT(*) FROM EXEMPLAIRE LEFT JOIN LIVRE_EMPRUNTE ON EXEMPLAIRE.id_exemplaire = LIVRE_EMPRUNTE.id_exemplaire WHERE EXEMPLAIRE.empruntable = TRUE AND LIVRE_EMPRUNTE.id_emprunt is null AND EXEMPLAIRE.id_livre = 4;
 
+*/
+
+/* Liste des livres disponibles a l'emprunt
+
+SELECT DISTINCT EXEMPLAIRE.id_livre 
+FROM EXEMPLAIRE LEFT JOIN LIVRE_EMPRUNTE ON EXEMPLAIRE.id_exemplaire = LIVRE_EMPRUNTE.id_exemplaire
+WHERE EXEMPLAIRE.empruntable = TRUE AND LIVRE_EMPRUNTE.id_emprunt is null;
 */
