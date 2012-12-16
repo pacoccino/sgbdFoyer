@@ -127,6 +127,7 @@ WHERE COMMENTAIRE.id_evt = 4;
 */
 
 /* Affichage de la liste des commentaires d'un élève
+
 SELECT IFNULL(texte, 'Non renseigné') AS texte,
        IFNULL(note, 'Non renseigné') AS note,
        IF(COMMENTAIRE.id_evt, 'evt', 'jeu') AS type, 
