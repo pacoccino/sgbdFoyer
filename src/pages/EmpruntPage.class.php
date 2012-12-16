@@ -1,14 +1,14 @@
 <?php
 
-class CommentPage extends Layout{
+class EmpruntPage extends Layout{
 	private $status="";
 	
 	public function __construct()
 	{
 		if(!isset($_SESSION['loggedin']))
 			die("Bad request");
-		$this->pageTitle = "Commenter";
-		if(isset($_POST['posted']) && isset($_SESSION['loggedin']))
+		$this->pageTitle = "Emprunts";
+		/*if(isset($_POST['posted']) && isset($_SESSION['loggedin']))
 		{
 			if($_POST['evt']!="-1" && $_POST['jeu']!="-1")
 			{
@@ -34,7 +34,7 @@ class CommentPage extends Layout{
 				else
 					$this->status = "Erreur de requete".Database::errorMsg();
 			}
-		}
+		}*/
 	}
 	// cette fonction est ce que va afficher la page web
 	public function bodyHTML() {
@@ -49,18 +49,42 @@ $(function() {
 
 });
     </script>
-<h1>Faire un commentaire</h1>
+<h1>Liste de vos emprunts en cours</h1>
+<?php
+$sql= "SELECT * FROM EMPRUNT WHERE date_rendu is null AND id_eleve = ".$_SESSION['loggedin'];
+$result = Database::query($sql);
+if(!($result))
+{
+	echo "Erreur de requete : ".Database::errorMsg();
+}
+elseif($result->num_rows==0)
+{
+	echo "Vous n'avez aucun emprunt en cours";
+}
+else
+{
+	echo "<ul>";
+	while($res = Database::fetch($result))
+	{
+		echo "<li>".$res['id_emprunt']."</li>";
+	} 
+	echo "</ul>";
+}
+?>
+<h1>Emprunter un livre</h1>
 <?php echo $this->status; ?>
 <form action="index.php?action=comment" method=post>
 <input type="hidden" name="posted" value="yes"/>
 <table >
 <tr>
-	<td><label for="evt">Evenement</label></td>
-<td><select name="evt" id="evt" onchange="$('#jeu').val('-1')">
-        <option value="-1">Aucun evenement</option>
+	<td><label for="evt">Livres disponibles à l'emprunt</label></td>
+<td><select name="id_li" id="id_li">
+
         <?php
-        
-        $result=Evenement::getListe();
+        $sql = "SELECT DISTINCT EXEMPLAIRE.id_livre 
+        		FROM EXEMPLAIRE LEFT JOIN LIVRE_EMPRUNTE ON EXEMPLAIRE.id_exemplaire = LIVRE_EMPRUNTE.id_exemplaire
+				WHERE EXEMPLAIRE.empruntable = TRUE AND LIVRE_EMPRUNTE.id_emprunt is null";
+        $result=Database::query($sql);
 			if(!($result))
 			{
 				echo "Erreur de requete : ".Database::errorMsg();
@@ -69,52 +93,18 @@ $(function() {
 			{
 				while($res = Database::fetch($result))
 				{
-					$evenement = new Evenement($res);
+					$livre = new Livre();
+					$livre->getFromDatabase($res['id_livre']);
 					
-					echo "<option value='".$evenement->id."'>".$evenement->date." a ".$evenement->lieu."</option>";
+					echo "<option value='".$livre->id."'>".$livre->titre."</option>";
 				} 
 			}
         ?>
 </select></td>
 </tr>
-<tr>
-<td><label for="jeu">Jeu</label></td>
-<td><select name="jeu" id="jeu" onchange="$('#evt').val('-1')">
-        <option value="-1">Aucun jeu</option>
-        <?php
-        
-        $result=Jeu::getListe();
-			if(!($result))
-			{
-				echo "Erreur de requete : ".Database::errorMsg();
-			}
-			else
-			{
-				while($res = Database::fetch($result))
-				{
-					$jeu = new Jeu($res);
-					
-					echo "<option value='".$jeu->id."'>".$jeu->nom."</option>";
-				} 
-			}
-        ?>
-</select></td>
-<tr>
-<td><label for="text">Commentaire</label></td>
-<td><textarea rows="5" cols="30" name="texte" id="texte"></textarea></td>
-</tr><tr>
-<td><label for="note">Note</label></td>
-<td><select name="note" id="note">
-	<?php
-	for($i=0; $i<=10; $i++)
-	{
-		echo "<option value='$i''>$i</option>";
-	}
- ?>
-</select></td></tr>
-</table>
 
-<button id="post">Ajouter</button>
+</table>
+<button id="post">Emprunterr</button>
 </form>
 	
 <?php

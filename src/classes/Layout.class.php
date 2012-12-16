@@ -83,6 +83,9 @@ abstract class Layout {
 					<li>
 						<a href="?action=comment">Commenter</a>
 					</li>
+					<li>
+						<a href="?action=emprunt">Emprunter</a>
+					</li>
 					<?php }	?>
 					<li>
 						<a href="?action=stats">Statistiques</a>

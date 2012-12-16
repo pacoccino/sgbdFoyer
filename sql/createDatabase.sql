@@ -223,6 +223,11 @@ CREATE TABLE IF NOT EXISTS `projetSGBD`.`HISTORIQUE_MEMBRE` (`id_eleve` INT, `no
 CREATE TABLE IF NOT EXISTS `projetSGBD`.`MEMBRE_ACTUEL` (`id_eleve` INT, `nom_eleve` INT, `prenom_eleve` INT, `filliere` INT, `login` INT, `promo` INT, `annee` INT);
 
 -- -----------------------------------------------------
+-- Placeholder table for view `projetSGBD`.`LIVRE_EMPRUNTE`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `projetSGBD`.`LIVRE_EMPRUNTE` (`id_emprunt` INT, `id_eleve` INT, `date_emprunt` INT, `id_exemplaire` INT, `id_livre` INT);
+
+-- -----------------------------------------------------
 -- View `projetSGBD`.`HISTORIQUE_MEMBRE`
 -- -----------------------------------------------------
 DROP VIEW IF EXISTS `projetSGBD`.`HISTORIQUE_MEMBRE` ;
@@ -256,8 +261,19 @@ SELECT ELEVE.id_eleve,
 FROM ELEVE, MEMBRE 
 WHERE ELEVE.id_eleve = MEMBRE.id_eleve AND MEMBRE.annee = YEAR(NOW());
 
+-- -----------------------------------------------------
+-- View `projetSGBD`.`LIVRE_EMPRUNTE`
+-- -----------------------------------------------------
+DROP VIEW IF EXISTS `projetSGBD`.`LIVRE_EMPRUNTE` ;
+DROP TABLE IF EXISTS `projetSGBD`.`LIVRE_EMPRUNTE`;
+USE `projetSGBD`;
+CREATE  OR REPLACE VIEW LIVRE_EMPRUNTE AS
+SELECT em.id_emprunt, em.id_eleve, em.date_emprunt, ex.id_exemplaire, ex.id_livre
+FROM EMPRUNT em INNER JOIN EXEMPLAIRE ex ON em.id_exemplaire = ex.id_exemplaire
+WHERE em.date_rendu is null;
+;
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-

@@ -151,11 +151,33 @@ if(isset($_GET['action']))
 	}
 	if($_GET['action'] == 'get_livre_info' && $_GET['id_li'])
 	{
-			echo "<h3>Liste adhérents ayant lu :</h3>";
 			$livre = new Livre();
 			$id = intval(Core::$_clean_get['id_li']);
 			$livre->getFromDatabase($id);
 			echo "<b>".$livre->titre."</b><br/>";
+			
+			echo "<h3>Liste des exemplaires :</h3>";
+			$result=Database::query("SELECT * FROM EXEMPLAIRE WHERE id_livre = $id");
+			echo "<div id='liste'><table><tr><th>ID</th><th>Disponibilité</th><th>Prix</th><th>Date d'achat</th></tr>";
+			while($res = Database::fetch($result))
+			{
+				$etatl=Database::query("SELECT * FROM LIVRE_EMPRUNTE WHERE id_exemplaire = ".$res['id_exemplaire']);
+				if($etatl->num_rows == 1)
+					$dispo = "Emprunté";
+				else 
+					$dispo = "Disponible";
+				if($res['empruntable']==false)
+					$dispo = "Non empruntable";
+				echo "<tr>";
+				echo "<td>".$res['id_exemplaire']."</td>";
+				echo "<td>".$dispo."</td>";
+				echo "<td>".$res['prix_livre']."</td>";
+				echo "<td>".$res['date_livre']."</td>";
+				echo "</tr>";
+			} 
+			echo "</table></div>";
+			
+			echo "<h3>Liste adhérents ayant lu ce livre :</h3>";
 			$result=Database::query("SELECT date_rendu, nom_eleve, prenom_eleve 
 				FROM ELEVE, LIVRE, EXEMPLAIRE, EMPRUNT  
 				WHERE ELEVE.id_eleve = EMPRUNT.id_eleve  

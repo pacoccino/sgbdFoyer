@@ -96,6 +96,9 @@ class Core {
 				case "comment":
 					$page = new CommentPage();
 					break;
+				case "emprunt":
+					$page = new EmpruntPage();
+					break;
 				case "tools":
 					$page = new ToolsPage();
 					break;

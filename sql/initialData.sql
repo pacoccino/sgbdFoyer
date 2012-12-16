@@ -139,11 +139,9 @@ INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('Tentation', 'Meyer', '
 INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('Hésitation', 'Meyer', 'Hachette', 14);
 INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('Révélation', 'Meyer', 'Gallimard', 1278);
 INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('Le Hobbit', 'Tolkien', 'Hachette', 1223);
-INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('Le Silmarillon', 'Tolkien', 'Hachette', 12899);
-INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('Harry Potter', 'Rowling', 'Gallimard', 12167);
 INSERT INTO LIVRE (titre, auteur, editeur, ISBN) values ('H2G2', 'Adams', 'Coucou',  42);
 
-select count(*), '= 8 ?','LIVRE' from LIVRE ;
+select count(*), '= 6 ?','LIVRE' from LIVRE ;
 
 -- ============================================================
 --    EXEMPLAIRE

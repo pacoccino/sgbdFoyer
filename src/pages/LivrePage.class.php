@@ -123,7 +123,7 @@ $(function() {
         $( "#dialog-info" ).dialog({
 	        autoOpen: false,
 	        height: 500,
-	        width: 350,
+	        width: 500,
 	        modal: true,
 	        show: "explode",
 	        buttons: {
