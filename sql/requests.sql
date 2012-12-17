@@ -146,3 +146,30 @@ SELECT DISTINCT EXEMPLAIRE.id_livre
 FROM EXEMPLAIRE LEFT JOIN LIVRE_EMPRUNTE ON EXEMPLAIRE.id_exemplaire = LIVRE_EMPRUNTE.id_exemplaire
 WHERE EXEMPLAIRE.empruntable = TRUE AND LIVRE_EMPRUNTE.id_emprunt is null;
 */
+
+/* Trigger pour commentaires multiples
+DELIMITER //
+CREATE TRIGGER `MULTIPLE_COMMENT`
+BEFORE INSERT
+ON `COMMENTAIRE`
+FOR EACH ROW
+BEGIN
+	DECLARE NB_ID INTEGER;
+	
+    IF(NEW.id_evt is not null) THEN
+        SELECT COUNT(*) INTO NB_ID FROM `COMMENTAIRE` WHERE id_eleve=NEW.id_eleve AND id_evt=NEW.id_evt;
+	END IF;
+    IF(NEW.id_jeu is not null) THEN
+        SELECT COUNT(*) INTO NB_ID FROM `COMMENTAIRE` WHERE id_eleve=NEW.id_eleve AND id_jeu=NEW.id_jeu;
+	END IF;
+
+	IF (NB_ID>0) THEN
+		SET NEW.id_eleve = NULL;
+		SET NEW.id_jeu = NULL;
+		SET NEW.id_evt = NULL;
+	END IF;
+END; 
+//
+
+*/
+	

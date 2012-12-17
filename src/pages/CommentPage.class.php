@@ -32,7 +32,7 @@ class CommentPage extends Layout{
 				if(Database::query($sql))
 					$this->status = "<font color='green'>Commentaire ajouté</font>";
 				else
-					$this->status = "Erreur de requete".Database::errorMsg();
+					$this->status = "Erreur de requete. Vous avez certainement déjà fait un commentaire sur cet élement.";
 			}
 		}
 	}
