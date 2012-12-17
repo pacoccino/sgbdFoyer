@@ -20,7 +20,7 @@ Le foyer étudiant organise des évènements pour les élèves, au cours desquel
 \section{Description du contexte de l'application}
 Tous les élèves de l'école sont des utilisateurs du foyer, chaque élève est caractérisé par l'année à laquelle il quittera l'école, sa promo. Parmi ces élèves, certains sont ou ont été membres du bureau, donc administrateurs du foyer pendant une année. Le foyer organise des évènements ponctuels dans divers lieux, au cours desquels il utilise un ou plusieurs jeux, et auxquels les élèves peuvent participer. Un livre donné est disponible en un ou plusieurs exemplaires au foyer, ces livres peuvent être empruntés par les élèves.
 \section{Modèle entité-association}
-\includegraphics[width=1.2\textwidth]{ER.png}
+\includegraphics[width=1\textwidth]{ER.png}
 Les conventions de nommage utilisées sont les suivantes : Les noms d'entité/association sont écrits en majuscule. Les clés sont en minuscule. En cas d'ambigu\"ité entre deux noms, on rajoute un symbole \_, suivi du nom de la table en minuscule. Les clés primaires commencent par id.
 \section{Considérations}
 Les entités sont celles demandées dans le sujet, à l'exception de l'entité EXEMPLAIRE. Celle ci a été créée pour distinguer le livre au sens virtuel (qui possède titre, auteur, editeur et ISBN) de l'objet physique. Ainsi, un élève emprunte un exemplaire et non pas un livre. Nous avons aussi choisi de réaliser une association A ETE EMPRUNTE PAR (emprunts actuels et passés plut\^ot que EST EMPRUNTE PAR afin de pouvoir conserver l'historique des emprunts (utile pour les requ\^etes de statistiques).\\
@@ -69,11 +69,15 @@ Nous considérons aussi que lorsque le sujet mentionne l'action pour un élève 
 \part{Schéma relationnel}
 \setcounter{section}{0}
 \section{Passage au relationnel}
-Le passage au modèle relationnel nécessite d'étudier les particularités de chaque association pour créer les bonnes relations. Certaines nécessitent la création de nouvelles tables, d'autres se contentent d'un ajout de clé étrangère.
+Le passage au modèle relationnel nécessite d'étudier les particularités de chaque association pour créer les bonnes relations. Certaines nécessitent la création de nouvelles tables, d'autres se contentent d'un ajout de clé étrangère. Nous ajoutons donc les tables PARTICIPE, UTILISE et EMPRUNT pour modéliser ces relations. La table EMPRUNT possède des attributs privés : les dates d'emprunt et de rendu. On rajoute aussi une clé primaire id\_emprunt car les clés étrangères ne permettent pas de caractériser un emprunt de manière unique (un m\^eme élève peut choisir d'emprunter deux fois le m\^eme livre).\\
+Les clés id\_eleve et id\_evt sont utilisées en tant que clés étrangères pour créer un couple de clés primaires de la table PARTICIPE. De m\^eme, la table UTILISE est caractérisée par les clés id\_jeu et id\_evt.
 \section{Contraintes d'intégrité et dépendances fonctionnelles}
+Plusieurs contraintes d'intégrité sont nécessaires à une utilisation sécurisée de la base de données. Pour commencer, des attributs ont été qualifiés NOT NULL. Ils ont pour la plupart été choisis sur des critères secondaires d'interprétation du sujet n'affectant pas le fonctionnement de la base. Les clés primaires non étrangères, elles, sont qualifiées de NOT NULL et AUTO INCREMENT.\\
+Des critères d'intégrité sont aussi à prendre en compte pour la table COMMENTAIRE. En effet, un commentaire doit concerner un évènement ou un jeu, mais pas les deux à la fois. De m\^eme, un utilisateur peut choisir d'ajouter une note, du texte, ou les deux.\\
+Les dépendances fonctionnelles sont pour la plupart triviales : Les attributs internes d'une table dépendent tous de la clé primaire qui lui est associée. Une exception subsiste pour la table MEMBRE. Son attribut annee peut \^etre simplement caractérisé par la clé étrangère id\_élève, qui devient donc aussi clé primaire.
 \section{Schéma relationnel en $3^{eme}$ forme normale}
-L'information "nombre de participants" etait ambigue. Nous avons decidé qu'elle indiquerait le nombre maximum de participants a un evenement, et que nous calculerions grâce a une requete le nombre réel de participants a un évènement afin de respecter le principe de constance des données.
-\includegraphics[width=1.2\textwidth]{relationnel.png}
+\includegraphics[width=1\textwidth]{relationnel.png}
+\\L'information "nombre de participants" etait ambigue. Nous avons decidé qu'elle indiquerait le nombre maximum de participants a un evenement, et que nous calculerions grâce a une requete le nombre réel de participants a un évènement afin de respecter le principe de constance des données.
 \section{Création de vues}
 Afin de faciliter certaines actions et réduire les requêtes SQL, nous avons également créé des vues concernant l'historique des membres, et les livres en cours d'emprunt.
 
@@ -81,7 +85,7 @@ Afin de faciliter certaines actions et réduire les requêtes SQL, nous avons é
 \part{Implantation}
 \setcounter{section}{0}
 \section{Création de la base de données}
-Nous avons choisit d'utiliser une base de données de type MySQL, correspondant au mieux a notre interface, et proposant des fonctionnalités telles que l'auto incrementations assez utiles.
+Nous avons choisit d'utiliser une base de données de type MySQL, correspondant au mieux a notre interface, et proposant des fonctionnalités telles que l'auto incrementations assez utiles. De plus, MySQL est un SGBD gratuit et très répendu chez les hébergeurs, permettant une utilisation/migration plus aisée de la base de données. Une limitation existe cependant : MySQL ne gère pas la fonction SQL CHECK. Cela empèche de gérer aisément les contraintes d'intégrité au niveau SQL. Cette limitation pourra éventuellement etre contrebalancée au niveau de la couche supérieure (langage serveur).
 
 \section{Implémentation des commandes SQL}
 La plupart des requètes utiles sont dans le fichier sql/requests.sql. Voici une liste incomplète :
@@ -132,6 +136,7 @@ SELECT IFNULL(texte, 'Non renseigné') AS texte,
 FROM COMMENTAIRE
 WHERE id_eleve = 1;
 \end{verbatim}
+La particularité de cette requète vient des conditions. On peut laisser un commentaire au sujet d'un jeu ou d'un évènement. Un commentaire peut contenir un texte et/ou une note. Les conditions permettent une mise en forme claire et concise de l'information récupérée.
 \paragraph{}
 Liste des emprunts en cours pour un élève
 \begin{verbatim}
@@ -171,8 +176,14 @@ SELECT * FROM PARTICIPE JOIN EVENEMENT ON PARTICIPE.id_evt = EVENEMENT.id_evt WH
 \paragraph{}
 Historique des emprunts pour un livre
 \begin{verbatim}
-SELECT date_rendu, nom_eleve  FROM ELEVE, LIVRE, EXEMPLAIRE, EMPRUNT  WHERE ELEVE.id_eleve = EMPRUNT.id_eleve  AND EMPRUNT.id_exemplaire = EXEMPLAIRE.id_exemplaire  AND EXEMPLAIRE.id_livre = LIVRE.id_livre  AND LIVRE.id_livre=3 ORDER BY date_rendu DESC;
+SELECT date_rendu, nom_eleve  FROM ELEVE, LIVRE, EXEMPLAIRE, EMPRUNT 
+WHERE ELEVE.id_eleve = EMPRUNT.id_eleve 
+AND EMPRUNT.id_exemplaire = EXEMPLAIRE.id_exemplaire  
+AND EXEMPLAIRE.id_livre = LIVRE.id_livre  
+AND LIVRE.id_livre=3 
+ORDER BY date_rendu DESC;
 \end{verbatim}
+On effectue d'abord une jointure conditionnelle entre les tables ELEVE, LIVRE, EXEMPLAIRE et EMPRUNT, pour relier un nom d'élève et un emprunt à un titre de livre. On sélectionne ensuite les colonnes interessantes.
 \paragraph{}
 Liste des livres disponibles a l'emprunt
 \begin{verbatim}
@@ -186,7 +197,7 @@ Nombres d'exemplaires disponibles a l'emprunt pour un livre
 SELECT COUNT(*) FROM EXEMPLAIRE LEFT JOIN LIVRE_EMPRUNTE ON EXEMPLAIRE.id_exemplaire = LIVRE_EMPRUNTE.id_exemplaire WHERE EXEMPLAIRE.empruntable = TRUE AND LIVRE_EMPRUNTE.id_emprunt is null AND EXEMPLAIRE.id_livre = 4;
 \end{verbatim}
 \paragraph{}
-Moyenne des emprunts de livre sur une année donnée.
+Moyenne des emprunts de livres sur une année donnée.
 \begin{verbatim}
 // Ici pour l'année 2012
 SELECT sum(total.an)/ 12 AS moyenne 
@@ -195,6 +206,7 @@ FROM (SELECT count(*) AS an
     WHERE YEAR(date_rendu)='2012' 
     GROUP BY MONTH(date_rendu)) AS total;
 \end{verbatim}
+On créé une table intermédiaire listant pour chaque mois le nombre de livre empruntés. On ensuite la somme des valeurs de cette table, puis on la divise par 12.
 \paragraph{}
 Classement des livres les plus lus.
 \begin{verbatim}
@@ -230,6 +242,7 @@ AND UTILISE.id_evt = PARTICIPATION.id_evt
 GROUP BY JEU.id_jeu
 ORDER BY total DESC;
 \end{verbatim}
+Pour cette requète, une table intermédiaire PARTICIPATION est utilisée. Elle liste, pour chaque évènement, le nombre de participants. Une jointure est ensuite effectuée avec les tables JEU et UTILISE, pour relier jeux et évènements. Les lignes sont regroupées par jeu, et la somme des valeurs de PARTICIPATION est effectuée.
 \paragraph{}
 Commentaires écrits sur un jeu.
 \begin{verbatim}
