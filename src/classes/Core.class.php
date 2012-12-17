@@ -67,10 +67,7 @@ class Core {
 		
 		$page=null;
 		if(isset($_GET['raz']))
-		{
 			$this::razDB();
-			unset($_SESSION['loggedin']);
-		}	
 		elseif(isset($_GET['test']))
 			$this->testP();
 		elseif(isset($_GET['action'])) {
@@ -176,9 +173,10 @@ class Core {
 	public static function razDB() {
 		Core::addDebug("<b>Reinitialisation de la base de donnees : </b><br />");
 		
-		Database::executeSqlFile("sql/deleteDatabase.sql");
-		Database::executeSqlFile("sql/createDatabase.sql");
-		Database::executeSqlFile("sql/initialData.sql");
+		unset($_SESSION['loggedin']);
+		
+		Database::executeSqlFile("sql/phpSQL/createDatabase.sql");
+		Database::executeSqlFile("sql/phpSQL/initialData.sql");
 		
 		Core::addDebug("<a href='index.php'>Retour a l'accueil</a><br />");
 		

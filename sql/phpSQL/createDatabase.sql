@@ -6,6 +6,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 -- -----------------------------------------------------
 -- Table `ELEVE`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `ELEVE` ;
 
 CREATE  TABLE IF NOT EXISTS `ELEVE` (
   `id_eleve` INT NOT NULL AUTO_INCREMENT ,
@@ -39,6 +40,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `JEU`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `JEU` ;
 
 CREATE  TABLE IF NOT EXISTS `JEU` (
   `id_jeu` INT NOT NULL AUTO_INCREMENT ,
@@ -53,6 +55,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `EVENEMENT`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `EVENEMENT` ;
 
 CREATE  TABLE IF NOT EXISTS `EVENEMENT` (
   `id_evt` INT NOT NULL AUTO_INCREMENT ,
@@ -66,6 +69,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `COMMENTAIRE`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `COMMENTAIRE` ;
 
 CREATE  TABLE IF NOT EXISTS `COMMENTAIRE` (
   `id_commentaire` INT NOT NULL AUTO_INCREMENT ,
@@ -99,6 +103,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `LIVRE`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `LIVRE` ;
 
 CREATE  TABLE IF NOT EXISTS `LIVRE` (
   `id_livre` INT NOT NULL AUTO_INCREMENT ,
@@ -113,6 +118,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `EXEMPLAIRE`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `EXEMPLAIRE` ;
 
 CREATE  TABLE IF NOT EXISTS `EXEMPLAIRE` (
   `id_exemplaire` INT NOT NULL AUTO_INCREMENT ,
@@ -133,6 +139,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `PARTICIPE`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `PARTICIPE` ;
 
 CREATE  TABLE IF NOT EXISTS `PARTICIPE` (
   `id_eleve` INT NOT NULL ,
@@ -155,6 +162,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `UTILISE`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `UTILISE` ;
 
 CREATE  TABLE IF NOT EXISTS `UTILISE` (
   `id_jeu` INT NOT NULL ,
@@ -177,6 +185,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `EMPRUNT`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `EMPRUNT` ;
 
 CREATE  TABLE IF NOT EXISTS `EMPRUNT` (
   `id_emprunt` INT NOT NULL AUTO_INCREMENT ,
@@ -220,7 +229,6 @@ CREATE TABLE IF NOT EXISTS `LIVRE_EMPRUNTE` (`id_emprunt` INT, `id_eleve` INT, `
 -- -----------------------------------------------------
 DROP VIEW IF EXISTS `HISTORIQUE_MEMBRE` ;
 DROP TABLE IF EXISTS `HISTORIQUE_MEMBRE`;
-DELIMITER $$
 CREATE  OR REPLACE VIEW HISTORIQUE_MEMBRE AS 
 SELECT ELEVE.id_eleve,
        ELEVE.nom_eleve,
@@ -231,17 +239,13 @@ SELECT ELEVE.id_eleve,
        MEMBRE.annee
 FROM ELEVE, MEMBRE 
 WHERE ELEVE.id_eleve = MEMBRE.id_eleve AND MEMBRE.annee < YEAR(NOW());
-$$
-DELIMITER ;
-
-;
 
 -- -----------------------------------------------------
 -- View `MEMBRE_ACTUEL`
 -- -----------------------------------------------------
 DROP VIEW IF EXISTS `MEMBRE_ACTUEL` ;
 DROP TABLE IF EXISTS `MEMBRE_ACTUEL`;
-DELIMITER $$
+
 CREATE  OR REPLACE VIEW MEMBRE_ACTUEL AS 
 SELECT ELEVE.id_eleve,
        ELEVE.nom_eleve,
@@ -252,30 +256,20 @@ SELECT ELEVE.id_eleve,
        MEMBRE.annee
 FROM ELEVE, MEMBRE 
 WHERE ELEVE.id_eleve = MEMBRE.id_eleve AND MEMBRE.annee = YEAR(NOW());
-$$
-DELIMITER ;
 
-;
 
 -- -----------------------------------------------------
 -- View `LIVRE_EMPRUNTE`
 -- -----------------------------------------------------
 DROP VIEW IF EXISTS `LIVRE_EMPRUNTE` ;
 DROP TABLE IF EXISTS `LIVRE_EMPRUNTE`;
-DELIMITER $$
+
 CREATE  OR REPLACE VIEW LIVRE_EMPRUNTE AS
 SELECT em.id_emprunt, em.id_eleve, em.date_emprunt, ex.id_exemplaire, ex.id_livre
 FROM EMPRUNT em INNER JOIN EXEMPLAIRE ex ON em.id_exemplaire = ex.id_exemplaire
 WHERE em.date_rendu is null;
 
-$$
-DELIMITER ;
 
-;
-
-DELIMITER $$
-
-DROP TRIGGER IF EXISTS `MULTIPLE_COMMENT` $$
 CREATE TRIGGER `MULTIPLE_COMMENT`
 BEFORE INSERT
 ON `COMMENTAIRE`
@@ -296,11 +290,6 @@ BEGIN
 		SET NEW.id_evt = NULL;
 	END IF;
 END; 
-$$
-
-
-DELIMITER ;
-
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

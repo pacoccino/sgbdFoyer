@@ -24,6 +24,7 @@ class Database implements genericInterface {
 				die('Erreur de creation base de donnée: '.Database::$base->error);
 			else {
 				Core::addDebug("Base de donnée créée");
+				Database::$base->select_db($mysqlDB->db);
 				if(!isset($_GET['raz']))
 					Core::razDB();
 			}	
